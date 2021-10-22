@@ -1,3 +1,58 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'pages/login.dart';
+import 'pages/homepage.dart';
+
+const storage = FlutterSecureStorage();
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  // const MyApp({Key? key}) : super(key: key);
+
+  Future<String> get jwtOrEmpty async {
+    var jwt = await storage.read(key: "jwt");
+    if (jwt == null) return "";
+    return jwt;
+  }
+
+  Widget handleDisplay(context, snapshot) {
+    if (!snapshot.hasData) return const CircularProgressIndicator();
+    if (snapshot.data != "") {
+      var str = snapshot.data.toString();
+
+      var jwt = str.split(".");
+
+      if (jwt.length != 3) {
+        return LoginPage();
+      } else {
+        var payload = getPayload(jwt);
+
+        if (DateTime.fromMillisecondsSinceEpoch(payload["exp"] * 1000)
+            .isAfter(DateTime.now())) {
+          return HomePage(str, payload);
+        } else {
+          return LoginPage();
+        }
+      }
+    } else {
+      return LoginPage();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Authentication Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: FutureBuilder(future: jwtOrEmpty, builder: handleDisplay),
+    );
+  }
+}
 // import 'package:flutter/material.dart';
 
 // void main() {
@@ -111,58 +166,3 @@
 //     );
 //   }
 // }
-import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'pages/login.dart';
-import 'pages/homepage.dart';
-
-const storage = FlutterSecureStorage();
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  // const MyApp({Key? key}) : super(key: key);
-
-  Future<String> get jwtOrEmpty async {
-    var jwt = await storage.read(key: "jwt");
-    if (jwt == null) return "";
-    return jwt;
-  }
-
-  Widget handleDisplay(context, snapshot) {
-    if (!snapshot.hasData) return const CircularProgressIndicator();
-    if (snapshot.data != "") {
-      var str = snapshot.data.toString();
-
-      var jwt = str.split(".");
-
-      if (jwt.length != 3) {
-        return LoginPage();
-      } else {
-        var payload = getPayload(jwt);
-
-        if (DateTime.fromMillisecondsSinceEpoch(payload["exp"] * 1000)
-            .isAfter(DateTime.now())) {
-          return HomePage(str, payload);
-        } else {
-          return LoginPage();
-        }
-      }
-    } else {
-      return LoginPage();
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Authentication Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: FutureBuilder(future: jwtOrEmpty, builder: handleDisplay),
-    );
-  }
-}
