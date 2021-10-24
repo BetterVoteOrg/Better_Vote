@@ -62,7 +62,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Authentication Demo',
+      title: 'BetterVote',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
