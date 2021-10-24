@@ -1,45 +1,64 @@
+import 'package:better_vote/views/Login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'pages/login.dart';
-import 'pages/homepage.dart';
+import 'views/Homepage.dart';
+import 'views/Login.dart';
 
-const storage = FlutterSecureStorage();
+import 'dart:convert' show json, base64, ascii;
 
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  // const MyApp({Key? key}) : super(key: key);
+class MyApp extends StatefulWidget {
+  const MyApp({Key key}) : super(key: key);
 
-  Future<String> get jwtOrEmpty async {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool isBusy = false;
+  bool isLoggedIn = false;
+  String jsontoken;
+  Map<String, dynamic> payload;
+
+  Future<String> get getJsonWebTokenOrEmpty async {
+    const storage = FlutterSecureStorage();
     var jwt = await storage.read(key: "jwt");
     if (jwt == null) return "";
     return jwt;
   }
 
-  Widget handleDisplay(context, snapshot) {
-    if (!snapshot.hasData) return const CircularProgressIndicator();
+  void handleLoading(snapshot) {
+    isBusy = !snapshot.hasData;
+  }
+
+  void handleData(snapshot) {}
+  bool tokenIsAuthorized(Map<String, dynamic> payload) {
+    return DateTime.fromMillisecondsSinceEpoch(payload["exp"] * 1000)
+        .isAfter(DateTime.now());
+  }
+
+  void handleLogging(snapshot) {
     if (snapshot.data != "") {
-      var str = snapshot.data.toString();
-
-      var jwt = str.split(".");
-
-      if (jwt.length != 3) {
-        return LoginPage();
-      } else {
-        var payload = getPayload(jwt);
-
-        if (DateTime.fromMillisecondsSinceEpoch(payload["exp"] * 1000)
-            .isAfter(DateTime.now())) {
-          return HomePage(str, payload);
-        } else {
-          return LoginPage();
+      jsontoken = snapshot.data.toString();
+      List<String> jwt = jsontoken.split(".");
+      if (jwt.length >= 3) {
+        payload = getPayload(jwt[1]);
+        if (tokenIsAuthorized(payload)) {
+          isLoggedIn = true;
         }
       }
-    } else {
-      return LoginPage();
     }
+  }
+
+  Widget handleDisplay(context, snapshot) {
+    handleLoading(snapshot);
+    handleLogging(snapshot);
+    if (isBusy) return const CircularProgressIndicator();
+    if (isLoggedIn) return HomePage(jsontoken, payload);
+    return LoginPage();
   }
 
   @override
@@ -49,11 +68,15 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: FutureBuilder(future: jwtOrEmpty, builder: handleDisplay),
+      home:
+          FutureBuilder(future: getJsonWebTokenOrEmpty, builder: handleDisplay),
     );
   }
+
+  // ···
 }
-// import 'package:flutter/material.dart';
+
+// import 'package:flutter/material.dart';r
 
 // void main() {
 //   runApp(MyApp());
