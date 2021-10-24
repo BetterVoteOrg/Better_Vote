@@ -2,10 +2,11 @@ import 'package:better_vote/controllers/LoginController.dart';
 import 'package:flutter/material.dart';
 import 'Homepage.dart';
 
+// ignore: must_be_immutable
 class LoginPage extends StatelessWidget {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final loginController = LoginController();
+  final _loginController = LoginController();
   bool _isLogged;
 
   @override
@@ -16,7 +17,7 @@ class LoginPage extends StatelessWidget {
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    HomePage.fromBase64(loginController.jsonWebToken)));
+                    HomePage.fromBase64(_loginController.jsonWebToken)));
       } else {
         showDialog(
           context: context,
@@ -31,7 +32,7 @@ class LoginPage extends StatelessWidget {
     void handleLogin() async {
       var _userName = _usernameController.text;
       var _password = _passwordController.text;
-      _isLogged = await loginController
+      _isLogged = await _loginController
           .attemptLogIn({"user_name": _userName, "password": _password});
       handleScreens(context);
     }

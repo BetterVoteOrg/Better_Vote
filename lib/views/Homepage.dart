@@ -2,20 +2,22 @@ import 'package:better_vote/network/NetworkHandler.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert' show json, base64, ascii;
 
-Map<String, dynamic> getPayload(_jsonWebToken) {
+Map<String, dynamic> getpayloadFromToken(_jsonWebToken) {
+  print(_jsonWebToken);
   return json
       .decode(ascii.decode(base64.decode(base64.normalize(_jsonWebToken))));
 }
 
 class HomePage extends StatelessWidget {
-  HomePage(this._jsonWebToken, this.payload, {Key key}) : super(key: key) {
+  HomePage(this._jsonWebToken, this._payloadFromToken, {Key key})
+      : super(key: key) {
     print(this._jsonWebToken);
   }
   factory HomePage.fromBase64(String _jsonWebToken) =>
-      HomePage(_jsonWebToken, getPayload(_jsonWebToken.split(".")[1]));
+      HomePage(_jsonWebToken, getpayloadFromToken(_jsonWebToken.split(".")[1]));
 
   final String _jsonWebToken;
-  final Map<String, dynamic> payload;
+  final Map<String, dynamic> _payloadFromToken;
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -27,14 +29,10 @@ class HomePage extends StatelessWidget {
               builder: (context, snapshot) => snapshot.hasData
                   ? Column(
                       children: <Widget>[
-                        //This payload has user id, iat=> date user logged in, iat => jsonwebtoken expiry date
-                        Text("${payload.toString()}"),
-
-                        // Text(snapshot.data.toString(),
-                        //     style: Theme.of(context).textTheme.bodyText1)
-
+                        //This _payloadFromToken has user id, iat=> date user logged in, iat => jsonwebtoken expiry date
+                        // Text("${_payloadFromToken.toString()}"),
                         //Get data using id
-                        displayUserData(payload['user_id'])
+                        displayUserData(_payloadFromToken['user_id'])
                       ],
                     )
                   : snapshot.hasError
@@ -44,12 +42,26 @@ class HomePage extends StatelessWidget {
       );
 
   Widget displayUserData(String _userId) {
+    Map<String, dynamic> _payloadFromUserRequest;
+
     return FutureBuilder(
       future: NetworkHandler("/users/" + _userId)
           .fetchData({"Authorization": _jsonWebToken}),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if (snapshot.hasData) {
-          return Text(snapshot.data.toString());
+          _payloadFromUserRequest = json.decode(snapshot.data);
+          print(_payloadFromUserRequest.toString());
+          return Center(
+            child: Column(
+              children: [
+                Text("WELCOME"),
+                Text("Username:  " + _payloadFromUserRequest["user_name"]),
+                Text("Email: " + _payloadFromUserRequest["email"]),
+                Text("Account created: " +
+                    _payloadFromUserRequest["created_at"]),
+              ],
+            ),
+          );
         }
         return Text("User not found");
       },

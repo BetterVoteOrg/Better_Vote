@@ -4,8 +4,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'views/Homepage.dart';
 import 'views/Login.dart';
 
-import 'dart:convert' show json, base64, ascii;
-
 void main() {
   runApp(MyApp());
 }
@@ -18,36 +16,36 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool isBusy = false;
-  bool isLoggedIn = false;
-  String jsontoken;
-  Map<String, dynamic> payload;
+  bool _isBusy = false;
+  bool _isLoggedIn = false;
+  String _jsonWebToken;
+  Map<String, dynamic> _payloadFromToken;
 
   Future<String> get getJsonWebTokenOrEmpty async {
     const storage = FlutterSecureStorage();
-    var jwt = await storage.read(key: "jwt");
-    if (jwt == null) return "";
-    return jwt;
+    var _jsonWebToken = await storage.read(key: "jwt");
+    if (_jsonWebToken == null) return "";
+    return _jsonWebToken;
   }
 
   void handleLoading(snapshot) {
-    isBusy = !snapshot.hasData;
+    _isBusy = !snapshot.hasData;
   }
 
   void handleData(snapshot) {}
-  bool tokenIsAuthorized(Map<String, dynamic> payload) {
-    return DateTime.fromMillisecondsSinceEpoch(payload["exp"] * 1000)
+  bool tokenIsAuthorized(Map<String, dynamic> _payloadFromToken) {
+    return DateTime.fromMillisecondsSinceEpoch(_payloadFromToken["exp"] * 1000)
         .isAfter(DateTime.now());
   }
 
   void handleLogging(snapshot) {
     if (snapshot.data != "") {
-      jsontoken = snapshot.data.toString();
-      List<String> jwt = jsontoken.split(".");
-      if (jwt.length >= 3) {
-        payload = getPayload(jwt[1]);
-        if (tokenIsAuthorized(payload)) {
-          isLoggedIn = true;
+      _jsonWebToken = snapshot.data.toString();
+      List<String> jwtList = _jsonWebToken.split(".");
+      if (jwtList.length >= 3) {
+        _payloadFromToken = getpayloadFromToken(jwtList[1]);
+        if (tokenIsAuthorized(_payloadFromToken)) {
+          _isLoggedIn = true;
         }
       }
     }
@@ -56,8 +54,8 @@ class _MyAppState extends State<MyApp> {
   Widget handleDisplay(context, snapshot) {
     handleLoading(snapshot);
     handleLogging(snapshot);
-    if (isBusy) return const CircularProgressIndicator();
-    if (isLoggedIn) return HomePage(jsontoken, payload);
+    if (_isBusy) return const CircularProgressIndicator();
+    if (_isLoggedIn) return HomePage(_jsonWebToken, _payloadFromToken);
     return LoginPage();
   }
 
