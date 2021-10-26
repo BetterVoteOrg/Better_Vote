@@ -45,7 +45,7 @@ class HomePage extends StatelessWidget {
     Map<String, dynamic> _payloadFromUserRequest;
 
     return FutureBuilder(
-      future: NetworkHandler("/users/" + _userId)
+      future: NetworkHandler("/api/users/")
           .fetchData({"Authorization": _jsonWebToken}),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if (snapshot.hasData) {
