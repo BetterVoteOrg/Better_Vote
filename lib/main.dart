@@ -42,6 +42,7 @@ class _MyAppState extends State<MyApp> {
     if (snapshot.data != "") {
       _jsonWebToken = snapshot.data.toString();
       List<String> jwtList = _jsonWebToken.split(".");
+      print("MAINR " + _jsonWebToken);
       if (jwtList.length >= 3) {
         _payloadFromToken = getpayloadFromToken(jwtList[1]);
         if (tokenIsAuthorized(_payloadFromToken)) {
@@ -55,7 +56,7 @@ class _MyAppState extends State<MyApp> {
     handleLoading(snapshot);
     handleLogging(snapshot);
     if (_isBusy) return const CircularProgressIndicator();
-    if (_isLoggedIn) return HomePage(_jsonWebToken, _payloadFromToken);
+    if (_isLoggedIn) return HomePage();
     return LoginPage();
   }
 
