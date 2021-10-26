@@ -3,7 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class LoginController {
   LoginController();
-  String _loginPath = "/users/login";
+  String _loginPath = "/login";
   String jsonWebToken;
 
   Future<bool> attemptLogIn(Object _loginData) async {

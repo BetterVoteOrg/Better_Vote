@@ -43,7 +43,7 @@ class HomePage extends StatelessWidget {
 
   Widget displayUserData(String _userId) {
     return FutureBuilder(
-      future: NetworkHandler("/users/" + _userId)
+      future: NetworkHandler("/api/users/")
           .fetchData({"Authorization": _jsonWebToken}),
       builder: userBuilder,
     );
