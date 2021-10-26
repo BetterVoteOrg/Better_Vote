@@ -42,29 +42,29 @@ class HomePage extends StatelessWidget {
       );
 
   Widget displayUserData(String _userId) {
-    Map<String, dynamic> _payloadFromUserRequest;
-
     return FutureBuilder(
       future: NetworkHandler("/users/" + _userId)
           .fetchData({"Authorization": _jsonWebToken}),
-      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        if (snapshot.hasData) {
-          _payloadFromUserRequest = json.decode(snapshot.data);
-          print(_payloadFromUserRequest.toString());
-          return Center(
-            child: Column(
-              children: [
-                Text("WELCOME"),
-                Text("Username:  " + _payloadFromUserRequest["user_name"]),
-                Text("Email: " + _payloadFromUserRequest["email"]),
-                Text("Account created: " +
-                    _payloadFromUserRequest["created_at"]),
-              ],
-            ),
-          );
-        }
-        return Text("User not found");
-      },
+      builder: userBuilder,
     );
+  }
+
+  Widget userBuilder(BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+    if (snapshot.hasData) {
+      Map<String, dynamic> _payloadFromUserRequest = json.decode(snapshot.data);
+      print(_payloadFromUserRequest.toString());
+      return Center(
+        child: Column(
+          children: [
+            Text("WELCOME"),
+            Text("Username:  " + _payloadFromUserRequest["user_name"]),
+            Text("Email: " + _payloadFromUserRequest["email"]),
+            Text("Account created: " + _payloadFromUserRequest["created_at"]),
+          ],
+        ),
+      );
+    }
+    if (snapshot.hasError) return Text("An error occurred fetching user data.");
+    return CircularProgressIndicator();
   }
 }
