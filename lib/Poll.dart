@@ -1,7 +1,10 @@
+import 'User.dart';
+
 enum VotingSystem { rcv, star, plurality }
 
 class Poll {
   int _id;
+  User _creator;
   String _title;
   int _startTime;
   int _endTime;
@@ -12,10 +15,12 @@ class Poll {
 
   // When editing choices, do not remove from array. Index needs to stay constant for votes.
   List<String> _choices = [];
+  // Indexes to ignore when calculating results
   List<int> _deletedChoices = [];
 
-  Poll(String title, int startTime, int endTime, String question,
+  Poll(User creator, String title, int startTime, int endTime, String question,
       VotingSystem votingSystem) {
+    this._creator = creator;
     this._title = title;
     this._startTime = startTime;
     this._endTime = endTime;
@@ -25,6 +30,10 @@ class Poll {
 
   int getId() {
     return _id;
+  }
+
+  User getCreator() {
+    return _creator;
   }
 
   String getTitle() {
