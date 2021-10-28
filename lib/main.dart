@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'views/Homepage.dart';
 import 'views/Login.dart';
+import 'views/Intro.dart';
 
 void main() {
   runApp(MyApp());
@@ -57,16 +58,16 @@ class _MyAppState extends State<MyApp> {
     handleLogging(snapshot);
     if (_isBusy) return const CircularProgressIndicator();
     if (_isLoggedIn) return HomePage();
-    return LoginPage();
+    return IntroPage();
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'BetterVote',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      //title: 'BetterVote',
+      //theme: ThemeData(
+        //primarySwatch: Colors.green,
+      //),
       home:
           FutureBuilder(future: getJsonWebTokenOrEmpty, builder: handleDisplay),
     );
