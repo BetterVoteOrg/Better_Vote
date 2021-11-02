@@ -1,4 +1,5 @@
 import 'package:better_vote/views/Login.dart';
+import 'package:better_vote/views/Signup.dart';
 import 'package:flutter/material.dart';
 
 class IntroPage extends StatelessWidget {
@@ -36,7 +37,8 @@ class IntroPage extends StatelessWidget {
                           ),
                         ),
                         onPressed: () {
-                          print('Pressed');
+                          //print('Pressed');
+                          _navigateToSignUp(context);
                         }
 
                       )
@@ -81,4 +83,8 @@ class IntroPage extends StatelessWidget {
 
 void _navigateToNextScreen(BuildContext context) {
   Navigator.of(context).push(MaterialPageRoute(builder: (context) => LoginPage()));
+}
+
+void _navigateToSignUp(BuildContext context) {
+  Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignupPage()));
 }
