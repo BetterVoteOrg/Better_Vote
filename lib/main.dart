@@ -1,8 +1,6 @@
-import 'package:better_vote/views/Login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'views/Homepage.dart';
-import 'views/Login.dart';
 import 'views/Intro.dart';
 
 void main() {
@@ -43,7 +41,6 @@ class _MyAppState extends State<MyApp> {
     if (snapshot.data != "") {
       _jsonWebToken = snapshot.data.toString();
       List<String> jwtList = _jsonWebToken.split(".");
-      print("MAINR " + _jsonWebToken);
       if (jwtList.length >= 3) {
         _payloadFromToken = getpayloadFromToken(jwtList[1]);
         if (tokenIsAuthorized(_payloadFromToken)) {
@@ -66,7 +63,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       //title: 'BetterVote',
       //theme: ThemeData(
-        //primarySwatch: Colors.green,
+      //primarySwatch: Colors.green,
       //),
       home:
           FutureBuilder(future: getJsonWebTokenOrEmpty, builder: handleDisplay),
