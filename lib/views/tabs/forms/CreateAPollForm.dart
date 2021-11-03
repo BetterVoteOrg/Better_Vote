@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class CreateAPoll extends StatelessWidget {
-  const CreateAPoll({Key key}) : super(key: key);
+class CreateAPollForm extends StatelessWidget {
+  const CreateAPollForm({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
