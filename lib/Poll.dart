@@ -1,4 +1,4 @@
-import 'User.dart';
+import 'controllers/UserController.dart';
 
 enum VotingSystem { rcv, star, plurality }
 

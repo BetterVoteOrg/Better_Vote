@@ -1,6 +1,6 @@
 import 'Ballot.dart';
 import 'Poll.dart';
-import 'User.dart';
+import 'controllers/UserController.dart';
 
 class RcvBallot extends Ballot {
   // an array who's index corresponds to the choice at the same index in the _choices array from the Ballot parent class' poll

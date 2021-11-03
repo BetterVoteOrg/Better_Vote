@@ -1,5 +1,5 @@
 import 'package:better_vote/Poll.dart';
-import 'package:better_vote/User.dart';
+import 'package:better_vote/controllers/UserController.dart';
 
 class Ballot {
   User _voter;
