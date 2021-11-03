@@ -1,5 +1,9 @@
 import 'package:better_vote/network/NetworkHandler.dart';
-import 'package:better_vote/views/tabs/Profile.dart';
+import 'package:better_vote/views/tabs/CreatePollTab.dart';
+import 'package:better_vote/views/tabs/ExploreTab.dart';
+import 'package:better_vote/views/tabs/HomeTab.dart';
+import 'package:better_vote/views/tabs/NotificationsTab.dart';
+import 'package:better_vote/views/tabs/ProfileTab.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -16,26 +20,10 @@ class HomeState extends State<HomePage> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static List<Widget> _screenOptions = <Widget>[
-    Text(
-      'Index 0: Home',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 1: Explore',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 2: Create Poll',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 3: Notifications',
-      style: optionStyle,
-    ),
-    // Text(
-    //   'Index 4: Profile',
-    //   style: optionStyle,
-    // ),
+    HomeTabPage(),
+    ExploreTabPage(),
+    CreatePollPage(),
+    NotificationsTabPage(),
     ProfilePage()
   ];
 
