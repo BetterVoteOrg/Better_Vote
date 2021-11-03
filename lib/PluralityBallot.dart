@@ -1,6 +1,6 @@
 import 'Ballot.dart';
 import 'Poll.dart';
-import 'User.dart';
+import 'controllers/UserController.dart';
 
 class PluralityBallot extends Ballot {
   // corresponds to the index of the _choices array from the Ballot parent class' poll

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'network/NetworkHandler.dart';
 import 'views/Homepage.dart';
 import 'views/Intro.dart';
 
