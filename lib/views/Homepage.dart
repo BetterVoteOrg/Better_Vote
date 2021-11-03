@@ -1,4 +1,3 @@
-import 'package:better_vote/network/NetworkHandler.dart';
 import 'package:better_vote/views/tabs/CreatePollTab.dart';
 import 'package:better_vote/views/tabs/ExploreTab.dart';
 import 'package:better_vote/views/tabs/HomeTab.dart';
@@ -22,9 +21,9 @@ class HomeState extends State<HomePage> {
   static List<Widget> _screenOptions = <Widget>[
     HomeTabPage(),
     ExploreTabPage(),
-    CreatePollPage(),
+    CreatePollTabPage(),
     NotificationsTabPage(),
-    ProfilePage()
+    ProfileTabPage()
   ];
 
   void _onItemTapped(int index) {

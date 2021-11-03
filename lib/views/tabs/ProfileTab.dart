@@ -1,13 +1,13 @@
 import 'package:better_vote/controllers/UserController.dart';
 import 'package:flutter/material.dart';
 
-class ProfilePage extends StatefulWidget {
-  ProfilePage({Key key}) : super(key: key);
+class ProfileTabPage extends StatefulWidget {
+  ProfileTabPage({Key key}) : super(key: key);
   @override
-  State<ProfilePage> createState() => ProfileState();
+  State<ProfileTabPage> createState() => ProfileState();
 }
 
-class ProfileState extends State<ProfilePage> {
+class ProfileState extends State<ProfileTabPage> {
   final user = User();
   @override
   Widget build(BuildContext context) {
