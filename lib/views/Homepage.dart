@@ -1,8 +1,11 @@
+import 'dart:html';
+
 import 'package:better_vote/network/NetworkHandler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:convert' show json, base64, ascii;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'CreateAPoll.dart';
 
 Map<String, dynamic> getpayloadFromToken(_jsonWebToken) {
   return json
@@ -28,10 +31,7 @@ class HomeState extends State<HomePage> {
       'Index 1: Explore',
       style: optionStyle,
     ),
-    Text(
-      'Index 2: Create Poll',
-      style: optionStyle,
-    ),
+    CreateAPoll(),
     Text(
       'Index 3: Notifications',
       style: optionStyle,
