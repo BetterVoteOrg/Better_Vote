@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class IntroPage extends StatelessWidget {
   Widget build(BuildContext context) {
-    void _navigateToNextScreen(BuildContext context, Widget screen) {
+    void _navigateToNextScreen(Widget screen) {
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => screen));
     }
@@ -40,7 +40,7 @@ class IntroPage extends StatelessWidget {
                             ),
                             onPressed: () {
                               //print('Pressed');
-                              _navigateToNextScreen(context, SignupPage());
+                              _navigateToNextScreen(SignupPage());
                             })),
                     SizedBox(height: 40),
                     SizedBox(
@@ -61,7 +61,7 @@ class IntroPage extends StatelessWidget {
                             ),
                             onPressed: () {
                               //print('Pressed');
-                              _navigateToNextScreen(context, LoginPage());
+                              _navigateToNextScreen(LoginPage());
                             }))
                   ],
                 ))

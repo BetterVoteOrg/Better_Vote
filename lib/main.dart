@@ -61,13 +61,20 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      //title: 'BetterVote',
-      //theme: ThemeData(
-      //primarySwatch: Colors.green,
-      //),
-      home:
+        //title: 'BetterVote',
+        //theme: ThemeData(
+        //primarySwatch: Colors.green,
+        //),
+        home: SafeArea(
+      top: true,
+      bottom: true,
+      left: true,
+      right: true,
+      // minimum: EdgeInsets.all(16.0),
+      maintainBottomViewPadding: true,
+      child:
           FutureBuilder(future: getJsonWebTokenOrEmpty, builder: handleDisplay),
-    );
+    ));
   }
 
   // ···
