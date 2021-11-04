@@ -1,6 +1,6 @@
-import 'controllers/UserController.dart';
+import '../controllers/UserController.dart';
 
-enum VotingSystem { rcv, star, plurality }
+enum VotingSystem { RCV, STAR, PLURALITY }
 
 class Poll {
   int _id;

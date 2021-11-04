@@ -1,8 +1,7 @@
 import 'dart:convert';
-
-import 'package:better_vote/Poll.dart';
 import 'package:better_vote/network/NetworkHandler.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import '../models/Poll.dart';
 
 class User {
   var _userdata;
@@ -43,7 +42,7 @@ class User {
     final _jsonWebToken = await FlutterSecureStorage().read(key: "jwt");
     Map<String, dynamic> _payloadFromToken =
         getpayloadFromToken(_jsonWebToken.split(".")[1]);
-    var response =
+    String response =
         await NetworkHandler("/api/users/" + _payloadFromToken["user_id"])
             .fetchData();
     _userdata = json.decode(response);

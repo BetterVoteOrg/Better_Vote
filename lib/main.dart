@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
+
 import 'network/NetworkHandler.dart';
 import 'views/Homepage.dart';
 import 'views/Intro.dart';
@@ -66,16 +70,31 @@ class _MyAppState extends State<MyApp> {
         //theme: ThemeData(
         //primarySwatch: Colors.green,
         //),
+        localizationsDelegates: [
+          FormBuilderLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: [
+          Locale('en', ''),
+          Locale('es', ''),
+          Locale('fa', ''),
+          Locale('fr', ''),
+          Locale('ja', ''),
+          Locale('pt', ''),
+          Locale('sk', ''),
+          Locale('pl', ''),
+        ],
         home: SafeArea(
-      top: true,
-      bottom: true,
-      left: true,
-      right: true,
-      // minimum: EdgeInsets.all(16.0),
-      maintainBottomViewPadding: true,
-      child:
-          FutureBuilder(future: getJsonWebTokenOrEmpty, builder: handleDisplay),
-    ));
+          top: true,
+          bottom: true,
+          left: true,
+          right: true,
+          // minimum: EdgeInsets.all(16.0),
+          maintainBottomViewPadding: true,
+          child: FutureBuilder(
+              future: getJsonWebTokenOrEmpty, builder: handleDisplay),
+        ));
   }
 
   // ···

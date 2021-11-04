@@ -1,6 +1,7 @@
+import 'package:better_vote/controllers/UserController.dart';
+
 import 'Ballot.dart';
-import 'Poll.dart';
-import 'controllers/UserController.dart';
+import '../../models/Poll.dart';
 
 class StarBallot extends Ballot {
   // an array who's index corresponds to the choice at the same index in the _choices array from the Ballot parent class' poll
