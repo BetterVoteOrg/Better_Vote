@@ -11,6 +11,7 @@ class CreateAPollForm extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           title: const Text(pageTitle),
+          backgroundColor: Color(0xFF008037),
         ),
         body: SingleChildScrollView(
           child: ConstrainedBox(

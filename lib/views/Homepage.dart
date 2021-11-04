@@ -48,31 +48,31 @@ class HomeState extends State<HomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
-            backgroundColor: Colors.red,
+            backgroundColor: Color(0xFF008037),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
             label: 'Explore',
-            backgroundColor: Colors.green,
+            backgroundColor: Color(0xFF008037),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add),
             label: 'Create Poll',
-            backgroundColor: Colors.purple,
+            backgroundColor: Color(0xFF008037),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.notifications),
             label: 'Notifications',
-            backgroundColor: Colors.pink,
+            backgroundColor: Color(0xFF008037),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: 'Profile',
-            backgroundColor: Colors.pink,
+            backgroundColor: Color(0xFF008037),
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
+        selectedItemColor: Colors.black,
         onTap: _onItemTapped,
       );
     }

@@ -62,10 +62,10 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        //title: 'BetterVote',
-        //theme: ThemeData(
-        //primarySwatch: Colors.green,
-        //),
+        title: 'BetterVote',
+        theme: ThemeData(
+        primaryColor: Color(0xFF008037),
+        ),
         home: SafeArea(
       top: true,
       bottom: true,

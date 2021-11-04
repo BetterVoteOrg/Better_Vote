@@ -1,5 +1,6 @@
 import 'package:better_vote/controllers/UserController.dart';
 import 'package:flutter/material.dart';
+import 'package:better_vote/views/widgets/postcard.dart';
 
 class HomeTabPage extends StatefulWidget {
   HomeTabPage({Key key}) : super(key: key);
@@ -21,10 +22,16 @@ class HomeTabState extends State<HomeTabPage> {
     if (snapshot.hasData) {
       const TextStyle optionStyle =
           TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-      return Center(
-        child: Text(
-          'Index 0: Home',
-          style: optionStyle,
+      return Scaffold(
+        appBar: AppBar(
+          title: Text("Polls"),
+          backgroundColor: Color(0xFF008037),
+        ),
+        body: ListView.builder(
+          itemCount: 5,
+          itemBuilder: (BuildContext context, int index) {
+            return PostCard();
+          },
         ),
       );
     }
