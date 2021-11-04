@@ -31,26 +31,13 @@ class CreateAPollForm extends StatelessWidget {
 
 class CustomForm extends StatefulWidget {
   CustomForm({Key key}) : super(key: key);
-  // DateTime today = DateTime.now();
   @override
   State<CustomForm> createState() => CustomFormState();
 }
 
 class CustomFormState extends State<CustomForm> {
-  TextEditingController _startDateController = TextEditingController();
-  TextEditingController _endDateController = TextEditingController();
-
-  // Future _selectDate(TextEditingController dateController) async {
-  //   FocusScope.of(context).requestFocus(new FocusNode());
-  //   var picked = DateTimePicker(
-  //       context: context,
-  //       initialDate: new DateTime.now(),
-  //       firstDate: new DateTime.now(),
-  //       lastDate: new DateTime(2025));
-
-  //   if (picked != null) dateController.text = picked.toIso8601String();
-  //   // setState(() => dateController.text= picked.toIso8601String());
-  // }
+  // TextEditingController _startDateController = TextEditingController();
+  // TextEditingController _endDateController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -99,17 +86,8 @@ class CustomFormState extends State<CustomForm> {
             initialValue: DateTime.now().toString(),
             firstDate: DateTime.now().add(const Duration(minutes: 5)),
             lastDate: DateTime(2025),
-            // icon: Icon(Icons.event),
             dateLabelText: 'Start Date',
             timeLabelText: "Hour",
-            // selectableDayPredicate: (date) {
-            //   // Disable weekend days to select from the calendar
-            //   if (date.weekday == 6 || date.weekday == 7) {
-            //     return false;
-            //   }
-
-            //   return true;
-            // },
             onChanged: (val) => print(val),
             validator: (val) {
               print(val);
@@ -126,17 +104,8 @@ class CustomFormState extends State<CustomForm> {
             initialValue: DateTime.now().toString(),
             firstDate: DateTime.now().add(const Duration(minutes: 5)),
             lastDate: DateTime(2025),
-            // icon: Icon(Icons.event),
             dateLabelText: 'End Date',
             timeLabelText: "Hour",
-            // selectableDayPredicate: (date) {
-            //   // Disable weekend days to select from the calendar
-            //   if (date.weekday == 6 || date.weekday == 7) {
-            //     return false;
-            //   }
-
-            //   return true;
-            // },
             onChanged: (val) => print(val),
             validator: (val) {
               print(val);
