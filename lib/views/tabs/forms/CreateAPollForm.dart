@@ -12,7 +12,12 @@ class CreateAPollForm extends StatelessWidget {
         appBar: AppBar(
           title: const Text(pageTitle),
         ),
-        body: const CustomForm(),
+        body: SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(),
+            child: const CustomForm(),
+          ),
+        ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {},
           child: Text('Save Poll'),
@@ -86,3 +91,27 @@ class CustomForm extends StatelessWidget {
     );
   }
 }
+
+/*  class MyButton extends StatelessWidget {
+    const MyButton({Key key}) : super(key: key);
+  
+
+    @override
+    Widget build(BuildContext context){
+    return GestureDetector(
+      onTap: (){
+        const buttonPress = SnackBar(content: Text('Save Poll'));
+        ScaffoldMessenger.of(context).showSnackBar(buttonPress);
+      },
+      child: Container(
+        padding: const EdgeInsets.all(12.0),
+        decoration: BoxDecoration(
+          color: Colors.lightBlue,
+          borderRadius: BorderRadius.circular(8.0),
+      ),
+      child: const Text('Save Poll'),
+    ),
+    );
+  }
+}
+}*/
