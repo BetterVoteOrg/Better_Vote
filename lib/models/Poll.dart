@@ -22,14 +22,14 @@ class Poll {
 
   List<Ballot> _votes = [];
 
-  Poll(User creator, Map<String, dynamic> data) {
+  Poll(User creator, Map<String, dynamic> json) {
     this._creator = creator;
-    this._title = data["poll_title"];
-    this._startTime = data["start_time"];
-    this._endTime = data["end_time"];
-    this._question = data["prompt"];
-    this._votingSystem = data["vote_system"];
-    this._createdTime = data["created_at"];
+    this._title = json["poll_title"];
+    this._startTime = json["start_time"];
+    this._endTime = json["end_time"];
+    this._question = json["prompt"];
+    this._votingSystem = json["vote_system"];
+    this._createdTime = json["created_at"];
   }
 
   int getId() {

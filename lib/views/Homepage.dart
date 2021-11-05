@@ -30,7 +30,7 @@ class HomeState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
+    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
     List<Widget> _screenOptions = <Widget>[
       HomeTabPage(),
       ExploreTabPage(),

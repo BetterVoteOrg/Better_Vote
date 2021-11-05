@@ -15,8 +15,7 @@ class HomeTabState extends State<HomeTabPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder(
-          builder: homeTabBuilder,
-          future: pollController.getUserCreatedPolls()),
+          builder: homeTabBuilder, future: pollController.getPublicPolls()),
     );
   }
 
