@@ -68,7 +68,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
         title: 'BetterVote',
         theme: ThemeData(
-        primaryColor: Color(0xFF008037),
+          primaryColor: Color(0xFF008037),
         ),
         localizationsDelegates: [
           FormBuilderLocalizations.delegate,
@@ -91,7 +91,7 @@ class _MyAppState extends State<MyApp> {
           left: true,
           right: true,
           // minimum: EdgeInsets.all(16.0),
-          maintainBottomViewPadding: true,
+          // maintainBottomViewPadding: true,
           child: FutureBuilder(
               future: getJsonWebTokenOrEmpty, builder: handleDisplay),
         ));

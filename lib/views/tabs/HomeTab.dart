@@ -26,6 +26,7 @@ class HomeTabState extends State<HomeTabPage> {
         appBar: AppBar(
           title: Text("Polls"),
           backgroundColor: Color(0xFF008037),
+          automaticallyImplyLeading: false,
         ),
         body: ListView.builder(
           itemCount: 5,

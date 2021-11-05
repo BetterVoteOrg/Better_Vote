@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:date_time_picker/date_time_picker.dart';
@@ -15,6 +13,7 @@ class CreateAPollForm extends StatelessWidget {
       appBar: AppBar(
         title: const Text(pageTitle),
         backgroundColor: Color(0xFF008037),
+        automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
         child: ConstrainedBox(
@@ -24,7 +23,10 @@ class CreateAPollForm extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
-        child: Text('Save Poll', textAlign: TextAlign.center,),
+        child: Text(
+          'Save Poll',
+          textAlign: TextAlign.center,
+        ),
       ),
     );
   }
@@ -39,6 +41,14 @@ class CustomForm extends StatefulWidget {
 class CustomFormState extends State<CustomForm> {
   // TextEditingController _startDateController = TextEditingController();
   // TextEditingController _endDateController = TextEditingController();
+  TextEditingController _candidateController = TextEditingController();
+  List<String> candidates = [""];
+  List<Widget> list;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,12 +82,45 @@ class CustomFormState extends State<CustomForm> {
         ),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+          child: Text("Add Candidates"),
+        ),
+        Container(
+          height: 80,
+          color: Color(000),
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: candidates.length,
+            itemBuilder: (context, index) {
+              var candidateNum = (index + 1);
+              return InputChip(
+                // avatar: Icon(Icons.remove),
+                label: Text("$candidateNum. ${candidates[index]}"),
+                onSelected: (bool value) {},
+              );
+            },
+            scrollDirection: Axis.horizontal,
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
           child: TextField(
+            controller: _candidateController,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
-              hintText: 'Poll Choices',
+              hintText: 'Start typing and press +',
             ),
           ),
+        ),
+        Center(
+          child: IconButton(
+              onPressed: () {
+                setState(() {
+                  candidates.remove("");
+                  candidates.add(_candidateController.text);
+                  candidates = candidates.toSet().toList();
+                });
+              },
+              icon: Icon(Icons.add)),
         ),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 8),
