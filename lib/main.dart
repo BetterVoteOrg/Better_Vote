@@ -1,3 +1,4 @@
+import 'package:better_vote/models/User.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter/cupertino.dart';
@@ -77,13 +78,6 @@ class _MyAppState extends State<MyApp> {
         ],
         supportedLocales: [
           Locale('en', ''),
-          Locale('es', ''),
-          Locale('fa', ''),
-          Locale('fr', ''),
-          Locale('ja', ''),
-          Locale('pt', ''),
-          Locale('sk', ''),
-          Locale('pl', ''),
         ],
         home: SafeArea(
           top: true,

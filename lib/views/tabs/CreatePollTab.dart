@@ -9,7 +9,7 @@ class CreatePollTabPage extends StatefulWidget {
 }
 
 class CreatePollState extends State<CreatePollTabPage> {
-  final user = User();
+  final user = UserController();
   @override
   Widget build(BuildContext context) {
     // const TextStyle optionStyle =

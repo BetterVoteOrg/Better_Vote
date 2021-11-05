@@ -1,4 +1,5 @@
-import 'package:better_vote/controllers/UserController.dart';
+import 'package:better_vote/controllers/PollController.dart';
+import 'package:better_vote/models/Poll.dart';
 import 'package:flutter/material.dart';
 import 'package:better_vote/views/widgets/postcard.dart';
 
@@ -9,19 +10,19 @@ class HomeTabPage extends StatefulWidget {
 }
 
 class HomeTabState extends State<HomeTabPage> {
-  final user = User();
+  final pollController = PollController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder(
-          builder: homeTabBuilder, future: user.canFindProfileData()),
+          builder: homeTabBuilder,
+          future: pollController.getUserCreatedPolls()),
     );
   }
 
   Widget homeTabBuilder(BuildContext context, AsyncSnapshot<dynamic> snapshot) {
     if (snapshot.hasData) {
-      const TextStyle optionStyle =
-          TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+      List<Poll> polls = snapshot.data;
       return Scaffold(
         appBar: AppBar(
           title: Text("Polls"),
@@ -29,9 +30,9 @@ class HomeTabState extends State<HomeTabPage> {
           automaticallyImplyLeading: false,
         ),
         body: ListView.builder(
-          itemCount: 5,
+          itemCount: polls.length,
           itemBuilder: (BuildContext context, int index) {
-            return PostCard();
+            return PostCard(polls[index]);
           },
         ),
       );

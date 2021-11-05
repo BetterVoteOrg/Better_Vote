@@ -8,7 +8,7 @@ class NotificationsTabPage extends StatefulWidget {
 }
 
 class NotificationsTabState extends State<NotificationsTabPage> {
-  final user = User();
+  final user = UserController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(

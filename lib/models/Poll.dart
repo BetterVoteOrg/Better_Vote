@@ -1,5 +1,5 @@
-import '../controllers/UserController.dart';
 import '../../models/ballots/Ballot.dart';
+import 'User.dart';
 
 enum VotingSystem { RCV, STAR, PLURALITY }
 
@@ -7,10 +7,10 @@ class Poll {
   int _id;
   User _creator;
   String _title;
-  int _startTime;
-  int _endTime;
+  String _startTime;
+  String _endTime;
   String _question;
-  VotingSystem _votingSystem;
+  String _votingSystem;
   String _winner;
   String _results;
 
@@ -21,14 +21,13 @@ class Poll {
 
   List<Ballot> _votes = [];
 
-  Poll(User creator, String title, int startTime, int endTime, String question,
-      VotingSystem votingSystem) {
+  Poll(User creator, Map<String, dynamic> data) {
     this._creator = creator;
-    this._title = title;
-    this._startTime = startTime;
-    this._endTime = endTime;
-    this._question = question;
-    this._votingSystem = votingSystem;
+    this._title = data["poll_title"];
+    this._startTime = data["start_time"];
+    this._endTime = data["end_time"];
+    this._question = data["prompt"];
+    this._votingSystem = data["vote_system"];
   }
 
   int getId() {
@@ -43,11 +42,11 @@ class Poll {
     return _title;
   }
 
-  int getStartTime() {
+  String getStartTime() {
     return _startTime;
   }
 
-  int getEndTime() {
+  String getEndTime() {
     return _endTime;
   }
 
@@ -55,7 +54,7 @@ class Poll {
     return _question;
   }
 
-  VotingSystem getVotingSystem() {
+  String getVotingSystem() {
     return _votingSystem;
   }
 
@@ -81,10 +80,6 @@ class Poll {
 
   void addVote(Ballot ballot) {
     _votes.add(ballot);
-  }
-
-  void setWinner(String winner) {
-    this._winner = winner;
   }
 
   String getWinner() {

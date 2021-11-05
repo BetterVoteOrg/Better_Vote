@@ -1,5 +1,4 @@
-import 'package:better_vote/controllers/UserController.dart';
-
+import '../User.dart';
 import 'Ballot.dart';
 import '../../models/Poll.dart';
 

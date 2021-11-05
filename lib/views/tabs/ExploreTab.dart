@@ -8,7 +8,7 @@ class ExploreTabPage extends StatefulWidget {
 }
 
 class ExploreTabState extends State<ExploreTabPage> {
-  final user = User();
+  final user = UserController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(

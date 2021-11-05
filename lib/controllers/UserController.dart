@@ -1,30 +1,15 @@
 import 'dart:convert';
+import 'package:better_vote/models/User.dart';
 import 'package:better_vote/network/NetworkHandler.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../models/Poll.dart';
 
-class User {
+class UserController {
   var _userdata;
   List<Poll> _createdPolls = [];
   List<Poll> _votedPolls = [];
 
-  User();
-
-  String getUsername() {
-    return _userdata["user_name"];
-  }
-
-  String getEmail() {
-    return _userdata["email"];
-  }
-
-  String getCreatedAt() {
-    return _userdata["created_at"];
-  }
-
-  List<Poll> getCreatedPolls() {
-    return _createdPolls;
-  }
+  UserController();
 
   void addCreatedPoll(Poll poll) {
     _createdPolls.add(poll);
@@ -38,21 +23,24 @@ class User {
     _votedPolls.add(poll);
   }
 
-  Future<bool> canFindProfileData() async {
-    final _jsonWebToken = await FlutterSecureStorage().read(key: "jwt");
+  Future<User> canFindProfileData() async {
+    var _jsonWebToken = await FlutterSecureStorage().read(key: "jwt");
     Map<String, dynamic> _payloadFromToken =
         getpayloadFromToken(_jsonWebToken.split(".")[1]);
     String response =
         await NetworkHandler("/api/users/" + _payloadFromToken["user_id"])
             .fetchData();
     _userdata = json.decode(response);
-    print(_userdata);
+    return User(_userdata);
+  }
 
-    return _userdata["user_id"] != null;
+  Map<String, dynamic> getLoggedInUserData() {
+    return _userdata;
+  }
 
-    // if (data.statusCode == 200) {r
-    //   _username = data["user_name"];
-    //   print(data);
-    // }
+  Future<dynamic> getProfileData(User user) async {
+    String response =
+        await NetworkHandler("/api/users/" + user.getUserID()).fetchData();
+    return json.decode(response);
   }
 }

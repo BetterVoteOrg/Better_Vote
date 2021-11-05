@@ -1,44 +1,48 @@
+import 'package:better_vote/models/Poll.dart';
 import 'package:flutter/material.dart';
 import 'package:better_vote/helper/demoValues.dart';
 import 'package:flutter/semantics.dart';
 
 class PostCard extends StatelessWidget {
-  const PostCard({Key key}) : super(key: key);
+  final Poll poll;
+  const PostCard(this.poll, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
       aspectRatio: 5 / 2,
       child: Card(
-        child: Column(children: <Widget>[_PostDetails(), _Post()]),
+        child: Column(children: <Widget>[_PostDetails(poll), _Post(poll)]),
       ),
     );
   }
 }
 
 class _Post extends StatelessWidget {
-  const _Post({Key key}) : super(key: key);
+  final Poll poll;
+  const _Post(this.poll, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       flex: 3,
       child: Row(
-        children: <Widget>[_PostTitleAndSummary()],
+        children: <Widget>[_PostTitleAndSummary(poll)],
       ),
     );
   }
 }
 
 class _PostTitleAndSummary extends StatelessWidget {
-  const _PostTitleAndSummary({Key key}) : super(key: key);
+  final Poll poll;
+  const _PostTitleAndSummary(this.poll, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     //final TextStyle titleTheme = Theme.of(context).textTheme.title;
     //final TextStyle summaryTheme = Theme.of(context).textTheme.body1;
-    final String title = DemoValues.postTitle;
-    final String summary = DemoValues.postSummary;
+    final String title = poll.getTitle();
+    final String summary = poll.getQuestion();
 
     return Expanded(
       flex: 3,
@@ -46,8 +50,9 @@ class _PostTitleAndSummary extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          Text(title, style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-          SizedBox(height:1),
+          Text(title,
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+          SizedBox(height: 1),
           Text(summary, style: TextStyle(fontSize: 14)),
         ],
       ),
@@ -67,18 +72,24 @@ class _PostImage extends StatelessWidget {
 */
 
 class _PostDetails extends StatelessWidget {
-  const _PostDetails({Key key}) : super(key: key);
+  final Poll poll;
+  const _PostDetails(this.poll, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: <Widget>[_UserImage(), _UserName(), _PostTime()],
+      children: <Widget>[
+        _UserImage(),
+        _UserName(poll.getCreator().getUsername()),
+        _PostTime()
+      ],
     );
   }
 }
 
 class _UserName extends StatelessWidget {
-  const _UserName({Key key}) : super(key: key);
+  final username;
+  const _UserName(this.username, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +99,7 @@ class _UserName extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(DemoValues.userName),
+          Text(username),
         ],
       ),
     );

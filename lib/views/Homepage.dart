@@ -1,3 +1,6 @@
+import 'package:better_vote/controllers/UserController.dart';
+import 'package:better_vote/models/User.dart';
+import 'package:better_vote/network/NetworkHandler.dart';
 import 'package:better_vote/views/tabs/CreatePollTab.dart';
 import 'package:better_vote/views/tabs/ExploreTab.dart';
 import 'package:better_vote/views/tabs/HomeTab.dart';
@@ -15,16 +18,9 @@ class HomePage extends StatefulWidget {
 
 class HomeState extends State<HomePage> {
   int _selectedIndex = 0;
-  var _jsonWebToken;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static List<Widget> _screenOptions = <Widget>[
-    HomeTabPage(),
-    ExploreTabPage(),
-    CreatePollTabPage(),
-    NotificationsTabPage(),
-    ProfileTabPage()
-  ];
+  UserController userController;
+  HomeState();
+  // var _jsonWebToken;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -35,10 +31,15 @@ class HomeState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
-    Widget handleScreenDisplay(data) {
-      //Check if token has expired
-      _jsonWebToken = data;
+    List<Widget> _screenOptions = <Widget>[
+      HomeTabPage(),
+      ExploreTabPage(),
+      CreatePollTabPage(),
+      NotificationsTabPage(),
+      ProfileTabPage(),
+    ];
 
+    Widget handleScreenDisplay(User user) {
       return _screenOptions[_selectedIndex];
     }
 
@@ -80,7 +81,7 @@ class HomeState extends State<HomePage> {
     return Scaffold(
       // appBar: AppBar(title: const Text("Home")),
       body: FutureBuilder(
-          future: FlutterSecureStorage().read(key: "jwt"),
+          future: UserController().canFindProfileData(),
           builder: (context, snapshot) => snapshot.hasData
               ?
               //snapshot.data is the json web token.
