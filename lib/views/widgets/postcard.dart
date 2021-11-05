@@ -81,7 +81,7 @@ class _PostDetails extends StatelessWidget {
       children: <Widget>[
         _UserImage(),
         _UserName(poll.getCreator().getUsername()),
-        _PostTime()
+        _PostTime(poll.getStartTime())
       ],
     );
   }
@@ -121,10 +121,15 @@ class _UserImage extends StatelessWidget {
 }
 
 class _PostTime extends StatelessWidget {
-  const _PostTime({Key key}) : super(key: key);
+  final String startTime;
+  const _PostTime(this.startTime, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext contxt) {
+    //To use later
+    var timeDifference =
+        DateTime.now().difference(DateTime.parse(startTime)).inHours;
+
     return Expanded(
       flex: 0,
       child: Column(

@@ -13,6 +13,7 @@ class Poll {
   String _votingSystem;
   String _winner;
   String _results;
+  String _createdTime;
 
   // When editing choices, do not remove from array. Index needs to stay constant for votes.
   List<String> _choices = [];
@@ -28,6 +29,7 @@ class Poll {
     this._endTime = data["end_time"];
     this._question = data["prompt"];
     this._votingSystem = data["vote_system"];
+    this._createdTime = data["created_at"];
   }
 
   int getId() {
@@ -40,6 +42,10 @@ class Poll {
 
   String getTitle() {
     return _title;
+  }
+
+  String getCreatedTime() {
+    return _createdTime;
   }
 
   String getStartTime() {
