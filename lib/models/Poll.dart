@@ -1,4 +1,5 @@
 import '../controllers/UserController.dart';
+import '../../models/ballots/Ballot.dart';
 
 enum VotingSystem { RCV, STAR, PLURALITY }
 
@@ -17,6 +18,8 @@ class Poll {
   List<String> _choices = [];
   // Indexes to ignore when calculating results
   List<int> _deletedChoices = [];
+
+  List<Ballot> _votes = [];
 
   Poll(User creator, String title, int startTime, int endTime, String question,
       VotingSystem votingSystem) {
@@ -72,8 +75,24 @@ class Poll {
     _deletedChoices.add(choiceIndex);
   }
 
+  List<Ballot> getVotes() {
+    return _votes;
+  }
+
+  void addVote(Ballot ballot) {
+    _votes.add(ballot);
+  }
+
+  void setWinner(String winner) {
+    this._winner = winner;
+  }
+
   String getWinner() {
     return _winner;
+  }
+
+  void setResults(String results) {
+    this._results = results;
   }
 
   String getResults() {

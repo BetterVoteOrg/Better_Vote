@@ -18,6 +18,7 @@ class RcvBallot extends Ballot {
     _vote[choice] = rank;
   }
 
+  @override
   List<int> getVote() {
     return _vote;
   }

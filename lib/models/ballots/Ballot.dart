@@ -1,7 +1,7 @@
 import '../../models/Poll.dart';
 import 'package:better_vote/controllers/UserController.dart';
 
-class Ballot {
+abstract class Ballot {
   User _voter;
   Poll _poll;
 
@@ -17,4 +17,6 @@ class Ballot {
   Poll getPoll() {
     return _poll;
   }
+
+  List<int> getVote();
 }

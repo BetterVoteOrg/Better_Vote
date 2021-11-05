@@ -16,6 +16,7 @@ class StarBallot extends Ballot {
     _vote[choice] = score;
   }
 
+  @override
   List<int> getVote() {
     return _vote;
   }
