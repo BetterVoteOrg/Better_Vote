@@ -10,11 +10,15 @@ class ProfileTabPage extends StatefulWidget {
 
 class ProfileState extends State<ProfileTabPage> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder(
-          builder: profileBuilder,
-          future: UserController().canFindProfileData()),
+          builder: profileBuilder, future: UserController().findProfileData()),
     );
   }
 
@@ -34,6 +38,8 @@ class ProfileState extends State<ProfileTabPage> {
     }
     if (snapshot.hasError) return Text("An error occurred fetching user data.");
 
-    return CircularProgressIndicator();
+    return Center(
+      child: CircularProgressIndicator(),
+    );
   }
 }

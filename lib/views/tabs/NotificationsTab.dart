@@ -8,12 +8,15 @@ class NotificationsTabPage extends StatefulWidget {
 }
 
 class NotificationsTabState extends State<NotificationsTabPage> {
-  final user = UserController();
+  //
+  final _userController = UserController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder(
-          builder: notificationsTabBuilder, future: user.canFindProfileData()),
+          builder: notificationsTabBuilder,
+          //Replace with method to fetch notifications
+          future: _userController.findProfileData()),
     );
   }
 
@@ -30,7 +33,8 @@ class NotificationsTabState extends State<NotificationsTabPage> {
       );
     }
     if (snapshot.hasError) return Text("An error occurred Notifications data.");
-
-    return CircularProgressIndicator();
+    return Center(
+      child: CircularProgressIndicator(),
+    );
   }
 }

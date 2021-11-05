@@ -7,8 +7,6 @@ import 'package:better_vote/views/tabs/HomeTab.dart';
 import 'package:better_vote/views/tabs/NotificationsTab.dart';
 import 'package:better_vote/views/tabs/ProfileTab.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
@@ -81,7 +79,7 @@ class HomeState extends State<HomePage> {
     return Scaffold(
       // appBar: AppBar(title: const Text("Home")),
       body: FutureBuilder(
-          future: UserController().canFindProfileData(),
+          future: UserController().findProfileData(),
           builder: (context, snapshot) => snapshot.hasData
               ?
               //snapshot.data is the json web token.

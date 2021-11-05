@@ -23,7 +23,7 @@ class UserController {
     _votedPolls.add(poll);
   }
 
-  Future<User> canFindProfileData() async {
+  Future<User> findProfileData() async {
     var _jsonWebToken = await FlutterSecureStorage().read(key: "jwt");
     Map<String, dynamic> _payloadFromToken =
         getpayloadFromToken(_jsonWebToken.split(".")[1]);
@@ -34,7 +34,7 @@ class UserController {
     return User(_userdata);
   }
 
-  Map<String, dynamic> getLoggedInUserData() {
+  Map<String, dynamic> getLoggedInUserJsonData() {
     return _userdata;
   }
 

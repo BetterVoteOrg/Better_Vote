@@ -8,12 +8,14 @@ class ExploreTabPage extends StatefulWidget {
 }
 
 class ExploreTabState extends State<ExploreTabPage> {
-  final user = UserController();
+  //Replace with appropriate controller
+  final _userController = UserController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder(
-          builder: exploreTabBuilder, future: user.canFindProfileData()),
+          builder: exploreTabBuilder,
+          future: _userController.findProfileData()),
     );
   }
 
@@ -30,7 +32,8 @@ class ExploreTabState extends State<ExploreTabPage> {
       );
     }
     if (snapshot.hasError) return Text("An error occurred home data.");
-
-    return CircularProgressIndicator();
+    return Center(
+      child: CircularProgressIndicator(),
+    );
   }
 }

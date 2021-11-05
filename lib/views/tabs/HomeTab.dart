@@ -10,12 +10,12 @@ class HomeTabPage extends StatefulWidget {
 }
 
 class HomeTabState extends State<HomeTabPage> {
-  final pollController = PollController();
+  final _pollController = PollController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder(
-          builder: homeTabBuilder, future: pollController.getPublicPolls()),
+          builder: homeTabBuilder, future: _pollController.getPublicPolls()),
     );
   }
 
@@ -37,7 +37,8 @@ class HomeTabState extends State<HomeTabPage> {
       );
     }
     if (snapshot.hasError) return Text("An error occurred home data.");
-
-    return CircularProgressIndicator();
+    return Center(
+      child: CircularProgressIndicator(),
+    );
   }
 }
