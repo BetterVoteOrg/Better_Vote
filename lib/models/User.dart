@@ -1,8 +1,8 @@
+import 'package:better_vote/controllers/UserController.dart';
 import '../models/Poll.dart';
 
 class User {
-  List<Poll> _createdPolls = [];
-  List<Poll> _votedPolls = [];
+  UserController controller = UserController();
   String _userName;
   String _email;
   String _createdAt;
@@ -30,11 +30,11 @@ class User {
     return _createdAt;
   }
 
-  List<Poll> getCreatedPolls() {
-    return _createdPolls;
+  Future<List<Poll>> getCreatedPolls() async {
+    return await controller.getUserCreatedPolls(this);
   }
 
-  List<Poll> getVotedPolls() {
-    return _votedPolls;
+  Future<List<Poll>> getVotedPolls() async {
+    return await controller.getUserParticipatedPolls(this);
   }
 }

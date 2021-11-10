@@ -6,19 +6,17 @@ import 'package:better_vote/network/NetworkHandler.dart';
 class PollController {
   PollController();
 
-  Future<dynamic> getUserCreatedPolls() async {
-    String _pollPath = "/api/users/me/created-polls";
+  Future<dynamic> getUserCreatedPolls(User user) async {
+    String _pollPath = "/api/users/${user.getUserID()}/created-polls";
     var response = await NetworkHandler(_pollPath).fetchData();
-    Map<String, dynamic> allPolls = json.decode(response);
-    User pollCreator = User(allPolls);
-    List<dynamic> pollsRaw = allPolls["created_polls"];
+    List<Map<String, dynamic>> allPolls = json.decode(response);
+    // User pollCreator = User(allPolls);
+    // List<dynamic> pollsRaw = allPolls["created_polls"];
     List<Poll> polls = [];
-
-    pollsRaw.toList().forEach((rawPollData) {
-      Map<String, dynamic> data = rawPollData;
-      polls.add(Poll(pollCreator, data));
+    allPolls.toList().forEach((rawPollData) {
+      Map<String, dynamic> pollData = rawPollData;
+      polls.add(Poll(user, pollData));
     });
-
     return polls;
   }
 
@@ -35,11 +33,20 @@ class PollController {
       });
       return polls;
     } catch (error) {
-      print(error);
+      throw (error);
     }
   }
 
-  Future<dynamic> createNewPoll() async {
-    //To implement
+  Future<bool> attempToCreateAPoll(Object _pollData) async {
+    try {
+      var response = await NetworkHandler("/api/users/me/add-poll")
+          .sendDataToServer(_pollData);
+      if (response.statusCode == 200) {
+        return true;
+      }
+      return false;
+    } catch (error) {
+      throw error;
+    }
   }
 }
