@@ -1,7 +1,6 @@
 import 'package:better_vote/controllers/UserController.dart';
 import 'package:better_vote/models/Poll.dart';
 import 'package:better_vote/models/User.dart';
-import 'package:better_vote/views/widgets/postcard.dart';
 import 'package:flutter/material.dart';
 
 class ProfileTabPage extends StatefulWidget {
