@@ -59,7 +59,10 @@ class _MyAppState extends State<MyApp> {
   Widget handleDisplay(context, snapshot) {
     handleLoading(snapshot);
     handleLogging(snapshot);
-    if (_isBusy) return const CircularProgressIndicator();
+    if (_isBusy)
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
     if (_isLoggedIn) return HomePage();
     return IntroPage();
   }
@@ -85,7 +88,7 @@ class _MyAppState extends State<MyApp> {
           left: true,
           right: true,
           // minimum: EdgeInsets.all(16.0),
-          // maintainBottomViewPadding: true,
+          maintainBottomViewPadding: true,
           child: FutureBuilder(
               future: getJsonWebTokenOrEmpty, builder: handleDisplay),
         ));

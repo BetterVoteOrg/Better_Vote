@@ -88,7 +88,9 @@ class HomeState extends State<HomePage> {
                 )
               : snapshot.hasError
                   ? const Text("An error occurred logging in.")
-                  : const CircularProgressIndicator()),
+                  : const Center(
+                      child: CircularProgressIndicator(),
+                    )),
 
       bottomNavigationBar: navBar(),
       // floatingActionButton: FloatingActionButton(

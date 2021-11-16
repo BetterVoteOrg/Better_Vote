@@ -12,13 +12,12 @@ class NetworkHandler {
   //     "https://6daf-2600-8807-305-3100-3801-a314-1b31-1f89.ngrok.io";
 
   Future<http.Response> sendDataToServer(Object _theData) async {
-    print(_theData);
     return await http.post(Uri.parse(_apiHost + _path), body: _theData);
   }
 
   Future<String> fetchData() async {
     final _jsonWebToken = await FlutterSecureStorage().read(key: "jwt");
-    return http.read(Uri.parse(_apiHost + _path),
+    return await http.read(Uri.parse(_apiHost + _path),
         headers: {"Authorization": "Bearer " + _jsonWebToken});
   }
 }

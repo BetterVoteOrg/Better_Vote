@@ -1,5 +1,7 @@
 import 'package:better_vote/controllers/UserController.dart';
+import 'package:better_vote/models/Poll.dart';
 import 'package:better_vote/models/User.dart';
+import 'package:better_vote/views/widgets/postcard.dart';
 import 'package:flutter/material.dart';
 
 class ProfileTabPage extends StatefulWidget {
@@ -148,9 +150,37 @@ class ProfileState extends State<ProfileTabPage> {
                 ),
               ),
             ]),
-          ), //Sort by dropdown
+          ),
+
+          //
+          //Sort by dropdown
           Column(
               //ONLY THING LEFT TO IMPLEMENT
+
+              //Help to display polls user has participated in or created
+
+              // FutureBuilder(
+              //   builder: (context, snapshot) {
+              //     if (snapshot.hasData) {
+              //       List<Poll> polls = snapshot.data;
+              //       return ListView.builder(
+              //           itemCount: polls.length,
+              //           shrinkWrap: true,
+              //           itemBuilder: (BuildContext context, int index) {
+              // Widget to make
+              //             return PollThingy(polls[index]);
+              //           });
+              //     }
+
+              //     if (snapshot.hasError)
+              //       return Text("An error occurred fetching polls.");
+              //     return Center(
+              //       child: CircularProgressIndicator(),
+              //     );
+              //   },
+              //   future: _user.getCreatedPolls(), OR _user.getParticipatePolls()
+              // )
+
               ) // Polls
         ],
       ));
