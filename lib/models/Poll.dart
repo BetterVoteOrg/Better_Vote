@@ -3,6 +3,12 @@ import 'User.dart';
 
 enum VotingSystem { RCV, STAR, PLURALITY }
 
+extension ParseToString on VotingSystem {
+  String toShortString() {
+    return this.toString().split('.').last;
+  }
+}
+
 class Poll {
   int _id;
   User _creator;

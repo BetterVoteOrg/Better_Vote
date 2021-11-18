@@ -1,33 +1,21 @@
+import 'package:better_vote/models/Poll.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:http/http.dart';
 
+typedef void FormDataCallback(Map<String, dynamic> val);
+
 class CreateAPollForm extends StatelessWidget {
   final _formKey = GlobalKey<FormBuilderState>();
-
-  CreateAPollForm({Key key}) : super(key: key);
+  final FormDataCallback callback;
+  CreateAPollForm({this.callback, Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    const pageTitle = 'Create Poll';
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(pageTitle),
-        backgroundColor: Color(0xFF008037),
-        automaticallyImplyLeading: false,
-      ),
-      body: SingleChildScrollView(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(),
-          child: CustomForm(),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: Text(
-          'Save Poll',
-          textAlign: TextAlign.center,
-        ),
+    return SingleChildScrollView(
+      child: ConstrainedBox(
+        constraints: BoxConstraints(),
+        child: CustomForm(),
       ),
     );
   }
@@ -43,16 +31,32 @@ class CustomFormState extends State<CustomForm> {
   // TextEditingController _startDateController = TextEditingController();
   // TextEditingController _endDateController = TextEditingController();
   TextEditingController _candidateController = TextEditingController();
-  List<String> candidates = [""];
+  TextEditingController _pollTitleController = TextEditingController();
+  TextEditingController _pollQuestionController = TextEditingController();
+  TextEditingController _voteSystemController = TextEditingController();
+  TextEditingController _pollTypeController = TextEditingController();
+  String _selectedVoteSystem;
+  // ignore: non_constant_identifier_names
+  List<String> VoteSystemDropDown = ["None"];
+
+  List<String> _selectedCandidates = [""];
   List<Widget> list;
 
   @override
   void initState() {
     super.initState();
+    // VoteSystemDropDown.add("None");
+    _selectedVoteSystem = "None";
+    List<String> list = VotingSystem.values.map<String>((VotingSystem value) {
+      return value.toString().split(".").last;
+    }).toList();
+
+    VoteSystemDropDown.addAll(list);
   }
 
   @override
   Widget build(BuildContext context) {
+    print(VoteSystemDropDown);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -63,6 +67,26 @@ class CustomFormState extends State<CustomForm> {
               border: OutlineInputBorder(),
               hintText: 'Enter Poll Title',
             ))),
+        Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+            child: DropdownButton<String>(
+                // value: _selectedVoteSystem,
+                iconSize: 24,
+                elevation: 16,
+                underline: Container(
+                  height: 2,
+                  color: Colors.deepPurpleAccent,
+                ),
+                onChanged: (String newValue) {
+                  if (newValue.length >= 0)
+                    setState(() {
+                      _selectedVoteSystem = newValue;
+                    });
+                },
+                items: VoteSystemDropDown.map((e) => DropdownMenuItem<String>(
+                      value: e,
+                      child: Text(e),
+                    )).toList())),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
           child: TextField(
@@ -90,12 +114,12 @@ class CustomFormState extends State<CustomForm> {
           color: Color(000),
           child: ListView.builder(
             shrinkWrap: true,
-            itemCount: candidates.length,
+            itemCount: _selectedCandidates.length,
             itemBuilder: (context, index) {
               var candidateNum = (index + 1);
               return InputChip(
                 // avatar: Icon(Icons.remove),
-                label: Text("$candidateNum. ${candidates[index]}"),
+                label: Text("$candidateNum. ${_selectedCandidates[index]}"),
                 onSelected: (bool value) {},
               );
             },
@@ -116,9 +140,9 @@ class CustomFormState extends State<CustomForm> {
           child: IconButton(
               onPressed: () {
                 setState(() {
-                  candidates.remove("");
-                  candidates.add(_candidateController.text);
-                  candidates = candidates.toSet().toList();
+                  _selectedCandidates.remove("");
+                  _selectedCandidates.add(_candidateController.text);
+                  _selectedCandidates = _selectedCandidates.toSet().toList();
                 });
               },
               icon: Icon(Icons.add)),
@@ -128,17 +152,23 @@ class CustomFormState extends State<CustomForm> {
           child: DateTimePicker(
             type: DateTimePickerType.dateTimeSeparate,
             dateMask: 'd MMM, yyyy',
-            initialValue: DateTime.now().toString(),
+            // controller: _startDateController,
+            initialValue:
+                DateTime.now().add(const Duration(minutes: 5)).toString(),
             firstDate: DateTime.now().add(const Duration(minutes: 5)),
-            lastDate: DateTime(2025),
+            lastDate: DateTime.now().add(const Duration(days: 7)),
             dateLabelText: 'Start Date',
             timeLabelText: "Hour",
-            onChanged: (val) => print(val),
+            onChanged: (val) {
+              print(val);
+            },
             validator: (val) {
               print(val);
               return null;
             },
-            onSaved: (val) => print(val),
+            onSaved: (val) {
+              print(val);
+            },
           ),
         ),
         Padding(
@@ -146,9 +176,11 @@ class CustomFormState extends State<CustomForm> {
           child: DateTimePicker(
             type: DateTimePickerType.dateTimeSeparate,
             dateMask: 'd MMM, yyyy',
-            initialValue: DateTime.now().toString(),
-            firstDate: DateTime.now().add(const Duration(minutes: 5)),
-            lastDate: DateTime(2025),
+            // controller: _endDateController,
+            initialValue:
+                DateTime.now().add(const Duration(minutes: 10)).toString(),
+            firstDate: DateTime.now().add(const Duration(minutes: 10)),
+            lastDate: DateTime.now().add(const Duration(days: 14)),
             dateLabelText: 'End Date',
             timeLabelText: "Hour",
             onChanged: (val) => print(val),
