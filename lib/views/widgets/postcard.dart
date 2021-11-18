@@ -1,6 +1,8 @@
 import 'package:better_vote/models/Poll.dart';
 import 'package:flutter/material.dart';
 import 'package:better_vote/helper/demoValues.dart';
+import 'package:better_vote/helper/descriptionTextWidget.dart';
+import 'package:better_vote/views/PollDisplay.dart';
 import 'package:flutter/semantics.dart';
 
 class PostCard extends StatelessWidget {
@@ -9,11 +11,22 @@ class PostCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 5 / 2,
-      child: Card(
-        child: Column(children: <Widget>[_PostDetails(poll), _Post(poll)]),
+    //return AspectRatio(
+    return GestureDetector(
+      child: AspectRatio(
+        aspectRatio: 5 / 2,
+        child: Card(
+          child: Column(children: <Widget>[_PostDetails(poll), _Post(poll)]),
+        ),
       ),
+      onTap: () {
+        //print("tapped");
+        Navigator.push(
+          context, 
+          MaterialPageRoute(
+            builder: (context) => PollDisplay(poll)),
+            );
+      },
     );
   }
 }
@@ -53,7 +66,8 @@ class _PostTitleAndSummary extends StatelessWidget {
           Text(title,
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
           SizedBox(height: 1),
-          Text(summary, style: TextStyle(fontSize: 14)),
+          //Text(summary, style: TextStyle(fontSize: 14)),
+          new DescriptionTextWidget(text: summary),
         ],
       ),
     );
