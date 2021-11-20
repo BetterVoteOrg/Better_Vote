@@ -32,8 +32,12 @@ class NetworkHandler {
   Future<String> fetchData() async {
     try {
       final _jsonWebToken = await FlutterSecureStorage().read(key: "jwt");
-      return await http.read(Uri.parse(_apiHost + _path),
-          headers: {"Authorization": "Bearer " + _jsonWebToken});
+      return await http.read(Uri.parse(_apiHost + _path), headers: {
+        "Authorization": "Bearer " + _jsonWebToken
+      }).onError((error, stackTrace) {
+        print(stackTrace.toString());
+        throw error;
+      });
     } catch (error) {
       throw error;
     }

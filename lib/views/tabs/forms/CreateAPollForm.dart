@@ -69,7 +69,7 @@ class CustomFormState extends State<CustomForm> {
         Padding(
             padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
             child: DropdownButton<String>(
-                // value: _selectedVoteSystem,
+                value: _selectedVoteSystem,
                 iconSize: 24,
                 elevation: 16,
                 underline: Container(
