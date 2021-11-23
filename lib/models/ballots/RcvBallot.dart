@@ -11,6 +11,8 @@ class RcvBallot extends Ballot {
     _vote = List<int>.filled(
         poll.getNumberOfChoices(), poll.getNumberOfChoices() + 1,
         growable: false);
+    print("_vote");
+    print(_vote);
   }
 
   void setVote(int choice, int rank) {

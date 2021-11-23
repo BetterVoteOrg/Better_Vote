@@ -1,11 +1,11 @@
 import 'package:better_vote/controllers/UserController.dart';
 import 'package:better_vote/models/User.dart';
 import 'package:better_vote/network/NetworkHandler.dart';
-import 'package:better_vote/views/tabs/CreatePollTab.dart';
-import 'package:better_vote/views/tabs/ExploreTab.dart';
-import 'package:better_vote/views/tabs/HomeTab.dart';
-import 'package:better_vote/views/tabs/NotificationsTab.dart';
-import 'package:better_vote/views/tabs/ProfileTab.dart';
+import 'package:better_vote/views/tabs/createpoll/CreatePollTab.dart';
+import 'package:better_vote/views/tabs/explore/ExploreTab.dart';
+import 'package:better_vote/views/tabs/home/HomeTab.dart';
+import 'package:better_vote/views/tabs/notifications/NotificationsTab.dart';
+import 'package:better_vote/views/tabs/profile/ProfileTab.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {

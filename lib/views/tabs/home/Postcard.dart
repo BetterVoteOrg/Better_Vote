@@ -2,7 +2,7 @@ import 'package:better_vote/models/Poll.dart';
 import 'package:flutter/material.dart';
 import 'package:better_vote/helper/demoValues.dart';
 import 'package:better_vote/helper/descriptionTextWidget.dart';
-import 'package:better_vote/views/PollDisplay.dart';
+import 'package:better_vote/views/tabs/home/PollDisplay.dart';
 import 'package:flutter/semantics.dart';
 
 class PostCard extends StatelessWidget {
@@ -22,10 +22,9 @@ class PostCard extends StatelessWidget {
       onTap: () {
         //print("tapped");
         Navigator.push(
-          context, 
-          MaterialPageRoute(
-            builder: (context) => PollDisplay(poll)),
-            );
+          context,
+          MaterialPageRoute(builder: (context) => PollDisplay(poll)),
+        );
       },
     );
   }

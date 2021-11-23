@@ -1,4 +1,4 @@
-import 'package:better_vote/views/tabs/forms/CreateAPollForm.dart';
+import 'package:better_vote/views/tabs/createpoll/forms/CreateAPollForm.dart';
 import 'package:flutter/material.dart';
 
 class CreatePollTabPage extends StatefulWidget {

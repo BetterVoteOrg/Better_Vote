@@ -24,6 +24,10 @@ class UserController {
     return _userdata;
   }
 
+  // User getLoggedInUser() {
+  //   return User(this.getLoggedInUserJsonData());
+  // }
+
   Future<dynamic> getProfileData(User user) async {
     String response =
         await NetworkHandler("/api/users/" + user.getUserID()).fetchData();

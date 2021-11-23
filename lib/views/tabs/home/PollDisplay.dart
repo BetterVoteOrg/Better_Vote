@@ -1,33 +1,34 @@
-
 import 'package:flutter/material.dart';
 import 'package:better_vote/models/Poll.dart';
 import 'package:better_vote/helper/demoValues.dart';
-import 'package:better_vote/views/tabs/forms/VoteInAPollForm.dart';
+import 'package:better_vote/views/tabs/home/forms/VoteInAPollForm.dart';
 
-class PollDisplay extends StatelessWidget{
+class PollDisplay extends StatelessWidget {
   final Poll poll;
   const PollDisplay(this.poll, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: AppBar(
         backgroundColor: Color(0xFF008037),
       ),
-        
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(13.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[_PostDetails(poll), _Post(poll), _Instructions(poll), _VotingForm(poll)],
+            children: <Widget>[
+              _PostDetails(poll),
+              _Post(poll),
+              _Instructions(poll),
+              _VotingForm(poll)
+            ],
           ),
         ),
       ),
-
     );
-}
+  }
 }
 
 class _Post extends StatelessWidget {
@@ -37,11 +38,9 @@ class _Post extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Row(
-        children: <Widget>[_PostTitleAndSummary(poll)],
-      )
-    );
-
+        child: Row(
+      children: <Widget>[_PostTitleAndSummary(poll)],
+    ));
   }
 }
 
@@ -161,12 +160,10 @@ class _Instructions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width,
-      child: Row(
-        children: <Widget>[_VotingSystemAndInstructions(poll)],
-      )
-    );
-
+        width: MediaQuery.of(context).size.width,
+        child: Row(
+          children: <Widget>[_VotingSystemAndInstructions(poll)],
+        ));
   }
 }
 
@@ -176,10 +173,9 @@ class _VotingSystemAndInstructions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final String votingSystem = poll.getVotingSystem();
     String votingInstructions = _getVotingInstructions(votingSystem);
-    
+
     return Expanded(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -188,28 +184,26 @@ class _VotingSystemAndInstructions extends StatelessWidget {
           Text("Voting System: " + votingSystem,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           SizedBox(height: 5),
-          Text("Instructions: " + votingInstructions, style: TextStyle(fontSize: 14)),
+          Text("Instructions: " + votingInstructions,
+              style: TextStyle(fontSize: 14)),
           SizedBox(height: 20),
         ],
       ),
     );
-
   }
 
   String _getVotingInstructions(String votingSystem) {
-    
     String rcv = "RCV";
     String star = "STAR";
     String plurality = "Plurality";
 
-    if(votingSystem == rcv){
+    if (votingSystem == rcv) {
       return "These are the instructions for RCV. This is how you vote in a RCV poll. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
-    }else if (votingSystem == star){
+    } else if (votingSystem == star) {
       return "These are the instructions for STAR. This is how you vote in a STAR poll.";
-    }else if (votingSystem == plurality){
+    } else if (votingSystem == plurality) {
       return "These are the instructions for Plurality. This is how you vote in a Plurality poll.";
     }
-
   }
 }
 
@@ -217,16 +211,11 @@ class _VotingForm extends StatelessWidget {
   final Poll poll;
   const _VotingForm(this.poll, {Key key}) : super(key: key);
   @override
-  Widget build(BuildContext context){
-
+  Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width,
-      child: Row(
-        children: <Widget>[VoteInAPollForm(poll)],
-      )
-    );
-
+        width: MediaQuery.of(context).size.width,
+        child: Row(
+          children: <Widget>[VoteInAPollForm(poll)],
+        ));
   }
-
-
 }

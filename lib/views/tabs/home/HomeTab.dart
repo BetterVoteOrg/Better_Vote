@@ -1,7 +1,7 @@
 import 'package:better_vote/controllers/PollController.dart';
 import 'package:better_vote/models/Poll.dart';
 import 'package:flutter/material.dart';
-import 'package:better_vote/views/widgets/postcard.dart';
+import 'package:better_vote/views/tabs/home/Postcard.dart';
 
 class HomeTabPage extends StatefulWidget {
   HomeTabPage({Key key}) : super(key: key);
