@@ -1,9 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:better_vote/models/Poll.dart';
-//import 'package:better_vote/helper/descriptionTextWidgetV2.dart';
 import 'package:better_vote/helper/demoValues.dart';
-//import 'package:flutter/semantics.dart';
 import 'package:better_vote/views/tabs/forms/VoteInAPollForm.dart';
 
 class PollDisplay extends StatelessWidget{
@@ -15,7 +13,6 @@ class PollDisplay extends StatelessWidget{
     return Scaffold(
 
       appBar: AppBar(
-        //title: Text(poll.getTitle()),
         backgroundColor: Color(0xFF008037),
       ),
         
@@ -40,7 +37,6 @@ class _Post extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      //flex: 3,
       child: Row(
         children: <Widget>[_PostTitleAndSummary(poll)],
       )
@@ -55,8 +51,6 @@ class _PostTitleAndSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //final TextStyle titleTheme = Theme.of(context).textTheme.title;
-    //final TextStyle summaryTheme = Theme.of(context).textTheme.body1;
     final String title = poll.getTitle();
     final String summary = poll.getQuestion();
 
@@ -71,7 +65,6 @@ class _PostTitleAndSummary extends StatelessWidget {
           SizedBox(height: 5),
           Text(summary, style: TextStyle(fontSize: 14)),
           SizedBox(height: 20),
-          //new DescriptionTextWidget(text: summary),
         ],
       ),
     );
@@ -185,13 +178,9 @@ class _VotingSystemAndInstructions extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final String votingSystem = poll.getVotingSystem();
-    //final String votingSystem = "STAR";
-    //debugPrint(votingSystem);
     String votingInstructions = _getVotingInstructions(votingSystem);
-    //debugPrint(votingInstructions);
     
     return Expanded(
-      //flex: 3,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -213,10 +202,7 @@ class _VotingSystemAndInstructions extends StatelessWidget {
     String star = "STAR";
     String plurality = "Plurality";
 
-    //debugPrint("called voting instructions");
-    //debugPrint(votingSystem);
     if(votingSystem == rcv){
-      //debugPrint("made it here");
       return "These are the instructions for RCV. This is how you vote in a RCV poll. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
     }else if (votingSystem == star){
       return "These are the instructions for STAR. This is how you vote in a STAR poll.";
@@ -232,8 +218,6 @@ class _VotingForm extends StatelessWidget {
   const _VotingForm(this.poll, {Key key}) : super(key: key);
   @override
   Widget build(BuildContext context){
-
-    //final String votingSystem = poll.getVotingSystem();
 
     return Container(
       width: MediaQuery.of(context).size.width,
