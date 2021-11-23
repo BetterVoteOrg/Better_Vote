@@ -36,8 +36,11 @@ class CustomFormState extends State<CustomForm> {
   TextEditingController _voteSystemController = TextEditingController();
   TextEditingController _pollTypeController = TextEditingController();
   String _selectedVoteSystem;
+  String _startDate;
+  String _endDate;
   // ignore: non_constant_identifier_names
   List<String> VoteSystemDropDown = ["None"];
+  String pollQuestion = "";
 
   List<String> _selectedCandidates = [""];
   List<Widget> list;
@@ -46,7 +49,7 @@ class CustomFormState extends State<CustomForm> {
   void initState() {
     super.initState();
     // VoteSystemDropDown.add("None");
-    _selectedVoteSystem = "None";
+    //_selectedVoteSystem = "None";
     List<String> list = VotingSystem.values.map<String>((VotingSystem value) {
       return value.toString().split(".").last;
     }).toList();
@@ -57,16 +60,30 @@ class CustomFormState extends State<CustomForm> {
   @override
   Widget build(BuildContext context) {
     print(VoteSystemDropDown);
+
+    createPollData() {
+      return {
+        "poll_title": _pollTitleController.text,
+        "prompt": "",
+        "vote_system": _selectedVoteSystem,
+        "poll_type": _selectedVoteSystem,
+        "candidates": _selectedCandidates,
+        "start_time": _startDate,
+        "end_time": _endDate
+      };
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        const Padding(
+        Padding(
             padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
             child: TextField(
+                controller: _pollTitleController,
                 decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: 'Enter Poll Title',
-            ))),
+                  border: OutlineInputBorder(),
+                  hintText: 'Enter Poll Title',
+                ))),
         Padding(
             padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
             child: DropdownButton<String>(
@@ -168,6 +185,13 @@ class CustomFormState extends State<CustomForm> {
             },
             onSaved: (val) {
               print(val);
+              setState(() {
+                var date = DateTime.now().toUtc();
+                print(date);
+                //Convert to GMT
+
+                _startDate = val;
+              });
             },
           ),
         ),
@@ -188,7 +212,12 @@ class CustomFormState extends State<CustomForm> {
               print(val);
               return null;
             },
-            onSaved: (val) => print(val),
+            onSaved: (val) {
+              print(val);
+              setState(() {
+                _endDate = val;
+              });
+            },
           ),
         ),
       ],
