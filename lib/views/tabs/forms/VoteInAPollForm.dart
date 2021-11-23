@@ -5,20 +5,16 @@ class VoteInAPollForm extends StatelessWidget {
   final Poll poll;
   const VoteInAPollForm(this.poll, {Key key}) : super(key: key);
 
-  
-
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      //width: MediaQuery.of(context).size.width,
-      child: Column(
-        children: <Widget>[_getVotingForm()],
-      )
-    );
+        //width: MediaQuery.of(context).size.width,
+        child: Column(
+      children: <Widget>[_getVotingForm()],
+    ));
   }
 
   Widget _getVotingForm() {
-
     String rcv = "RCV";
     String star = "STAR";
     String plurality = "Plurality";
@@ -27,45 +23,42 @@ class VoteInAPollForm extends StatelessWidget {
 
     //debugPrint("here we are");
 
-    if(votingSystem == rcv){
+    if (votingSystem == rcv) {
       return _RCVForm(poll);
-    }else if (votingSystem == star){
+    } else if (votingSystem == star) {
       return _STARForm(poll);
-    }else if (votingSystem == plurality){
+    } else if (votingSystem == plurality) {
       return _PluralityForm(poll);
     }
-  
   }
-
 }
 
 class _RCVForm extends StatefulWidget {
   final Poll poll;
   _RCVForm(this.poll, {Key key}) : super(key: key);
   @override
-  State<_RCVForm> createState() => _RCVFormState();
+  State<_RCVForm> createState() => _RCVFormState(this.poll);
 }
 
 class _RCVFormState extends State<_RCVForm> {
-  
-  //final Poll poll;
-  //const _RCVFormState(this.poll);
-  //List<String> choices;
+  final Poll poll;
+  _RCVFormState(this.poll);
+  List<String> choices;
 
   @override
   void initState() {
     super.initState();
+
     //List<String> list = ['choice a', 'choice b', 'choice c', 'choice d'];
     //choices.addAll(list);
-
   }
 
   @override
   Widget build(BuildContext context) {
-
-    //List<String> choices = poll.getChoices();
+    print(poll.getChoices());
+    List<dynamic> choices = poll.getChoices();
     //int numberOfChoices = poll.getNumberOfChoices();
-    List<String> choices = ['choice a', 'choice b', 'choice c', 'choice d'];
+    // List<String> choices = ['choice a', 'choice b', 'choice c', 'choice d'];
     //int numberOfChoices = 4;
     //debugPrint(choices.toString());
     //debugPrint(numberOfChoices.toString());
@@ -75,31 +68,35 @@ class _RCVFormState extends State<_RCVForm> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text(
-          "\t\tRank\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tChoices", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          "\t\tRank\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tChoices",
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         ListView.builder(
-          padding: const EdgeInsets.all(8),
-          shrinkWrap: true,
-          itemCount: choices.length,
-          itemBuilder: (BuildContext context, int index) {
-            //debugPrint("this right here2");
-            return Container(
-              height: 50,
-              child: Row(
-                children: [Text("\t\t\t\t\t" + (index+1).toString() + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t"), _choicesDropDown(choices)]),
-            );
-          }
-        ),
+            padding: const EdgeInsets.all(8),
+            shrinkWrap: true,
+            itemCount: choices.length,
+            itemBuilder: (BuildContext context, int index) {
+              //debugPrint("this right here2");
+              return Container(
+                height: 50,
+                child: Row(children: [
+                  Text("\t\t\t\t\t" +
+                      (index + 1).toString() +
+                      "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t"),
+                  _choicesDropDown(choices)
+                ]),
+              );
+            }),
         Align(
-          alignment: Alignment.center, 
-          child: TextButton(
-            onPressed: () {}, 
-            child: Text("Submit Vote", style: TextStyle(fontSize: 20, color: Colors.green), )
-          )
-        )
-      ],   
+            alignment: Alignment.center,
+            child: TextButton(
+                onPressed: () {},
+                child: Text(
+                  "Submit Vote",
+                  style: TextStyle(fontSize: 20, color: Colors.green),
+                )))
+      ],
     );
-    
   }
 
   /*
@@ -108,24 +105,22 @@ class _RCVFormState extends State<_RCVForm> {
   }
   */
 
-  
-
-  Widget _choicesDropDown(List<String> choices){
+  Widget _choicesDropDown(List<dynamic> choices) {
     //String _selectedLocation;
     //List<String> _choices = ['A', 'B', 'C', 'D'];
     String _selectedValue;
 
     return DropdownButton<String>(
-
       hint: Text('Please choose an option'), // Not necessary for Option 1
 
       value: _selectedValue,
 
-      items: choices.map((String choice) => DropdownMenuItem<String>(
-          value: choice,
-          child: Text(choice),
-        )
-      ).toList(),
+      items: choices
+          .map((dynamic choice) => DropdownMenuItem<String>(
+                value: choice,
+                child: Text(choice),
+              ))
+          .toList(),
 
       onChanged: (String changedValue) {
         setState(() {
@@ -134,7 +129,6 @@ class _RCVFormState extends State<_RCVForm> {
         });
       },
       //value: newValue,
-      
     );
     /*
     return DropdownButton(
@@ -154,7 +148,6 @@ class _RCVFormState extends State<_RCVForm> {
     );
     */
   }
-
 }
 
 class _STARForm extends StatelessWidget {
@@ -165,11 +158,10 @@ class _STARForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Row(
-          children: [Text("Testing star")],
+        children: [Text("Testing star")],
       ),
     );
   }
-  
 }
 
 class _PluralityForm extends StatelessWidget {
@@ -179,8 +171,7 @@ class _PluralityForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-        children: [Text("Testing plurality")],
+      children: [Text("Testing plurality")],
     );
   }
-  
 }

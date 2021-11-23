@@ -20,9 +20,10 @@ class Poll {
   String _winner;
   String _results;
   String _createdTime;
+  // List<String> _choices;
 
   // When editing choices, do not remove from array. Index needs to stay constant for votes.
-  List<String> _choices = [];
+  List<dynamic> _choices = [];
   // Indexes to ignore when calculating results
   List<int> _deletedChoices = [];
 
@@ -36,6 +37,7 @@ class Poll {
     this._question = pollDataJson["prompt"];
     this._votingSystem = pollDataJson["vote_system"];
     this._createdTime = pollDataJson["created_at"];
+    this._choices = pollDataJson["candidates"];
   }
 
   int getId() {
@@ -48,6 +50,10 @@ class Poll {
 
   String getTitle() {
     return _title;
+  }
+
+  List<dynamic> getChoices() {
+    return _choices;
   }
 
   String getCreatedTime() {
@@ -68,10 +74,6 @@ class Poll {
 
   String getVotingSystem() {
     return _votingSystem;
-  }
-
-  List<String> getChoices() {
-    return _choices;
   }
 
   void addChoice(String choice) {
