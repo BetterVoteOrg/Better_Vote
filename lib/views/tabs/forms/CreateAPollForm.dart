@@ -39,7 +39,7 @@ class CustomFormState extends State<CustomForm> {
   String _startDate;
   String _endDate;
   // ignore: non_constant_identifier_names
-  List<String> VoteSystemDropDown = ["None"];
+  List<String> VoteSystemDropDown = ["-"];
   String pollQuestion = "";
 
   List<String> _selectedCandidates = [""];
@@ -104,7 +104,7 @@ class CustomFormState extends State<CustomForm> {
                       value: e,
                       child: Text(e),
                     )).toList())),
-        Padding(
+        /*Padding(
           padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
           child: TextField(
             decoration: InputDecoration(
@@ -112,7 +112,7 @@ class CustomFormState extends State<CustomForm> {
               hintText: 'Enter Description',
             ),
           ),
-        ),
+        ),*/
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
           child: TextField(
