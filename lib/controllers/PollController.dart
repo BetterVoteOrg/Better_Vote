@@ -22,7 +22,6 @@ class PollController {
 
   Future<dynamic> getPublicPolls() async {
     try {
-      print("Fetching polls");
       var response = await NetworkHandler("/api/polls/public").fetchData();
       List<dynamic> allPolls = json.decode(response);
       List<Poll> polls = [];
@@ -41,6 +40,7 @@ class PollController {
     try {
       var response = await NetworkHandler("/api/users/me/add-poll")
           .sendDataToServer(_pollData);
+
       if (response.statusCode == 200) {
         return true;
       }

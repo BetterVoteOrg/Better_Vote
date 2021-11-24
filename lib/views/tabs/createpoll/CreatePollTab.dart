@@ -32,7 +32,7 @@ class CreatePollState extends State<CreatePollTabPage> {
   Widget build(BuildContext context) {
     const pageTitle = 'Create Poll';
 
-    print(_formData.toString());
+    // print(_formData.toString());
 
     return Scaffold(
       body: CreateAPollForm(
@@ -44,13 +44,13 @@ class CreatePollState extends State<CreatePollTabPage> {
         backgroundColor: Color(0xFF008037),
         automaticallyImplyLeading: false,
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: Text(
-          'Save Poll',
-          textAlign: TextAlign.center,
-        ),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {},
+      //   child: Text(
+      //     'Save Poll',
+      //     textAlign: TextAlign.center,
+      //   ),
+      // ),
     );
   }
 }
