@@ -8,7 +8,6 @@ class NotificationsTabPage extends StatefulWidget {
 }
 
 class NotificationsTabState extends State<NotificationsTabPage> {
-  //
   final _userController = UserController();
   @override
   Widget build(BuildContext context) {
@@ -27,7 +26,7 @@ class NotificationsTabState extends State<NotificationsTabPage> {
           TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
       return Center(
         child: Text(
-          'Index 3: Notifications',
+          "Notifications.",
           style: optionStyle,
         ),
       );

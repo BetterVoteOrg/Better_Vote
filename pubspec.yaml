@@ -34,6 +34,10 @@ dependencies:
   form_builder_validators: ^7.0.0
   date_time_picker: ^2.1.0
   enum_to_string: ^2.0.1
+  font_awesome_flutter: ^9.2.0
+  image_picker: ^0.8.4+4
+  flutter_icons: ^1.1.0
+  permission_handler: ^8.3.0
 
 dev_dependencies:
   flutter_test:
