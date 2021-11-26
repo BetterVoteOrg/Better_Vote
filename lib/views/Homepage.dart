@@ -34,7 +34,7 @@ class HomeState extends State<HomePage> {
       ExploreTabPage(),
       CreatePollTabPage(),
       NotificationsTabPage(),
-      ProfileTabPage(),
+      SafeArea(child: ProfileTabPage()),
     ];
 
     Widget handleScreenDisplay(User user) {

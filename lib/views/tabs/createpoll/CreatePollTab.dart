@@ -11,16 +11,6 @@ class CreatePollTabPage extends StatefulWidget {
 }
 
 class CreatePollState extends State<CreatePollTabPage> {
-  Map<String, dynamic> _formData = {
-    "poll_title": "",
-    "prompt": "",
-    "vote_system": "",
-    "poll_type": "PUBLIC",
-    "candidates": [],
-    "start_time": "",
-    "end_time": ""
-  };
-
   GlobalKey<FormState> _formkey =
       GlobalKey<FormState>(debugLabel: '_pollformScreenkey');
 
@@ -31,12 +21,8 @@ class CreatePollState extends State<CreatePollTabPage> {
   @override
   Widget build(BuildContext context) {
     const pageTitle = 'Create Poll';
-
-    // print(_formData.toString());
-
     return Scaffold(
       body: CreateAPollForm(
-        callback: (data) => setState(() => _formData = data),
         key: _formkey,
       ),
       appBar: AppBar(
@@ -44,13 +30,6 @@ class CreatePollState extends State<CreatePollTabPage> {
         backgroundColor: Color(0xFF008037),
         automaticallyImplyLeading: false,
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {},
-      //   child: Text(
-      //     'Save Poll',
-      //     textAlign: TextAlign.center,
-      //   ),
-      // ),
     );
   }
 }

@@ -74,6 +74,7 @@ class _MyAppState extends State<MyApp> {
         theme: ThemeData(
           primaryColor: Color(0xFF008037),
         ),
+        debugShowCheckedModeBanner: false,
         localizationsDelegates: [
           FormBuilderLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,

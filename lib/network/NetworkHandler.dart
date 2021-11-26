@@ -14,14 +14,17 @@ class NetworkHandler {
   Future<http.Response> sendDataToServer(Object _theData) async {
     try {
       final _jsonWebToken = await FlutterSecureStorage().read(key: "jwt");
+      Map<String, String> headers = {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+      };
+      if (_jsonWebToken != null)
+        headers['Authorization'] = 'Bearer ' + _jsonWebToken;
+
       return await http
           .post(
         Uri.parse(_apiHost + _path),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Accept': 'application/json',
-          "Authorization": "Bearer " + _jsonWebToken
-        },
+        headers: headers,
         body: jsonEncode(_theData),
       )
           .onError((error, stackTrace) {

@@ -2,6 +2,7 @@ import 'package:better_vote/controllers/UserController.dart';
 import 'package:better_vote/models/Poll.dart';
 import 'package:better_vote/models/User.dart';
 import 'package:better_vote/views/tabs/home/Postcard.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ProfileTabPage extends StatefulWidget {
@@ -27,126 +28,9 @@ class ProfileState extends State<ProfileTabPage> {
   }
 
   Widget profileBuilder(BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-    const darkGreen = const Color(0xFF008037);
-    String dropdownValue = 'Active';
     if (snapshot.hasData) {
       User _user = snapshot.data;
-      return CustomScrollView(
-        slivers: <Widget>[
-          SliverAppBar(
-            pinned: true,
-            expandedHeight: 270.0,
-            actions: [
-              IconButton(
-                  alignment: Alignment.topLeft,
-                  onPressed: () {},
-                  icon: Icon(Icons.settings, size: 30))
-            ],
-            flexibleSpace: FlexibleSpaceBar(
-              // title: Text('Demo'),
-              background: Container(
-                //Top User Info Bar
-                alignment: Alignment.topCenter,
-                color: darkGreen,
-                height: 300,
-                child: Column(children: [
-                  Icon(Icons.account_circle_outlined, size: 150),
-                  Text(
-                    _user.getUsername(),
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                    textScaleFactor: 2,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text("# Polls Created: ", textScaleFactor: 1.1),
-                          Text("# Polls Participated in: ",
-                              textScaleFactor: 1.1)
-                        ]),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: Container(
-                            decoration: BoxDecoration(
-                                color: darkGreen,
-                                border: Border(
-                                    top: BorderSide(
-                                        width: 4, color: Color(0xFF000000)),
-                                    left: BorderSide(
-                                        width: 0, color: Color(0xFF000000)),
-                                    right: BorderSide(
-                                        width: 3, color: Color(0xFF000000)),
-                                    bottom: BorderSide(
-                                        width: 4, color: Color(0xFF000000)))),
-                            child: TextButton(
-                                style: TextButton.styleFrom(
-                                    primary: Colors.black,
-                                    padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
-                                    textStyle: TextStyle(
-                                        fontSize: 22,
-                                        fontWeight: FontWeight.bold)),
-                                onPressed: () {
-                                  getUserCreatedPolls(_user);
-                                },
-                                child: Text("Polls I created"))),
-                      ),
-                      Expanded(
-                          child: Container(
-                              decoration: BoxDecoration(
-                                  color: darkGreen,
-                                  border: Border(
-                                      top: BorderSide(
-                                          width: 4, color: Color(0xFF000000)),
-                                      left: BorderSide(
-                                          width: 3, color: Color(0xFF000000)),
-                                      right: BorderSide(
-                                          width: 0, color: Color(0xFF000000)),
-                                      bottom: BorderSide(
-                                          width: 4, color: Color(0xFF000000)))),
-                              child: TextButton(
-                                  style: TextButton.styleFrom(
-                                      primary: Colors.black,
-                                      padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
-                                      textStyle: TextStyle(
-                                          fontSize: 22,
-                                          fontWeight: FontWeight.bold)),
-                                  onPressed: () {
-                                    getUserVotedPolls(_user);
-                                  },
-                                  child: Text("Polls I voted in"))))
-                    ],
-                  ),
-                ]),
-              ),
-            ),
-          ),
-          SliverFillRemaining(
-              child: FutureBuilder(
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      polls = snapshot.data;
-                      return ListView.builder(
-                          itemCount: polls.length,
-                          shrinkWrap: true,
-                          itemBuilder: (BuildContext context, int index) {
-                            //Replace this widget
-                            return PostCard(polls[index]);
-                          });
-                    }
-
-                    if (snapshot.hasError)
-                      return Text("An error occurred fetching polls.");
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  },
-                  future: handleDisplay(_user)))
-        ],
-      );
+      return profileInfo(_user);
     }
     if (snapshot.hasError) {
       print(snapshot.stackTrace.toString());
@@ -158,24 +42,127 @@ class ProfileState extends State<ProfileTabPage> {
     );
   }
 
-  getUserCreatedPolls(User user) {
-    setState(() {
-      _isDisplayingVotedPolls = false;
-    });
+  Widget pollsCreated(User _user) {
+    return FutureBuilder(
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            polls = snapshot.data;
+            if (polls.length > 0)
+              return ListView.builder(
+                  itemCount: polls.length,
+                  shrinkWrap: true,
+                  itemBuilder: (BuildContext context, int index) {
+                    //Replace this widget
+                    return PostCard(polls[index]);
+                  });
+            else {
+              return Center(
+                child: Text("No polls to display"),
+              );
+            }
+          }
+
+          if (snapshot.hasError)
+            return Text("An error occurred fetching polls.");
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+        future: _user.getCreatedPolls());
   }
 
-  getUserVotedPolls(User user) {
-    setState(() {
-      _isDisplayingVotedPolls = true;
-    });
+  Widget pollsVoted(User _user) {
+    return FutureBuilder(
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            polls = snapshot.data;
+            if (polls.length > 0)
+              return ListView.builder(
+                  itemCount: polls.length,
+                  shrinkWrap: true,
+                  itemBuilder: (BuildContext context, int index) {
+                    //Replace this widget
+                    return PostCard(polls[index]);
+                  });
+            else {
+              return Center(
+                child: Text("No polls to display"),
+              );
+            }
+          }
+
+          if (snapshot.hasError) {
+            print(snapshot.error);
+            return Text("An error occurred fetching polls.");
+          }
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+        future: _user.getVotedPolls());
   }
 
-  handleDisplay(User user) async {
-    return _isDisplayingVotedPolls
-        ? await user.getVotedPolls()
-        : await user.getCreatedPolls();
+  Widget profileInfo(_user) {
+    return DefaultTabController(
+      length: 2,
+      child: new NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            new SliverAppBar(
+              automaticallyImplyLeading: false,
+              backgroundColor: Color(0xFF008037),
+              expandedHeight: 250,
+              actions: [
+                IconButton(onPressed: () {}, icon: Icon(Icons.settings))
+              ],
+              flexibleSpace: FlexibleSpaceBar(
+                background: Container(
+                  alignment: Alignment.topCenter,
+                  child: Column(children: [
+                    Icon(Icons.account_circle_outlined, size: 120),
+                    Text(
+                      _user.getUsername(),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      textScaleFactor: 2,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("# Polls Created: ", textScaleFactor: 1.1),
+                            Text("# Polls Participated in: ",
+                                textScaleFactor: 1.1)
+                          ]),
+                    ),
+                  ]),
+                ),
+              ),
+              floating: true,
+              pinned: true,
+              snap: true,
+              bottom: new TabBar(
+                isScrollable: true,
+                tabs: <Tab>[
+                  new Tab(text: "POLLS I CREATED"),
+                  new Tab(text: "POLLS I VOTED IN"),
+                ],
+              ),
+            ),
+          ];
+        },
+        body: new TabBarView(
+          children: <Widget>[
+            pollsCreated(_user),
+            pollsVoted(_user),
+          ],
+        ),
+      ),
+    );
   }
 }
+
+
 
       // ListView(
       //   children: [

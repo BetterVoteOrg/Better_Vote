@@ -77,7 +77,7 @@ class CustomFormState extends State<CustomForm> {
             context: context,
             builder: (context) => AlertDialog(
                 title: Text("Your poll was created successfully."),
-                content: Text("Poll will start on , at .")),
+                content: Text("Poll will start on ${this._startDate}")),
           );
         } else
           showDialog(

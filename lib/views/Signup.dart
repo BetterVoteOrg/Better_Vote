@@ -51,7 +51,7 @@ class SignupPage extends StatelessWidget {
       var _userName = _usernameController.text;
       var _password = _passwordController.text;
       var _email = _useremailController.text;
-      var _loginData = {
+      Object _loginData = {
         "user_name": _userName,
         "email": _email,
         "password": _password

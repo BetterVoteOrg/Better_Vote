@@ -35,8 +35,15 @@ class UserController {
   }
 
   Future<List<Poll>> getUserParticipatedPolls(User user) async {
-    String _pollPath = "/api/users/${user.getUserID()}/participated-polls";
-    return await _organizedData(_pollPath, user);
+    String _pollPath = "/api/users/me/participated-polls";
+    var response = await NetworkHandler(_pollPath).fetchData();
+    List<dynamic> selectionsWithPolls = json.decode(response);
+    List<Poll> polls = [];
+    selectionsWithPolls.toList().forEach((rawPollData) {
+      Map<String, dynamic> pollData = rawPollData['poll'];
+      polls.add(Poll(user, pollData));
+    });
+    return polls;
   }
 
   Future<List<Poll>> getUserCreatedPolls(User user) async {
@@ -47,14 +54,13 @@ class UserController {
   Future<List<Poll>> _organizedData(String _pollPath, User user) async {
     try {
       var response = await NetworkHandler(_pollPath).fetchData();
-
       List<dynamic> allPolls = json.decode(response);
-
       List<Poll> polls = [];
       allPolls.toList().forEach((rawPollData) {
         Map<String, dynamic> pollData = rawPollData;
         polls.add(Poll(user, pollData));
       });
+
       return polls;
     } catch (error) {
       throw error;

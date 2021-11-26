@@ -28,8 +28,9 @@ class LoginPage extends StatelessWidget {
     void handleLogin() async {
       var _userName = _usernameController.text;
       var _password = _passwordController.text;
-      _isLogged = await _loginController
-          .attemptLogIn({"user_name": _userName, "password": _password});
+
+      Object data = {"user_name": _userName, "password": _password};
+      _isLogged = await _loginController.attemptLogIn(data);
       handleScreens(context);
     }
 
