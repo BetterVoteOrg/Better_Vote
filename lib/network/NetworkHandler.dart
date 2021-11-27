@@ -6,11 +6,7 @@ import 'package:http/http.dart' as http;
 class NetworkHandler {
   NetworkHandler(this._path);
   String _path;
-  // final String _apiHost = "https://bettervote.herokuapp.com";
-
-  final String _apiHost =
-      "https://afb0-2600-8807-307-8800-f08b-bb58-2797-424b.ngrok.io";
-
+  final String _apiHost = "https://bettervote.herokuapp.com";
   Future<http.Response> sendDataToServer(Map<String, dynamic> _theData) async {
     try {
       final _jsonWebToken = await FlutterSecureStorage().read(key: "jwt");

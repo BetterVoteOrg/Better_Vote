@@ -16,8 +16,7 @@ class S3URLResponse {
 }
 
 class S3BucketHandler {
-  String _apiHost =
-      "https://afb0-2600-8807-307-8800-f08b-bb58-2797-424b.ngrok.io";
+  String _apiHost = "https://bettervote.herokuapp.com";
   bool _success = false;
   String _message;
   String _uploadUrl;
