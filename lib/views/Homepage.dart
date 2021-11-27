@@ -43,35 +43,39 @@ class HomeState extends State<HomePage> {
 
     Widget navBar() {
       return BottomNavigationBar(
+        backgroundColor: Colors.white,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
-            backgroundColor: Color(0xFF008037),
+            //backgroundColor: Colors.white,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
             label: 'Explore',
-            backgroundColor: Color(0xFF008037),
+            //backgroundColor: Colors.white,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add),
             label: 'Create Poll',
-            backgroundColor: Color(0xFF008037),
+            //backgroundColor: Colors.white,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.notifications),
             label: 'Notifications',
-            backgroundColor: Color(0xFF008037),
+            //backgroundColor: Colors.white,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: 'Profile',
-            backgroundColor: Color(0xFF008037),
+            //backgroundColor: Colors.white,
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.black,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        unselectedItemColor: Colors.grey,
+        selectedItemColor: Color(0xFF00b764),
         onTap: _onItemTapped,
       );
     }

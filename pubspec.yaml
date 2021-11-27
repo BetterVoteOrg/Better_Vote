@@ -23,6 +23,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -38,6 +39,7 @@ dependencies:
   image_picker: ^0.8.4+4
   flutter_icons: ^1.1.0
   permission_handler: ^8.3.0
+  scroll_app_bar: ^2.0.0
 
 dev_dependencies:
   flutter_test:
@@ -58,6 +60,7 @@ flutter:
   assets:
     - images/intro_bg.png
     - images/pfp_placeholder_image.png
+    - images/better_vote_logo.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

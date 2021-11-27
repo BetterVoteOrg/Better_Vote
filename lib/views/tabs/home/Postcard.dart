@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:better_vote/helper/demoValues.dart';
 import 'package:better_vote/helper/descriptionTextWidget.dart';
 import 'package:better_vote/views/tabs/home/PollDisplay.dart';
+import 'package:better_vote/helper/profilePics.dart';
 import 'package:flutter/semantics.dart';
 
 class PostCard extends StatelessWidget {
@@ -92,9 +93,12 @@ class _PostDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
+        SizedBox(width: 5),
         _UserImage(),
+        SizedBox(width: 10),
         _UserName(poll.getCreator().getUsername()),
-        _PostTime(poll.getStartTime())
+        _PostTime(poll.getStartTime()),
+        SizedBox(width: 5)
       ],
     );
   }
@@ -127,7 +131,7 @@ class _UserImage extends StatelessWidget {
     return Expanded(
       flex: 1,
       child: CircleAvatar(
-        backgroundImage: AssetImage(DemoValues.userImage),
+        backgroundImage: NetworkImage(ProfilePics.janedoeProfilePic),
       ),
     );
   }

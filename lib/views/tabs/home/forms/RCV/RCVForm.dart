@@ -77,7 +77,7 @@ class _RCVFormState extends State<RCVForm> {
                     onPressed: () {},
                     child: Text(
                       "Submit Vote",
-                      style: TextStyle(fontSize: 20, color: Colors.green),
+                      style: TextStyle(fontSize: 20, color: Color(0xFF00b764)),
                     )))
           ],
         );
@@ -116,7 +116,10 @@ class RCVDropdownState extends State<RCVDropdown> {
       items: widget.choices
           .map((choice) => DropdownMenuItem<String>(
                 value: choice,
-                child: Text(choice),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(choice),
+                ),
               ))
           .toList(),
 

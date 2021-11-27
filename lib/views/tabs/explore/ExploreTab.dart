@@ -35,10 +35,10 @@ class ExploreTabState extends State<ExploreTabPage> {
               return <Widget>[
                 new SliverAppBar(
                   automaticallyImplyLeading: false,
-                  backgroundColor: Color(0xFF008037),
+                  backgroundColor: Colors.white,
                   title: Container(
-                    padding: EdgeInsets.only(left: 16, right: 16),
-                    height: 40,
+                    padding: EdgeInsets.only(left: 30, right: 30),
+                    height: 30,
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Container(
@@ -48,21 +48,22 @@ class ExploreTabState extends State<ExploreTabPage> {
                           keyboardType: TextInputType.text,
                           placeholder: 'Search',
                           placeholderStyle: TextStyle(
-                            color: Color(0xffC4C6CC),
+                            color: Colors.black38,
                             fontSize: 14.0,
                             fontFamily: 'Brutal',
                           ),
                           prefix: Padding(
                             padding:
-                                const EdgeInsets.fromLTRB(9.0, 6.0, 9.0, 6.0),
+                                const EdgeInsets.fromLTRB(10.0, 6.0, 0.0, 6.0),
                             child: Icon(
                               Icons.search,
-                              color: Color(0xffC4C6CC),
+                              color: Colors.black38,
+                              size: 16,
                             ),
                           ),
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8.0),
-                            color: Color(0xffF0F1F5),
+                            borderRadius: BorderRadius.circular(100.0),
+                            color: Colors.black12,
                           ),
                         ),
                       ),
@@ -72,9 +73,12 @@ class ExploreTabState extends State<ExploreTabPage> {
                   pinned: true,
                   snap: true,
                   bottom: new TabBar(
+                    unselectedLabelColor: Colors.grey,
+                    indicatorColor: Color(0xFF00b764),
+                    labelColor: Color(0xFF00b764),
                     isScrollable: true,
                     tabs: <Tab>[
-                      new Tab(text: "For you"),
+                      new Tab(text: "For you", ),
                       new Tab(text: "Trending"),
                       new Tab(text: "Sports"),
                       new Tab(text: "Entertainment"),

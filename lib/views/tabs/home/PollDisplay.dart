@@ -1,3 +1,4 @@
+import 'package:better_vote/helper/profilePics.dart';
 import 'package:flutter/material.dart';
 import 'package:better_vote/models/Poll.dart';
 import 'package:better_vote/helper/demoValues.dart';
@@ -10,27 +11,24 @@ class PollDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // appBar: AppBar(
-        //   backgroundColor: Color(0xFF008037),
-        //   automaticallyImplyLeading: false,
-        //   // title: Text(poll.getTitle()),
-        // ),
-        body: SafeArea(
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(13.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              _PostDetails(poll),
-              _Post(poll),
-              _Instructions(poll),
-              _VotingForm(poll)
-            ],
+      appBar: AppBar(backgroundColor: Colors.white, elevation: 0.5,iconTheme: IconThemeData(color: Color(0xFF00b764)),),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(13.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                _PostDetails(poll),
+                _Post(poll),
+                _Instructions(poll),
+                _VotingForm(poll)
+              ],
+            ),
           ),
         ),
-      ),
-    ));
+      )
+    );
   }
 }
 
@@ -92,9 +90,12 @@ class _PostDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
+        SizedBox(width: 5),
         _UserImage(),
+        SizedBox(width: 10),
         _UserName(poll.getCreator().getUsername()),
-        _PostTime(poll.getStartTime())
+        _PostTime(poll.getStartTime()),
+        SizedBox(width: 5)
       ],
     );
   }
@@ -127,7 +128,7 @@ class _UserImage extends StatelessWidget {
     return Expanded(
       flex: 1,
       child: CircleAvatar(
-        backgroundImage: AssetImage(DemoValues.userImage),
+        backgroundImage: NetworkImage(ProfilePics.janedoeProfilePic),
       ),
     );
   }
@@ -184,11 +185,58 @@ class _VotingSystemAndInstructions extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          Text("Voting System: " + votingSystem,
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-          SizedBox(height: 5),
-          Text("Instructions: " + votingInstructions,
-              style: TextStyle(fontSize: 14)),
+          Row(
+            children: [
+              Text(
+                "Voting System: " + votingSystem,
+                style: TextStyle(
+                  fontSize: 20, 
+                  fontWeight: FontWeight.bold
+                )
+              ),
+              SizedBox(
+                width: 5
+              ),
+              ButtonTheme(padding: EdgeInsets.all(0), materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, child: 
+              TextButton(
+                onPressed: () {
+                  showModalBottomSheet<void>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Container(
+                        height: MediaQuery.of(context).size.height*0.75,
+                        color: Colors.white,
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              const Text('Modal BottomSheet'),
+                              ElevatedButton(
+                                child: const Text('Close BottomSheet'),
+                                onPressed: () => Navigator.pop(context),
+                              )
+                            ],
+                          )
+                        )
+                      );
+                    }
+                  );
+                },
+                child: 
+                  Text(
+                    "Learn More",
+                    style: TextStyle(
+                      fontSize: 12, 
+                      color: Color(0xFF00b764)
+                    ),
+                  )
+              ),)
+            ]
+          ),
+          //SizedBox(height: 5),
+          // Text("Instructions: " + votingInstructions,
+          //     style: TextStyle(fontSize: 14)),
           SizedBox(height: 20),
         ],
       ),
