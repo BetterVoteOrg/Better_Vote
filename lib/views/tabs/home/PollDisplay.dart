@@ -4,6 +4,8 @@ import 'package:better_vote/models/Poll.dart';
 import 'package:better_vote/helper/demoValues.dart';
 import 'package:better_vote/views/tabs/home/forms/VoteInAPollForm.dart';
 
+import 'Post.dart';
+
 class PollDisplay extends StatelessWidget {
   final Poll poll;
   const PollDisplay(this.poll, {Key key}) : super(key: key);
@@ -11,39 +13,45 @@ class PollDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: Colors.white, elevation: 0.5,iconTheme: IconThemeData(color: Color(0xFF00b764)),),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.all(13.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                _PostDetails(poll),
-                _Post(poll),
-                _Instructions(poll),
-                _VotingForm(poll)
-              ],
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0.5,
+          iconTheme: IconThemeData(color: Color(0xFF00b764)),
+        ),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.all(13.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  _PostDetails(poll),
+                  Post(
+                    poll,
+                    child: _PostTitleAndSummary(poll),
+                  ),
+                  _Instructions(poll),
+                  _VotingForm(poll)
+                ],
+              ),
             ),
           ),
-        ),
-      )
-    );
+        ));
   }
 }
 
-class _Post extends StatelessWidget {
-  final Poll poll;
-  const _Post(this.poll, {Key key}) : super(key: key);
+// class _Post extends StatelessWidget {
+//   final Poll poll;
+//   const _Post(this.poll, {Key key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        child: Row(
-      children: <Widget>[_PostTitleAndSummary(poll)],
-    ));
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//         child: Row(
+//       children: <Widget>[_PostTitleAndSummary(poll)],
+//     ));
+//   }
+// }
 
 class _PostTitleAndSummary extends StatelessWidget {
   final Poll poll;
@@ -53,7 +61,7 @@ class _PostTitleAndSummary extends StatelessWidget {
   Widget build(BuildContext context) {
     final String title = poll.getTitle();
     final String summary = poll.getQuestion();
-
+    final String image = poll.getImageUrl();
     return Expanded(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,6 +71,15 @@ class _PostTitleAndSummary extends StatelessWidget {
           Text(title,
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
           SizedBox(height: 5),
+          image == 'no image' || image == null
+              ? Container()
+              : AspectRatio(
+                  aspectRatio: 18.0 / 13.0,
+                  child: Image.network(
+                    image,
+                    fit: BoxFit.fill,
+                  ),
+                ),
           Text(summary, style: TextStyle(fontSize: 14)),
           SizedBox(height: 20),
         ],
@@ -185,55 +202,41 @@ class _VotingSystemAndInstructions extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          Row(
-            children: [
-              Text(
-                "Voting System: " + votingSystem,
-                style: TextStyle(
-                  fontSize: 20, 
-                  fontWeight: FontWeight.bold
-                )
-              ),
-              SizedBox(
-                width: 5
-              ),
-              ButtonTheme(padding: EdgeInsets.all(0), materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, child: 
-              TextButton(
-                onPressed: () {
-                  showModalBottomSheet<void>(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return Container(
-                        height: MediaQuery.of(context).size.height*0.75,
-                        color: Colors.white,
-                        child: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              const Text('Modal BottomSheet'),
-                              ElevatedButton(
-                                child: const Text('Close BottomSheet'),
-                                onPressed: () => Navigator.pop(context),
-                              )
-                            ],
-                          )
-                        )
-                      );
-                    }
-                  );
-                },
-                child: 
-                  Text(
+          Row(children: [
+            Text("Voting System: " + votingSystem,
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            SizedBox(width: 5),
+            ButtonTheme(
+              padding: EdgeInsets.all(0),
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              child: TextButton(
+                  onPressed: () {
+                    showModalBottomSheet<void>(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Container(
+                              height: MediaQuery.of(context).size.height * 0.75,
+                              color: Colors.white,
+                              child: Center(
+                                  child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  const Text('Modal BottomSheet'),
+                                  ElevatedButton(
+                                    child: const Text('Close BottomSheet'),
+                                    onPressed: () => Navigator.pop(context),
+                                  )
+                                ],
+                              )));
+                        });
+                  },
+                  child: Text(
                     "Learn More",
-                    style: TextStyle(
-                      fontSize: 12, 
-                      color: Color(0xFF00b764)
-                    ),
-                  )
-              ),)
-            ]
-          ),
+                    style: TextStyle(fontSize: 12, color: Color(0xFF00b764)),
+                  )),
+            )
+          ]),
           //SizedBox(height: 5),
           // Text("Instructions: " + votingInstructions,
           //     style: TextStyle(fontSize: 14)),
