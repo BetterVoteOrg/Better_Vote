@@ -14,7 +14,8 @@ class SignupPage extends StatelessWidget {
   Widget build(BuildContext context) {
     bool _isRegistered;
 
-    void handleScreens(BuildContext context, loginData) async {
+    void handleScreens(
+        BuildContext context, Map<String, String> loginData) async {
       _isRegistered = await _signupController.attemptSignup(loginData);
       if (_isRegistered) {
         showDialog(
@@ -51,7 +52,7 @@ class SignupPage extends StatelessWidget {
       var _userName = _usernameController.text;
       var _password = _passwordController.text;
       var _email = _useremailController.text;
-      Object _loginData = {
+      Map<String, String> _loginData = {
         "user_name": _userName,
         "email": _email,
         "password": _password

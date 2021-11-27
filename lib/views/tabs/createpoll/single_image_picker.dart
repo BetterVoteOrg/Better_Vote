@@ -1,5 +1,5 @@
 import 'package:better_vote/network/FileHandler.dart';
-import 'package:better_vote/network/ImageHandler.dart';
+import 'package:better_vote/network/S3BucketHandler.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'AddAttachmentModalSheet.dart';
@@ -18,7 +18,7 @@ class SingleImagePicker {
   final Function(String message) onImageUploadFailed;
 
   SingleImagePicker({
-    this.pickImageSource = PickImageSource.both,
+    this.pickImageSource,
     @required this.onImagePicked,
     @required this.onSaveImage,
     @required this.onImageSuccessfullySaved,
@@ -76,30 +76,30 @@ class SingleImagePicker {
         onImagePicked?.call(image.path);
 
         String fileExtension = path.extension(image.path);
+        S3BucketHandler bucketHandler = S3BucketHandler();
 
-        GenerateImageUrl generateImageUrl = GenerateImageUrl();
-        await generateImageUrl.call(fileExtension);
+        S3URLResponse response =
+            await bucketHandler.generatePresignedUrl(fileExtension);
 
         String uploadUrl;
-        if (generateImageUrl.isGenerated != null &&
-            generateImageUrl.isGenerated) {
-          uploadUrl = generateImageUrl.uploadUrl;
-        } else {
-          throw generateImageUrl.message;
-        }
+        // if (response.isGenerated != null && response.isGenerated) {
+        //   uploadUrl = response.uploadUrl;
+        // } else {
+        //   throw response.message;
+        // }
 
-        FileHandler uploadFile = FileHandler();
-        await uploadFile.uploadImage(uploadUrl, image);
+        bool isUploaded =
+            await bucketHandler.uploadImageFileToS3(uploadUrl, image);
 
-        if (uploadFile.isUploaded != null && uploadFile.isUploaded) {
-          bool isSaved = await onSaveImage(generateImageUrl.downloadUrl);
+        if (isUploaded != null && response.isUploaded) {
+          bool isSaved = await onSaveImage(response.downloadUrl);
           if (isSaved) {
-            onImageSuccessfullySaved(generateImageUrl.downloadUrl);
+            onImageSuccessfullySaved(response.downloadUrl);
           } else {
             throw "Failed to save image";
           }
         } else {
-          throw uploadFile.message;
+          throw response.message;
         }
       }
     } catch (e) {

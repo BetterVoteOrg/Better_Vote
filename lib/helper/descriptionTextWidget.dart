@@ -8,7 +8,8 @@ class DescriptionTextWidget extends StatefulWidget {
   DescriptionTextWidget({@required this.text});
 
   @override
-  _DescriptionTextWidgetState createState() => new _DescriptionTextWidgetState();
+  _DescriptionTextWidgetState createState() =>
+      new _DescriptionTextWidgetState();
 }
 
 class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {

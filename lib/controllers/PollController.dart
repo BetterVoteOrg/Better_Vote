@@ -2,10 +2,13 @@ import 'dart:convert';
 import 'package:better_vote/models/Poll.dart';
 import 'package:better_vote/models/User.dart';
 import 'package:better_vote/network/NetworkHandler.dart';
+import 'package:better_vote/network/S3BucketHandler.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart' as path;
 
 class PollController {
   PollController();
-
+  S3BucketHandler bucketHandler = S3BucketHandler();
   Future<dynamic> getUserCreatedPolls(User user) async {
     String _pollPath = "/api/users/${user.getUserID()}/created-polls";
     var response = await NetworkHandler(_pollPath).fetchData();
@@ -28,6 +31,7 @@ class PollController {
       allPolls.toList().forEach((rawPollData) {
         User pollCreator = User(rawPollData["created_by"]);
         Map<String, dynamic> data = rawPollData;
+        print(data['poll_image']);
         polls.add(Poll(pollCreator, data));
       });
       return polls;
@@ -36,15 +40,23 @@ class PollController {
     }
   }
 
-  Future<bool> attempToCreateAPoll(Object _pollData) async {
+  Future<bool> attempToCreateAPoll(Map pollData, {XFile pollImage}) async {
     try {
-      var response = await NetworkHandler("/api/users/me/add-poll")
-          .sendDataToServer(_pollData);
-
-      if (response.statusCode == 200) {
-        return true;
+      if (pollImage != null) {
+        S3URLResponse s3response = await bucketHandler
+            .generatePresignedUrl(path.extension(pollImage.path));
+        if (s3response.success) {
+          bool isUploaded = await bucketHandler.uploadImageFileToS3(
+              s3response.uploadUrl, pollImage);
+          if (isUploaded) {
+            pollData['poll_image'] = s3response.downloadUrl;
+          }
+        }
       }
-      return false;
+
+      var response = await NetworkHandler("/api/users/me/add-poll")
+          .sendDataToServer(pollData);
+      return response.statusCode == 200;
     } catch (error) {
       throw error;
     }

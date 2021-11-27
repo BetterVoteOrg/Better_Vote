@@ -4,30 +4,46 @@ import 'package:better_vote/helper/demoValues.dart';
 import 'package:better_vote/helper/descriptionTextWidget.dart';
 import 'package:better_vote/views/tabs/home/PollDisplay.dart';
 import 'package:better_vote/helper/profilePics.dart';
-import 'package:flutter/semantics.dart';
 
 class PostCard extends StatelessWidget {
   final Poll poll;
   const PostCard(this.poll, {Key key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    //return AspectRatio(
-    return GestureDetector(
-      child: AspectRatio(
-        aspectRatio: 5 / 2,
+    final String image = poll.getImageUrl();
+
+    return Column(children: <Widget>[
+      GestureDetector(
+        onTap: () {
+          //print("tapped");
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => PollDisplay(poll)),
+          );
+        },
         child: Card(
-          child: Column(children: <Widget>[_PostDetails(poll), _Post(poll)]),
+          margin: const EdgeInsets.all(10.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _PostDetails(poll),
+              image == 'no image' || image == null
+                  ? Container()
+                  : AspectRatio(
+                      aspectRatio: 18.0 / 13.0,
+                      child: Image.network(
+                        image,
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+              Padding(
+                  padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
+                  child: _Post(poll)),
+            ],
+          ),
         ),
-      ),
-      onTap: () {
-        //print("tapped");
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => PollDisplay(poll)),
-        );
-      },
-    );
+      )
+    ]);
   }
 }
 
@@ -37,11 +53,8 @@ class _Post extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      flex: 3,
-      child: Row(
-        children: <Widget>[_PostTitleAndSummary(poll)],
-      ),
+    return Row(
+      children: <Widget>[_PostTitleAndSummary(poll)],
     );
   }
 }
@@ -58,15 +71,15 @@ class _PostTitleAndSummary extends StatelessWidget {
     final String summary = poll.getQuestion();
 
     return Expanded(
-      flex: 3,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Text(title,
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+
           SizedBox(height: 1),
-          //Text(summary, style: TextStyle(fontSize: 14)),
+          // Text(summary, style: TextStyle(fontSize: 14)),
           new DescriptionTextWidget(text: summary),
         ],
       ),
@@ -130,8 +143,12 @@ class _UserImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       flex: 1,
-      child: CircleAvatar(
-        backgroundImage: NetworkImage(ProfilePics.janedoeProfilePic),
+      child: Column(
+        children: [
+          CircleAvatar(
+            backgroundImage: NetworkImage(ProfilePics.janedoeProfilePic),
+          ),
+        ],
       ),
     );
   }

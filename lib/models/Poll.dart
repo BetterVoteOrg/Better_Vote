@@ -13,6 +13,8 @@ class Poll {
   int _id;
   User _creator;
   String _title;
+  String _imageUrl;
+  String _category;
   String _startTime;
   String _endTime;
   String _question;
@@ -38,6 +40,8 @@ class Poll {
     this._votingSystem = pollDataJson["vote_system"];
     this._createdTime = pollDataJson["created_at"];
     this._choices = pollDataJson["candidates"];
+    this._imageUrl = pollDataJson["poll_image"];
+    this._category = pollDataJson["poll_category"];
   }
 
   int getId() {
@@ -46,6 +50,14 @@ class Poll {
 
   User getCreator() {
     return _creator;
+  }
+
+  String getImageUrl() {
+    return _imageUrl;
+  }
+
+  String getCategory() {
+    return _category;
   }
 
   String getTitle() {

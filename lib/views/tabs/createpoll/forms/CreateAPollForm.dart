@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:better_vote/controllers/PollController.dart';
 import 'package:better_vote/models/Poll.dart';
+import 'package:better_vote/network/FileHandler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 
 typedef void FormDataCallback(Map<String, dynamic> val);
 
@@ -42,7 +46,8 @@ class CustomFormState extends State<CustomForm> {
   List<String> VoteSystemDropDown = [];
   String pollQuestion = "";
   List<String> _selectedCandidates = [""];
-  List<String> _selectedCandidatesImagePaths = [""];
+  XFile _selectedImage;
+  FileHandler fileHandler = FileHandler();
   List<Widget> list;
   final _formKey = GlobalKey<FormState>();
   @override
@@ -58,14 +63,15 @@ class CustomFormState extends State<CustomForm> {
   @override
   Widget build(BuildContext context) {
     getPollData() {
-      Object data = {
+      Map<String, dynamic> data = {
         'poll_title': _pollTitleController.text,
         'prompt': _pollQuestionController.text,
         'vote_system': _selectedVoteSystem,
-        'poll_type': "PUBLIC",
-        'candidates': _selectedCandidates.toString(),
+        'poll_type': 'PUBLIC',
+        'candidates': _selectedCandidates,
         'start_time': _startDate,
-        'end_time': _endDate
+        'end_time': _endDate,
+        'poll_category': _selectedCategory,
       };
 
       return data;
@@ -73,8 +79,8 @@ class CustomFormState extends State<CustomForm> {
 
     createNewPoll(pollData) async {
       try {
-        bool pollIsCreated =
-            await PollController().attempToCreateAPoll(pollData);
+        bool pollIsCreated = await PollController()
+            .attempToCreateAPoll(pollData, pollImage: _selectedImage);
         if (pollIsCreated) {
           showDialog(
               context: context,
@@ -453,6 +459,47 @@ class CustomFormState extends State<CustomForm> {
                                           child: Text(e),
                                         ))
                                     .toList())
+                          ],
+                        )),
+                    Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 5),
+                            ),
+                            Text('Poll image'),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 5),
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                _selectedImage == null
+                                    ? Text('Poll image not selected.')
+                                    : Container(
+                                        height: 300,
+                                        child: Image.file(
+                                          File(_selectedImage.path),
+                                          fit: BoxFit.fitWidth,
+                                        ),
+                                      ),
+                                ElevatedButton(
+                                  child: Text("Add Image"),
+                                  onPressed: () async {
+                                    XFile xfile =
+                                        await fileHandler.getImageFromGallery();
+                                    setState(() {
+                                      _selectedImage = xfile;
+                                    });
+                                  },
+                                )
+                              ],
+                            ),
                           ],
                         )),
                     Padding(

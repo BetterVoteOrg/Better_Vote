@@ -4,7 +4,7 @@ class SignupController {
   SignupController();
   String _signupPath = "/signup";
 
-  Future<bool> attemptSignup(Object _signupData) async {
+  Future<bool> attemptSignup(Map<String, String> _signupData) async {
     var response =
         await NetworkHandler(_signupPath).sendDataToServer(_signupData);
 

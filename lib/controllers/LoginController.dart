@@ -5,7 +5,7 @@ class LoginController {
   LoginController();
   String _loginPath = "/login";
 
-  Future<bool> attemptLogIn(Object _loginData) async {
+  Future<bool> attemptLogIn(Map<String, String> _loginData) async {
     var response =
         await NetworkHandler(_loginPath).sendDataToServer(_loginData);
 

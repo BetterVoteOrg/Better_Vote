@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'get_image_permission.dart';
 import 'single_image_picker.dart';
 

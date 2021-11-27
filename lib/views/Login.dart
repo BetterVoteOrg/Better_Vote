@@ -29,7 +29,10 @@ class LoginPage extends StatelessWidget {
       var _userName = _usernameController.text;
       var _password = _passwordController.text;
 
-      Object data = {"user_name": _userName, "password": _password};
+      Map<String, String> data = {
+        "user_name": _userName,
+        "password": _password
+      };
       _isLogged = await _loginController.attemptLogIn(data);
       handleScreens(context);
     }
