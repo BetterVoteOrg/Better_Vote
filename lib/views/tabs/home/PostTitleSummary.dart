@@ -20,19 +20,27 @@ class PostTitleAndSummary extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Text(title,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
+          ),
+          SizedBox(height: 10),
           image == 'no image' || image == null
-              ? Container()
-              : AspectRatio(
-                  aspectRatio: 18.0 / 13.0,
-                  child: Image.network(
-                    image,
-                    fit: BoxFit.fill,
-                  ),
+              ? Container(child: new DescriptionTextWidget(text: summary))
+              : Column(
+                  children: [
+                    AspectRatio(
+                      aspectRatio: 18.0 / 13.0,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20), 
+                        child: Image.network(
+                          image,
+                          fit: BoxFit.fill,
+                        )
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                  ]
                 ),
-          SizedBox(height: 1),
           // Text(summary, style: TextStyle(fontSize: 14)),
-          new DescriptionTextWidget(text: summary),
         ],
       ),
     );

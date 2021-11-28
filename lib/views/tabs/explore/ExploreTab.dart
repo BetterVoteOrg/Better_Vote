@@ -1,6 +1,7 @@
 import 'package:better_vote/controllers/UserController.dart';
 import 'package:better_vote/helper/demoValues.dart';
 import 'package:better_vote/helper/images.dart';
+import 'package:better_vote/helper/profilePics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -175,11 +176,10 @@ class ExploreTabState extends State<ExploreTabPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
-          children: [_UserImage(), _UserName("meep")],
+          children: [_UserImage(), SizedBox(width: 5), _UserName("meep")],
         ),
         Text("Poll Title"),
         Text("Description"),
-        Text("Tags")
       ],
     );
   }
@@ -193,8 +193,8 @@ class _UserImage extends StatelessWidget {
     return Expanded(
       flex: 1,
       child: CircleAvatar(
-        backgroundImage: AssetImage(DemoValues.userImage),
-        radius: 10,
+        backgroundImage: NetworkImage(ProfilePics.janedoeProfilePic),
+        //radius: 10,
       ),
     );
   }

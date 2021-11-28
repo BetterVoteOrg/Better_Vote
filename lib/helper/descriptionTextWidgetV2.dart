@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 
-/*This widget is for hiding description text that is too long to be shown on the homepage*/
+/*This widget is for hiding description text that is too long to be shown on the poll display*/
 class DescriptionTextWidget extends StatefulWidget {
   final String text;
 
   DescriptionTextWidget({@required this.text});
 
   @override
-  _DescriptionTextWidgetState createState() =>
-      new _DescriptionTextWidgetState();
+  _DescriptionTextWidgetState createState() => new _DescriptionTextWidgetState();
 }
 
 class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
@@ -22,9 +21,9 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
   void initState() {
     super.initState();
 
-    if (widget.text.length > 135) {
-      firstHalf = widget.text.substring(0, 135);
-      secondHalf = widget.text.substring(135, widget.text.length);
+    if (widget.text.length > 150) {
+      firstHalf = widget.text.substring(0, 150);
+      secondHalf = widget.text.substring(150, widget.text.length);
     } else {
       firstHalf = widget.text;
       secondHalf = "";
@@ -39,15 +38,14 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
           ? new Text(firstHalf)
           : new Column(
               children: <Widget>[
-                new Text(flag ? (firstHalf + "...") : (firstHalf + secondHalf)),
-                /*
+                new Text(flag ? (firstHalf + secondHalf) : (firstHalf + "...")),
                 new InkWell(
                   child: new Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
                       new Text(
-                        flag ? "show more" : "show less",
-                        style: new TextStyle(color: Colors.blue),
+                        flag ? "show less" : "show more",
+                        style: new TextStyle(fontSize: 12, color: Color(0xFF00b764)),
                       ),
                     ],
                   ),
@@ -56,7 +54,7 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
                       flag = !flag;
                     });
                   },
-                ),*/
+                ),
               ],
             ),
     );

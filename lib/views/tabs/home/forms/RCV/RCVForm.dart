@@ -74,7 +74,9 @@ class _RCVFormState extends State<RCVForm> {
             Align(
                 alignment: Alignment.center,
                 child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      
+                    },
                     child: Text(
                       "Submit Vote",
                       style: TextStyle(fontSize: 20, color: Color(0xFF00b764)),

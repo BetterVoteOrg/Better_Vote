@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:better_vote/models/Poll.dart';
 import 'package:better_vote/helper/demoValues.dart';
 import 'package:better_vote/views/tabs/home/forms/VoteInAPollForm.dart';
+import 'package:better_vote/helper/descriptionTextWidgetV2.dart';
 
 import 'Post.dart';
 
@@ -67,20 +68,26 @@ class _PostTitleAndSummary extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          SizedBox(height: 20),
+          SizedBox(height: 10),
           Text(title,
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-          SizedBox(height: 5),
+          SizedBox(height: 10),
           image == 'no image' || image == null
               ? Container()
               : AspectRatio(
                   aspectRatio: 18.0 / 13.0,
-                  child: Image.network(
-                    image,
-                    fit: BoxFit.fill,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20), 
+                    child: Image.network(
+                      image,
+                      fit: BoxFit.fill,
+                    )
                   ),
                 ),
-          Text(summary, style: TextStyle(fontSize: 14)),
+          SizedBox(height: 10),
+          //Text(summary, style: TextStyle(fontSize: 14)),
+          //Text(summary, style: TextStyle(fontSize: 14)),
+          DescriptionTextWidget(text: summary),
           SizedBox(height: 20),
         ],
       ),
@@ -195,6 +202,7 @@ class _VotingSystemAndInstructions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String votingSystem = poll.getVotingSystem();
+    votingSystem.toLowerCase();
     String votingInstructions = _getVotingInstructions(votingSystem);
 
     return Expanded(
@@ -202,36 +210,82 @@ class _VotingSystemAndInstructions extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          Row(children: [
-            Text("Voting System: " + votingSystem,
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-            SizedBox(width: 5),
-            ButtonTheme(
-              padding: EdgeInsets.all(0),
-              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              child: TextButton(
-                  onPressed: () {
-                    showModalBottomSheet<void>(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return Container(
-                              height: MediaQuery.of(context).size.height * 0.75,
-                              color: Colors.white,
-                              child: Center(
-                                  child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  const Text('Modal BottomSheet'),
-                                  ElevatedButton(
-                                    child: const Text('Close BottomSheet'),
-                                    onPressed: () => Navigator.pop(context),
+          Row(
+            children: [
+              Text(
+                "Voting System: " + votingSystem,
+                style: TextStyle(
+                  fontSize: 20, 
+                  fontWeight: FontWeight.bold
+                )
+              ),
+              SizedBox(
+                width: 5
+              ),
+              ButtonTheme(padding: EdgeInsets.all(0), materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, child: 
+              TextButton(
+                onPressed: () {
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    backgroundColor: Colors.transparent,
+                    builder: (context) => Container(
+                      height: MediaQuery.of(context).size.height * 0.9,
+                      decoration: new BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: new BorderRadius.only(
+                          topLeft: const Radius.circular(25.0),
+                          topRight: const Radius.circular(25.0),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(20),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    "Voting Systems", 
+                                    style: TextStyle(
+                                      fontSize: 22, 
+                                      fontWeight: FontWeight.bold,
+                                    )
+                                  )
+                                ]
+                              ),
+                              Divider(color: Color(0xFF00b764), height: 40, thickness: 1, indent: 1, endIndent: 1),
+                              Row(
+                                children: [ 
+                                  Flexible( 
+                                    child:
+                                    Text("Explanation of Voting Systems. Just explain why voting systems are important and what voting systems Better Vote offers. Filler Text: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.")
+                                  )
+                                ]
+                              ),
+                              SizedBox(height: 20),
+                              Row(
+                                children: [
+                                  Text("How to vote", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)
+                                ],
+                              ), 
+                              SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(_getVotingInstructions(votingSystem))
                                   )
                                 ],
-                              )));
-                        });
-                  },
-                  child: Text(
+                              )
+                            ],
+                          )
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                child: 
+                  Text(
                     "Learn More",
                     style: TextStyle(fontSize: 12, color: Color(0xFF00b764)),
                   )),
@@ -249,14 +303,14 @@ class _VotingSystemAndInstructions extends StatelessWidget {
   String _getVotingInstructions(String votingSystem) {
     String rcv = "RCV";
     String star = "STAR";
-    String plurality = "Plurality";
+    String plurality = "PLURALITY";
 
     if (votingSystem == rcv) {
-      return "These are the instructions for RCV. This is how you vote in a RCV poll. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
+      return "These are the instructions for RCV. This is how you vote in a RCV poll. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Resize Later";
     } else if (votingSystem == star) {
-      return "These are the instructions for STAR. This is how you vote in a STAR poll.";
+      return "These are the instructions for STAR. This is how you vote in a STAR poll. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Resize later";
     } else if (votingSystem == plurality) {
-      return "These are the instructions for Plurality. This is how you vote in a Plurality poll.";
+      return "These are the instructions for Plurality. This is how you vote in a Plurality poll.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Resize later";
     }
   }
 }

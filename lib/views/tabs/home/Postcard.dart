@@ -28,7 +28,7 @@ class PostCard extends StatelessWidget {
             children: [
               _PostDetails(poll),
               Padding(
-                  padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
+                  padding: EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 8.0),
                   child: Post(
                     poll,
                     child: PostTitleAndSummary(poll),
