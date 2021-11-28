@@ -1,3 +1,4 @@
+import 'package:better_vote/controllers/BallotController.dart';
 import 'package:better_vote/controllers/UserController.dart';
 import 'package:better_vote/models/Poll.dart';
 import 'package:better_vote/models/User.dart';
@@ -18,6 +19,7 @@ class _RCVFormState extends State<RCVForm> {
   _RCVFormState(this.poll);
   // List<dynamic> _remainingChoices;
   List<int> _ranks = [];
+  bool isBusy;
   RcvBallot ballot;
   @override
   void initState() {
@@ -74,7 +76,14 @@ class _RCVFormState extends State<RCVForm> {
             Align(
                 alignment: Alignment.center,
                 child: TextButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      setState(() {
+                        isBusy = true;
+                      });
+                      bool succesfulVote = await BallotController()
+                          .attempToSubmitABallot(
+                              widget.poll.getId(), ballot.getVote());
+                    },
                     child: Text(
                       "Submit Vote",
                       style: TextStyle(fontSize: 20, color: Color(0xFF00b764)),
