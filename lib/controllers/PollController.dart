@@ -18,6 +18,7 @@ class PollController {
     List<Poll> polls = [];
     allPolls.toList().forEach((rawPollData) {
       Map<String, dynamic> pollData = rawPollData;
+      
       polls.add(Poll(user, pollData));
     });
     return polls;
@@ -31,7 +32,6 @@ class PollController {
       allPolls.toList().forEach((rawPollData) {
         User pollCreator = User(rawPollData["created_by"]);
         Map<String, dynamic> data = rawPollData;
-        print(data['poll_image']);
         polls.add(Poll(pollCreator, data));
       });
       return polls;

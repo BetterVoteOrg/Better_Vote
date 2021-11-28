@@ -1,4 +1,3 @@
-import '../User.dart';
 import 'Ballot.dart';
 import '../../models/Poll.dart';
 
@@ -8,7 +7,7 @@ class PluralityBallot extends Ballot {
   // corresponds to the index of the _choices array from the Ballot parent class' poll
   List<int> _vote;
 
-  PluralityBallot(User voter, Poll poll) : super(voter, poll) {
+  PluralityBallot( Poll poll) : super(poll) {
     _vote = List<int>.filled(1, -1, growable: false);
   }
 

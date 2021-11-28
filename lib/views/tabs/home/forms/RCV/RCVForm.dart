@@ -23,6 +23,8 @@ class _RCVFormState extends State<RCVForm> {
   void initState() {
     super.initState();
     final List<dynamic> choices = poll.getChoices();
+    ballot = new RcvBallot(poll);
+
     // _remainingChoices = choices;
     for (int i = 0; i < choices.length; i++) {
       _ranks.add(i);
@@ -33,11 +35,9 @@ class _RCVFormState extends State<RCVForm> {
   Widget build(BuildContext context) {
     //immutable
     final List<dynamic> choices = poll.getChoices();
-
     voterBuilder(BuildContext context, AsyncSnapshot<dynamic> snapshot) {
       if (snapshot.hasData) {
         User voter = snapshot.data;
-        ballot = RcvBallot(voter, poll);
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,7 +61,7 @@ class _RCVFormState extends State<RCVForm> {
                           "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t"),
                       RCVDropdown(choices, rank, (int selectedChoice) {
                         setState(() {
-                          ballot.setVote(selectedChoice, rank);
+                          ballot.setVote(rank, selectedChoice);
                           print("ballot: ${ballot.getVote()}");
                           print("rank $rank");
                           print("choice ${choices[selectedChoice]}");

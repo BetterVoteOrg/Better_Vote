@@ -1,12 +1,11 @@
+import 'package:better_vote/controllers/BallotController.dart';
 import 'package:better_vote/controllers/UserController.dart';
 import 'package:better_vote/models/Poll.dart';
-import 'package:better_vote/models/User.dart';
 import 'package:better_vote/models/ballots/StarBallot.dart';
 import 'package:flutter/material.dart';
 
 class STARForm extends StatefulWidget {
   final Poll poll;
-
   STARForm(this.poll, {Key key}) : super(key: key);
   @override
   State<STARForm> createState() => _STARFormState(this.poll);
@@ -14,11 +13,12 @@ class STARForm extends StatefulWidget {
 
 class _STARFormState extends State<STARForm> {
   final Poll poll;
-
   _STARFormState(this.poll);
   // List<dynamic> _remainingChoices;
   List<dynamic> _scores = [];
   StarBallot ballot;
+  bool isBusy = false;
+  List<int> ballotSelections;
   @override
   void initState() {
     super.initState();
@@ -36,9 +36,6 @@ class _STARFormState extends State<STARForm> {
 
     voterBuilder(BuildContext context, AsyncSnapshot<dynamic> snapshot) {
       if (snapshot.hasData) {
-        User voter = snapshot.data;
-        ballot = StarBallot(voter, poll);
-
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -75,6 +72,7 @@ class _STARFormState extends State<STARForm> {
                               (int selectedScore) {
                                 setState(() {
                                   ballot.setVote(score, selectedScore);
+                                  ballotSelections = ballot.getVote();
                                   print("ballot: ${ballot.getVote()}");
                                   print("score $selectedScore");
                                   print("choice ${choices[score]}");
@@ -91,7 +89,16 @@ class _STARFormState extends State<STARForm> {
             Align(
                 alignment: Alignment.center,
                 child: TextButton(
-                    onPressed: () {},
+                    onPressed: () async{
+                      //Validate ballot before next line
+                      setState(() {
+                        isBusy = true;
+                      });
+                      bool succesfulVote = await BallotController().attempToSubmitABallot(poll.getId(), ballotSelections);
+                      // if(succesfulVote)
+                      // showDialog(context: context, builder: builder);
+
+                    },
                     child: Text(
                       "Submit Vote",
                       style: TextStyle(fontSize: 20, color: Color(0xFF00b764)),
@@ -109,6 +116,7 @@ class _STARFormState extends State<STARForm> {
     return FutureBuilder(
         future: UserController().findProfileData(), builder: voterBuilder);
   }
+
 }
 
 // ignore: must_be_immutable

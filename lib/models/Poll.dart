@@ -10,7 +10,7 @@ extension ParseToString on VotingSystem {
 }
 
 class Poll {
-  int _id;
+  String _id;
   User _creator;
   String _title;
   String _imageUrl;
@@ -33,6 +33,7 @@ class Poll {
 
   Poll(User creator, Map<String, dynamic> pollDataJson) {
     this._creator = creator;
+    this._id = pollDataJson["poll_id"];
     this._title = pollDataJson["poll_title"];
     this._startTime = pollDataJson["start_time"];
     this._endTime = pollDataJson["end_time"];
@@ -44,7 +45,7 @@ class Poll {
     this._category = pollDataJson["poll_category"];
   }
 
-  int getId() {
+  String getId() {
     return _id;
   }
 

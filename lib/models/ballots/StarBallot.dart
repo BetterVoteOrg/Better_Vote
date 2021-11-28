@@ -1,4 +1,3 @@
-import '../User.dart';
 import 'Ballot.dart';
 import '../../models/Poll.dart';
 
@@ -7,7 +6,7 @@ class StarBallot extends Ballot {
   // the value at the index is the score of the choice
   List<int> _vote;
 
-  StarBallot(User voter, Poll poll) : super(voter, poll) {
+  StarBallot( Poll poll) : super( poll) {
     _vote = List<int>.filled(poll.getNumberOfChoices(), 0, growable: false);
   }
 

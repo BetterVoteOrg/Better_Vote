@@ -1,17 +1,9 @@
 import '../../models/Poll.dart';
-import '../User.dart';
-
 abstract class Ballot {
-  User _voter;
   Poll _poll;
 
-  Ballot(User voter, Poll poll) {
-    this._voter = voter;
+  Ballot( Poll poll) {
     this._poll = poll;
-  }
-
-  User getVoter() {
-    return _voter;
   }
 
   Poll getPoll() {
