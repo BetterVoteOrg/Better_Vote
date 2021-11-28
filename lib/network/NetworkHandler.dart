@@ -51,19 +51,3 @@ Map<String, dynamic> getpayloadFromToken(_jsonWebToken) {
   return json
       .decode(ascii.decode(base64.decode(base64.normalize(_jsonWebToken))));
 }
-
-var dummy = {
-  "poll_title": "STAR POLL DEPLOYED",
-  "prompt":
-      "Baton Rouge, Louisiana’s capital Country, visit the capitol buildings or check out the Shaw Center for the arts.",
-  "vote_system": "STAR",
-  "poll_type": "PUBLIC",
-  "candidates": [
-    "Ruth's Chris Steak House",
-    "Anthony's Italian Deli",
-    "Parrain's Seafood Restaurant",
-    "Albasha Greek & Lebanese"
-  ],
-  "start_time": "2022-11-12T17:42:00.042Z",
-  "end_time": "2022-11-12T17:45:00.042Z"
-};

@@ -1,11 +1,11 @@
 import 'package:better_vote/controllers/UserController.dart';
 import 'package:better_vote/models/User.dart';
-import 'package:better_vote/network/NetworkHandler.dart';
 import 'package:better_vote/views/tabs/createpoll/CreatePollTab.dart';
 import 'package:better_vote/views/tabs/explore/ExploreTab.dart';
 import 'package:better_vote/views/tabs/home/HomeTab.dart';
 import 'package:better_vote/views/tabs/notifications/NotificationsTab.dart';
 import 'package:better_vote/views/tabs/profile/ProfileTab.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -19,11 +19,19 @@ class HomeState extends State<HomePage> {
   UserController userController;
   HomeState();
   // var _jsonWebToken;
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _firebaseMessaging.getToken().then((token) => print(token));
   }
 
   @override

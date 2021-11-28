@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "735626296857",
+    "project_id": "bettervote-c8595",
+    "storage_bucket": "bettervote-c8595.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:735626296857:android:f01aede9a572727e78f488",
+        "android_client_info": {
+          "package_name": "com.example.better_vote"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "735626296857-v7v34m6gc5rapjhqi9j9rno6pp182ums.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMIo5voMkv7GRzHt0JMysp6MWPP3C5mck"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "735626296857-v7v34m6gc5rapjhqi9j9rno6pp182ums.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

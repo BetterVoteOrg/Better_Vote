@@ -3,36 +3,28 @@ import 'package:better_vote/controllers/UserController.dart';
 import 'package:better_vote/models/Poll.dart';
 import 'package:better_vote/models/ballots/StarBallot.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class STARForm extends StatefulWidget {
   final Poll poll;
+  StarBallot ballot;
   STARForm(this.poll, {Key key}) : super(key: key);
   @override
-  State<STARForm> createState() => _STARFormState(this.poll);
+  State<STARForm> createState() => _STARFormState();
 }
 
 class _STARFormState extends State<STARForm> {
-  final Poll poll;
-  _STARFormState(this.poll);
-  // List<dynamic> _remainingChoices;
-  List<dynamic> _scores = [];
-  StarBallot ballot;
   bool isBusy = false;
-  List<int> ballotSelections;
   @override
   void initState() {
     super.initState();
-    final List<dynamic> choices = poll.getChoices();
-    // _remainingChoices = choices;
-    for (int i = 0; i < choices.length; i++) {
-      _scores.add((i+1).toString());
-    }
+    widget.ballot = new StarBallot(widget.poll);
   }
 
   @override
   Widget build(BuildContext context) {
     //immutable
-    final List<dynamic> choices = poll.getChoices();
+    final List<dynamic> choices = widget.poll.getChoices();
 
     voterBuilder(BuildContext context, AsyncSnapshot<dynamic> snapshot) {
       if (snapshot.hasData) {
@@ -48,56 +40,79 @@ class _STARFormState extends State<STARForm> {
                 padding: const EdgeInsets.all(8),
                 shrinkWrap: true,
                 itemCount: choices.length,
-                itemBuilder: (BuildContext context, int score) {
+                itemBuilder: (BuildContext context, int choice) {
                   //debugPrint("this right here2");
                   return Container(
                     height: 50,
-                    child: 
-                    Row(
-                      children: [
-                        //Column(
-                          //children: [
-                            Text(
-                              "\t\t" +
-                              choices[score].toString() +
-                              "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t"
-                            ),
-                          //],
-                        //),
-                        Column(
-                          children: [Align(alignment: Alignment.centerRight,child:
-                            STARDropdown(
-                              choices[score].toString(), 
-                              _scores, 
-                              (int selectedScore) {
-                                setState(() {
-                                  ballot.setVote(score, selectedScore);
-                                  ballotSelections = ballot.getVote();
-                                  print("ballot: ${ballot.getVote()}");
-                                  print("score $selectedScore");
-                                  print("choice ${choices[score]}");
+                    child: Row(children: [
+                      Column(
+                        children: [
+                          Text("\t\t" +
+                              choices[choice].toString() +
+                              "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t"),
+                        ],
+                      ),
+                      Column(children: [
+                        Align(
+                            alignment: Alignment.centerRight,
+                            child: RatingBar.builder(
+                              initialRating: 0,
+                              itemSize: 20,
+                              itemCount: 5,
+                              // ignore: missing_return
+                              itemBuilder: (context, index) {
+                                switch (index) {
+                                  case 0:
+                                    return Icon(
+                                      Icons.sentiment_very_dissatisfied,
+                                      color: Colors.red,
+                                    );
+                                  case 1:
+                                    return Icon(
+                                      Icons.sentiment_dissatisfied,
+                                      color: Colors.redAccent,
+                                    );
+                                  case 2:
+                                    return Icon(
+                                      Icons.sentiment_neutral,
+                                      color: Colors.amber,
+                                    );
+                                  case 3:
+                                    return Icon(
+                                      Icons.sentiment_satisfied,
+                                      color: Colors.lightGreen,
+                                    );
+                                  case 4:
+                                    return Icon(
+                                      Icons.sentiment_very_satisfied,
+                                      color: Colors.green,
+                                    );
                                 }
-                              );
-                              }
+                              },
+                              onRatingUpdate: (rating) {
+                                setState(() {
+                                  widget.ballot.setVote(choice, rating.toInt());
+                                });
+                                print(widget.ballot.getVote());
+                              },
                             ))
-                          ]
-                        )
-                      ]
-                    ),
+                      ])
+                    ]),
                   );
                 }),
             Align(
                 alignment: Alignment.center,
                 child: TextButton(
-                    onPressed: () async{
+                    onPressed: () async {
                       //Validate ballot before next line
                       setState(() {
                         isBusy = true;
                       });
-                      bool succesfulVote = await BallotController().attempToSubmitABallot(poll.getId(), ballotSelections);
+                      bool succesfulVote = await BallotController()
+                          .attempToSubmitABallot(
+                              widget.poll.getId(), widget.ballot.getVote());
                       // if(succesfulVote)
                       // showDialog(context: context, builder: builder);
-
                     },
                     child: Text(
                       "Submit Vote",
@@ -116,48 +131,49 @@ class _STARFormState extends State<STARForm> {
     return FutureBuilder(
         future: UserController().findProfileData(), builder: voterBuilder);
   }
-
 }
 
 // ignore: must_be_immutable
-class STARDropdown extends StatefulWidget {
-  Function callback;
-  List<dynamic> scores;
-  String choice;
-  STARDropdown(this.choice, this.scores, this.callback);
-  @override
-  State<STARDropdown> createState() => STARDropdownState();
-}
+// class STARDropdown extends StatefulWidget {
+//   Function callback;
+//   List<dynamic> scores;
+//   String choice;
+//   STARDropdown(this.choice, this.scores, this.callback);
+//   @override
+//   State<STARDropdown> createState() => STARDropdownState();
+// }
 
-class STARDropdownState extends State<STARDropdown> {
-  STARDropdownState();
-  String _selectedScore;
+// class STARDropdownState extends State<STARDropdown> {
+//   STARDropdownState();
+//   String _selectedScore;
 
-  @override
-  Widget build(BuildContext context) {
-    return Align(alignment: Alignment.center, child: DropdownButton<String>(
-      hint: Text('-'), // Not necessary for Option 1
-      value: _selectedScore,
-      items: widget.scores
-          .map((score) => DropdownMenuItem<String>(
-                value: score,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(score),
-                ),
-              ))
-          .toList(),
+//   @override
+//   Widget build(BuildContext context) {
+//     return Align(
+//         alignment: Alignment.center,
+//         child: DropdownButton<String>(
+//           hint: Text('-'), // Not necessary for Option 1
+//           value: _selectedScore,
+//           items: widget.scores
+//               .map((score) => DropdownMenuItem<String>(
+//                     value: score,
+//                     child: Padding(
+//                       padding: const EdgeInsets.all(8.0),
+//                       child: Text(score),
+//                     ),
+//                   ))
+//               .toList(),
 
-      onChanged: (String newSelectedScore) {
-        setState(() {
-          _selectedScore = newSelectedScore;
-          print("Selected Value: $newSelectedScore");
-        });
-        int index = widget.scores.indexOf(_selectedScore);
-        print("index: $index");
-        //widget.callback(index);
-      },
-      //value: newValue,
-    ));
-  }
-}
+//           onChanged: (String newSelectedScore) {
+//             setState(() {
+//               _selectedScore = newSelectedScore;
+//               print("Selected Value: $newSelectedScore");
+//             });
+//             int index = widget.scores.indexOf(_selectedScore);
+//             print("index: $index");
+//             //widget.callback(index);
+//           },
+//           //value: newValue,
+//         ));
+//   }
+// }

@@ -35,34 +35,25 @@ class UserController {
   }
 
   Future<List<Poll>> getUserParticipatedPolls(User user) async {
-    //String _pollPath = "/api/users/me/participated-polls";
-    String _pollPath = "/api/polls/public";
+    String _pollPath = "/api/users/me/participated-polls";
+    // String _pollPath = "/api/polls/public";
     try {
-          var response = await NetworkHandler(_pollPath).fetchData();
-          List<dynamic> allPolls = json.decode(response);
-          List<Poll> polls = [];
-          allPolls.toList().forEach((rawPollData) {
-            Map<String, dynamic> pollData = rawPollData;
-            polls.add(Poll(user, pollData));
-          });
-
-          return polls;
-        } catch (error) {
-          throw error;
-        }
-    // var response = await NetworkHandler(_pollPath).fetchData();
-    // List<dynamic> selectionsWithPolls = json.decode(response);
-    // List<Poll> polls = [];
-    // selectionsWithPolls.toList().forEach((rawPollData) {
-    //   Map<String, dynamic> pollData = rawPollData['poll'];
-    //   polls.add(Poll(user, pollData));
-    // });
-    // return polls;
+      var response = await NetworkHandler(_pollPath).fetchData();
+      List<dynamic> selectionsWithPolls = json.decode(response);
+      List<Poll> polls = [];
+      selectionsWithPolls.toList().forEach((rawPollData) {
+        Map<String, dynamic> pollData = rawPollData['poll'];
+        polls.add(Poll(user, pollData));
+      });
+      return polls;
+    } catch (error) {
+      throw error;
+    }
   }
 
   Future<List<Poll>> getUserCreatedPolls(User user) async {
-    // String _pollPath = "/api/users/${user.getUserID()}/created-polls";
-    String _pollPath = "/api/polls/public";
+    String _pollPath = "/api/users/${user.getUserID()}/created-polls";
+    // String _pollPath = "/api/polls/public";
     return await _organizedData(_pollPath, user);
   }
 

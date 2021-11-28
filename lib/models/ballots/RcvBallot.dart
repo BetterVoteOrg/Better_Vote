@@ -1,4 +1,3 @@
-import '../User.dart';
 import 'Ballot.dart';
 import '../../models/Poll.dart';
 
@@ -8,13 +7,12 @@ class RcvBallot extends Ballot {
   List<int> _RANKS;
 
   RcvBallot(Poll poll) : super(poll) {
-    this._RANKS= List<int>.filled(
-        poll.getNumberOfChoices(), poll.getNumberOfChoices() + 1,
-        growable: false);
+    this._RANKS =
+        List<int>.filled(poll.getNumberOfChoices(), 0, growable: false);
   }
 
-  void setVote(int choice, int rank) {
-    this._RANKS[choice] = rank;
+  void setVote(int candidateIndex, int rank) {
+    this._RANKS[candidateIndex] = rank;
   }
 
   @override

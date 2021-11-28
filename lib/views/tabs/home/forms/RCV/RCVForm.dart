@@ -61,22 +61,20 @@ class _RCVFormState extends State<RCVForm> {
                           "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t"),
                       RCVDropdown(choices, rank, (int selectedChoice) {
                         setState(() {
-                          ballot.setVote(rank, selectedChoice);
+                          // Validate choices first
+                          ballot.setVote(selectedChoice, rank + 1);
                           print("ballot: ${ballot.getVote()}");
                           print("rank $rank");
                           print("choice ${choices[selectedChoice]}");
                         });
                       })
-                      // _choicesDropDown(choices)
                     ]),
                   );
                 }),
             Align(
                 alignment: Alignment.center,
                 child: TextButton(
-                    onPressed: () {
-                      
-                    },
+                    onPressed: () {},
                     child: Text(
                       "Submit Vote",
                       style: TextStyle(fontSize: 20, color: Color(0xFF00b764)),

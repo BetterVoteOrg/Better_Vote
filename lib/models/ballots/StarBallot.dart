@@ -6,16 +6,17 @@ class StarBallot extends Ballot {
   // the value at the index is the score of the choice
   List<int> _vote;
 
-  StarBallot( Poll poll) : super( poll) {
-    _vote = List<int>.filled(poll.getNumberOfChoices(), 0, growable: false);
+  StarBallot(Poll poll) : super(poll) {
+    this._vote =
+        List<int>.filled(poll.getNumberOfChoices(), 0, growable: false);
   }
 
   void setVote(int choice, int score) {
-    _vote[choice] = score;
+    this._vote[choice] = score;
   }
 
   @override
   List<int> getVote() {
-    return _vote;
+    return this._vote;
   }
 }

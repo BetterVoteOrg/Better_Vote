@@ -1,15 +1,36 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-
 import 'network/NetworkHandler.dart';
 import 'views/Homepage.dart';
 import 'views/Intro.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase
+      .initializeApp(); // initialize firebase before actual app get start.
+
+  AwesomeNotifications().initialize(null, [
+    NotificationChannel(
+        channelKey: 'basic_channel',
+        channelName: 'Basic notifications',
+        channelDescription: 'Notification channel for basic tests',
+        defaultColor: Color(0xFF9D50DD),
+        ledColor: Colors.white)
+  ]);
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+      alert: true, badge: true, sound: true);
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   runApp(MyApp());
+}
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  AwesomeNotifications().createNotificationFromJsonData(message.data);
 }
 
 class MyApp extends StatefulWidget {
@@ -24,6 +45,10 @@ class _MyAppState extends State<MyApp> {
   bool _isLoggedIn = false;
   String _jsonWebToken;
   Map<String, dynamic> _payloadFromToken;
+  @override
+  void initState() {
+    super.initState();
+  }
 
   Future<String> get getJsonWebTokenOrEmpty async {
     const storage = FlutterSecureStorage();
