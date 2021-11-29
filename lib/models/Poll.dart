@@ -9,6 +9,16 @@ extension ParseToString on VotingSystem {
   }
 }
 
+class PollResults {
+  String winner;
+  String analysis;
+
+  PollResults(this.winner, this.analysis);
+  PollResults.fromJson(Map<String, dynamic> json)
+      : analysis = json['analysis'],
+        winner = json['elected'];
+}
+
 class Poll {
   String _id;
   User _creator;
@@ -20,20 +30,17 @@ class Poll {
   String _question;
   String _votingSystem;
   String _winner;
-  String _results;
+  String _status;
   String _createdTime;
-  // List<String> _choices;
-
-  // When editing choices, do not remove from array. Index needs to stay constant for votes.
+  PollResults _results;
   List<dynamic> _choices = [];
-  // Indexes to ignore when calculating results
-  List<int> _deletedChoices = [];
-
   List<Ballot> _votes = [];
 
   Poll(User creator, Map<String, dynamic> pollDataJson) {
     this._creator = creator;
     this._id = pollDataJson["poll_id"];
+    this._category = pollDataJson["poll_category"];
+    this._status = pollDataJson["poll_status"];
     this._title = pollDataJson["poll_title"];
     this._startTime = pollDataJson["start_time"];
     this._endTime = pollDataJson["end_time"];
@@ -43,10 +50,15 @@ class Poll {
     this._choices = pollDataJson["candidates"];
     this._imageUrl = pollDataJson["poll_image"];
     this._category = pollDataJson["poll_category"];
+    this._results = PollResults.fromJson(pollDataJson['results']);
   }
 
   String getId() {
     return _id;
+  }
+
+  String getStatus() {
+    return _status;
   }
 
   User getCreator() {
@@ -89,35 +101,19 @@ class Poll {
     return _votingSystem;
   }
 
-  void addChoice(String choice) {
-    _choices.add(choice);
-  }
-
   int getNumberOfChoices() {
     return _choices.length;
-  }
-
-  void deleteChoice(int choiceIndex) {
-    _deletedChoices.add(choiceIndex);
   }
 
   List<Ballot> getVotes() {
     return _votes;
   }
 
-  void addVote(Ballot ballot) {
-    _votes.add(ballot);
-  }
-
   String getWinner() {
     return _winner;
   }
 
-  void setResults(String results) {
-    this._results = results;
-  }
-
-  String getResults() {
+  PollResults getResults() {
     return _results;
   }
 }

@@ -13,12 +13,12 @@ class PollController {
     String _pollPath = "/api/users/${user.getUserID()}/created-polls";
     var response = await NetworkHandler(_pollPath).fetchData();
     List<Map<String, dynamic>> allPolls = json.decode(response);
+
     // User pollCreator = User(allPolls);
     // List<dynamic> pollsRaw = allPolls["created_polls"];
     List<Poll> polls = [];
     allPolls.toList().forEach((rawPollData) {
       Map<String, dynamic> pollData = rawPollData;
-      
       polls.add(Poll(user, pollData));
     });
     return polls;

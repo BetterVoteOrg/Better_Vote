@@ -64,7 +64,7 @@ class _PostDetails extends StatelessWidget {
         _UserImage(),
         SizedBox(width: 10),
         _UserName(poll.getCreator().getUsername()),
-        _PostTime(poll.getStartTime()),
+        _PostTime(poll.getCreatedTime()),
         SizedBox(width: 5)
       ],
     );
@@ -109,14 +109,29 @@ class _UserImage extends StatelessWidget {
 }
 
 class _PostTime extends StatelessWidget {
-  final String startTime;
-  const _PostTime(this.startTime, {Key key}) : super(key: key);
+  final String createdTime;
+  const _PostTime(this.createdTime, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext contxt) {
     //To use later
-    var timeDifference =
-        DateTime.now().difference(DateTime.parse(startTime)).inHours;
+    var timeDifference = DateTime.now().difference(DateTime.parse(createdTime));
+    String getTimeDifference() {
+      if (timeDifference.inMinutes <= 1) {
+        return "Just now";
+      }
+      if (timeDifference.inMinutes <= 60) {
+        return "${timeDifference.inMinutes} minutes ago";
+      }
+      if (timeDifference.inHours <= 24) {
+        return "${timeDifference.inHours} hours ago";
+      }
+
+      if (timeDifference.inDays == 1) {
+        return "Yesterday";
+      }
+      return "${timeDifference.inDays} days ago";
+    }
 
     return Expanded(
       flex: 0,
@@ -124,7 +139,7 @@ class _PostTime extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(DemoValues.postTime),
+          Text(getTimeDifference()),
         ],
       ),
     );
