@@ -46,6 +46,7 @@ dependencies:
   firebase_core: ^1.10.0
   firebase_messaging: ^11.1.0
   awesome_notifications: ^0.6.18+2
+  badges: ^2.0.2
 
 dev_dependencies:
   flutter_test:

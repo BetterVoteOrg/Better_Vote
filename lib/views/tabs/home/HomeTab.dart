@@ -2,7 +2,6 @@ import 'package:better_vote/controllers/PollController.dart';
 import 'package:better_vote/models/Poll.dart';
 import 'package:flutter/material.dart';
 import 'package:better_vote/views/tabs/home/Postcard.dart';
-import 'package:flutter/rendering.dart';
 import 'package:scroll_app_bar/scroll_app_bar.dart';
 
 class HomeTabPage extends StatefulWidget {
@@ -11,7 +10,8 @@ class HomeTabPage extends StatefulWidget {
   State<HomeTabPage> createState() => HomeTabState();
 }
 
-class HomeTabState extends State<HomeTabPage> with SingleTickerProviderStateMixin {
+class HomeTabState extends State<HomeTabPage>
+    with SingleTickerProviderStateMixin {
   final _pollController = PollController();
 
   final _controller = ScrollController();
@@ -31,11 +31,12 @@ class HomeTabState extends State<HomeTabPage> with SingleTickerProviderStateMixi
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.white70,
         appBar: ScrollAppBar(
-          controller: _controller, 
+          controller: _controller,
           title: Image.asset('images/better_vote_logo.png', height: 50),
           backgroundColor: Colors.white,
           elevation: 0.5,
-          automaticallyImplyLeading: false,),
+          automaticallyImplyLeading: false,
+        ),
         body: ListView.builder(
           controller: _controller,
           itemCount: polls.length,

@@ -1,11 +1,12 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 
 /*This widget is for hiding description text that is too long to be shown on the homepage*/
 class DescriptionTextWidget extends StatefulWidget {
   final String text;
-
-  DescriptionTextWidget({@required this.text});
+  final String status;
+  DescriptionTextWidget({@required this.text, @required this.status});
 
   @override
   _DescriptionTextWidgetState createState() =>

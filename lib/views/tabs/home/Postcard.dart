@@ -1,7 +1,6 @@
 import 'package:better_vote/models/Poll.dart';
 import 'package:better_vote/views/tabs/home/PostTitleSummary.dart';
 import 'package:flutter/material.dart';
-import 'package:better_vote/helper/demoValues.dart';
 import 'package:better_vote/views/tabs/home/PollDisplay.dart';
 import 'package:better_vote/helper/profilePics.dart';
 
@@ -64,7 +63,7 @@ class _PostDetails extends StatelessWidget {
         _UserImage(),
         SizedBox(width: 10),
         _UserName(poll.getCreator().getUsername()),
-        _PostTime(poll.getCreatedTime()),
+        PostTime(poll.getCreatedTime()),
         SizedBox(width: 5)
       ],
     );
@@ -102,44 +101,6 @@ class _UserImage extends StatelessWidget {
           CircleAvatar(
             backgroundImage: NetworkImage(ProfilePics.janedoeProfilePic),
           ),
-        ],
-      ),
-    );
-  }
-}
-
-class _PostTime extends StatelessWidget {
-  final String createdTime;
-  const _PostTime(this.createdTime, {Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext contxt) {
-    //To use later
-    var timeDifference = DateTime.now().difference(DateTime.parse(createdTime));
-    String getTimeDifference() {
-      if (timeDifference.inMinutes <= 1) {
-        return "Just now";
-      }
-      if (timeDifference.inMinutes <= 60) {
-        return "${timeDifference.inMinutes} minutes ago";
-      }
-      if (timeDifference.inHours <= 24) {
-        return "${timeDifference.inHours} hours ago";
-      }
-
-      if (timeDifference.inDays == 1) {
-        return "Yesterday";
-      }
-      return "${timeDifference.inDays} days ago";
-    }
-
-    return Expanded(
-      flex: 0,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(getTimeDifference()),
         ],
       ),
     );

@@ -32,7 +32,22 @@ class PollDisplay extends StatelessWidget {
                     child: _PostTitleAndSummary(poll),
                   ),
                   _Instructions(poll),
-                  _VotingForm(poll)
+                  poll.getStatus() == 'ACTIVE'
+                      ? _VotingForm(poll)
+                      : Center(
+                          child: Container(
+                            child: Column(
+                              children: [
+                                Text(
+                                    "Poll is not active or has ended. (Specify)"),
+                                Text("Winner:"),
+                                Text(" ${poll.getResults().winner}"),
+                                Text("Analysis: "),
+                                Text("${poll.getResults().analysis}")
+                              ],
+                            ),
+                          ),
+                        )
                 ],
               ),
             ),
@@ -61,6 +76,7 @@ class _PostTitleAndSummary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String title = poll.getTitle();
+    final String status = poll.getStatus();
     final String summary = poll.getQuestion();
     final String image = poll.getImageUrl();
     return Expanded(
@@ -72,17 +88,17 @@ class _PostTitleAndSummary extends StatelessWidget {
           Text(title,
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
           SizedBox(height: 10),
+          handlePollStatus(status),
           image == 'no image' || image == null
               ? Container()
               : AspectRatio(
                   aspectRatio: 18.0 / 13.0,
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20), 
-                    child: Image.network(
-                      image,
-                      fit: BoxFit.fill,
-                    )
-                  ),
+                      borderRadius: BorderRadius.circular(20),
+                      child: Image.network(
+                        image,
+                        fit: BoxFit.fill,
+                      )),
                 ),
           SizedBox(height: 10),
           //Text(summary, style: TextStyle(fontSize: 14)),
@@ -118,7 +134,7 @@ class _PostDetails extends StatelessWidget {
         _UserImage(),
         SizedBox(width: 10),
         _UserName(poll.getCreator().getUsername()),
-        _PostTime(poll.getStartTime()),
+        PostTime(poll.getStartTime()),
         SizedBox(width: 5)
       ],
     );
@@ -158,29 +174,6 @@ class _UserImage extends StatelessWidget {
   }
 }
 
-class _PostTime extends StatelessWidget {
-  final String startTime;
-  const _PostTime(this.startTime, {Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    //To use later
-    var timeDifference =
-        DateTime.now().difference(DateTime.parse(startTime)).inHours;
-
-    return Expanded(
-      flex: 0,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(DemoValues.postTime),
-        ],
-      ),
-    );
-  }
-}
-
 class _Instructions extends StatelessWidget {
   final Poll poll;
   const _Instructions(this.poll, {Key key}) : super(key: key);
@@ -210,82 +203,77 @@ class _VotingSystemAndInstructions extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          Row(
-            children: [
-              Text(
-                "Voting System: " + votingSystem,
-                style: TextStyle(
-                  fontSize: 20, 
-                  fontWeight: FontWeight.bold
-                )
-              ),
-              SizedBox(
-                width: 5
-              ),
-              ButtonTheme(padding: EdgeInsets.all(0), materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, child: 
-              TextButton(
-                onPressed: () {
-                  showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    backgroundColor: Colors.transparent,
-                    builder: (context) => Container(
-                      height: MediaQuery.of(context).size.height * 0.9,
-                      decoration: new BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: new BorderRadius.only(
-                          topLeft: const Radius.circular(25.0),
-                          topRight: const Radius.circular(25.0),
+          Row(children: [
+            Text("Voting System: " + votingSystem,
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            SizedBox(width: 5),
+            ButtonTheme(
+              padding: EdgeInsets.all(0),
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              child: TextButton(
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      backgroundColor: Colors.transparent,
+                      builder: (context) => Container(
+                        height: MediaQuery.of(context).size.height * 0.9,
+                        decoration: new BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: new BorderRadius.only(
+                            topLeft: const Radius.circular(25.0),
+                            topRight: const Radius.circular(25.0),
+                          ),
                         ),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.all(20),
-                        child: SingleChildScrollView(
-                          child: Column(
+                        child: Padding(
+                          padding: EdgeInsets.all(20),
+                          child: SingleChildScrollView(
+                              child: Column(
                             children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    "Voting Systems", 
+                              Row(children: [
+                                Text("Voting Systems",
                                     style: TextStyle(
-                                      fontSize: 22, 
+                                      fontSize: 22,
                                       fontWeight: FontWeight.bold,
-                                    )
-                                  )
-                                ]
-                              ),
-                              Divider(color: Color(0xFF00b764), height: 40, thickness: 1, indent: 1, endIndent: 1),
-                              Row(
-                                children: [ 
-                                  Flexible( 
-                                    child:
-                                    Text("Explanation of Voting Systems. Just explain why voting systems are important and what voting systems Better Vote offers. Filler Text: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.")
-                                  )
-                                ]
-                              ),
+                                    ))
+                              ]),
+                              Divider(
+                                  color: Color(0xFF00b764),
+                                  height: 40,
+                                  thickness: 1,
+                                  indent: 1,
+                                  endIndent: 1),
+                              Row(children: [
+                                Flexible(
+                                    child: Text(
+                                        "Explanation of Voting Systems. Just explain why voting systems are important and what voting systems Better Vote offers. Filler Text: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."))
+                              ]),
                               SizedBox(height: 20),
                               Row(
                                 children: [
-                                  Text("How to vote", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)
+                                  Text(
+                                    "How to vote",
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  )
                                 ],
-                              ), 
+                              ),
                               SizedBox(height: 10),
                               Row(
                                 children: [
                                   Expanded(
-                                    child: Text(_getVotingInstructions(votingSystem))
-                                  )
+                                      child: Text(
+                                          _getVotingInstructions(votingSystem)))
                                 ],
                               )
                             ],
-                          )
+                          )),
                         ),
                       ),
-                    ),
-                  );
-                },
-                child: 
-                  Text(
+                    );
+                  },
+                  child: Text(
                     "Learn More",
                     style: TextStyle(fontSize: 12, color: Color(0xFF00b764)),
                   )),
