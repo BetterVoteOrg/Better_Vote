@@ -13,6 +13,8 @@ class ProfileTabPage extends StatefulWidget {
 
 class ProfileState extends State<ProfileTabPage> {
   List<Poll> polls;
+  int numPollsCreated = 0;
+  int numPollsVoted = 0;
   bool _isDisplayingVotedPolls = false;
   @override
   void initState() {
@@ -47,12 +49,15 @@ class ProfileState extends State<ProfileTabPage> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             polls = snapshot.data;
+            numPollsCreated = polls.length;
+
             if (polls.length > 0)
               return ListView.builder(
                   itemCount: polls.length,
                   shrinkWrap: true,
                   itemBuilder: (BuildContext context, int index) {
                     //Replace this widget
+
                     return PostCard(polls[index]);
                   });
             else {
@@ -76,12 +81,14 @@ class ProfileState extends State<ProfileTabPage> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             polls = snapshot.data;
+            numPollsVoted = polls.length;
             if (polls.length > 0)
               return ListView.builder(
                   itemCount: polls.length,
                   shrinkWrap: true,
                   itemBuilder: (BuildContext context, int index) {
                     //Replace this widget
+
                     return PostCard(polls[index]);
                   });
             else {
@@ -102,7 +109,7 @@ class ProfileState extends State<ProfileTabPage> {
         future: _user.getVotedPolls());
   }
 
-  Widget profileInfo(_user) {
+  Widget profileInfo(User _user) {
     return DefaultTabController(
       length: 2,
       child: new NestedScrollView(
@@ -119,11 +126,19 @@ class ProfileState extends State<ProfileTabPage> {
                 background: Container(
                   alignment: Alignment.topCenter,
                   child: Column(children: [
-                    Icon(
-                      Icons.account_circle_outlined,
-                      size: 120,
-                      color: Colors.white,
+                    // Icon(
+                    //   Icons.account_circle_outlined,
+                    //   size: 120,
+                    //   color: Colors.white,
+                    // ),
+                    Padding(
+                      padding: EdgeInsets.all(10),
+                      child: CircleAvatar(
+                        radius: 50,
+                        backgroundImage: NetworkImage(_user.getAvatar()),
+                      ),
                     ),
+
                     Text(
                       _user.getUsername(),
                       style: const TextStyle(
@@ -136,12 +151,12 @@ class ProfileState extends State<ProfileTabPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "# Polls Created: ",
+                              "# Polls Created: $numPollsCreated ",
                               textScaleFactor: 1.1,
                               style: TextStyle(color: Colors.white),
                             ),
                             Text(
-                              "# Polls Participated in: ",
+                              "# Polls Participated in: $numPollsVoted",
                               textScaleFactor: 1.1,
                               style: TextStyle(color: Colors.white),
                             )

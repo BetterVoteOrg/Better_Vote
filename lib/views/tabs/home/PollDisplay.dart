@@ -131,7 +131,7 @@ class _PostDetails extends StatelessWidget {
     return Row(
       children: <Widget>[
         SizedBox(width: 5),
-        _UserImage(url: poll.getCreator().getAvatar()),
+        UserImage(url: poll.getCreator().getAvatar()),
         SizedBox(width: 10),
         _UserName(poll.getCreator().getUsername()),
         PostTime(poll.getStartTime()),
@@ -161,10 +161,9 @@ class _UserName extends StatelessWidget {
 }
 
 // ignore: must_be_immutable
-class _UserImage extends StatelessWidget {
+class UserImage extends StatelessWidget {
   String url = ProfilePics.janedoeProfilePic;
-  _UserImage({Key key, String url}) : super(key: key) {
-    print(url);
+  UserImage({Key key, String url}) : super(key: key) {
     if (url != null) this.url = url;
   }
 
@@ -173,7 +172,7 @@ class _UserImage extends StatelessWidget {
     return Expanded(
       flex: 1,
       child: CircleAvatar(
-        backgroundImage: NetworkImage(this.url),
+        backgroundImage: NetworkImage(this.url, scale: 0.5),
       ),
     );
   }

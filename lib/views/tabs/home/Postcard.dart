@@ -60,7 +60,9 @@ class _PostDetails extends StatelessWidget {
     return Row(
       children: <Widget>[
         SizedBox(width: 5),
-        _UserImage(),
+        UserImage(
+          url: poll.getCreator().getAvatar(),
+        ),
         SizedBox(width: 10),
         _UserName(poll.getCreator().getUsername()),
         PostTime(poll.getCreatedTime()),
@@ -83,24 +85,6 @@ class _UserName extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(username),
-        ],
-      ),
-    );
-  }
-}
-
-class _UserImage extends StatelessWidget {
-  const _UserImage({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      flex: 1,
-      child: Column(
-        children: [
-          CircleAvatar(
-            backgroundImage: NetworkImage(ProfilePics.janedoeProfilePic),
-          ),
         ],
       ),
     );
