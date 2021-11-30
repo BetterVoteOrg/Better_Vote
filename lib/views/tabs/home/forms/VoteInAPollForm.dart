@@ -71,7 +71,8 @@ class VoteInAPollForm extends StatelessWidget {
     final SharedPreferences prefs = await _prefs;
 
     List<dynamic> votedPollsIds = prefs.getStringList("votedPollsIds");
-    return votedPollsIds.contains(poll.getId());
+    if (votedPollsIds != null) return votedPollsIds.contains(poll.getId());
+    return false;
   }
 
   Widget chooseForm() {
