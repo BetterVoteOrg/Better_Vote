@@ -4,7 +4,7 @@ import 'package:better_vote/models/User.dart';
 import 'package:better_vote/views/tabs/home/Postcard.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:better_vote/helper/profilePics.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileTabPage extends StatefulWidget {
   // ProfileTabPage( {Key key}) : super(key: key)
@@ -17,6 +17,7 @@ class ProfileState extends State<ProfileTabPage> {
   int numPollsCreated = 0;
   int numPollsVoted = 0;
   bool _isDisplayingVotedPolls = false;
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   @override
   void initState() {
     super.initState();
@@ -33,7 +34,15 @@ class ProfileState extends State<ProfileTabPage> {
   Widget profileBuilder(BuildContext context, AsyncSnapshot<dynamic> snapshot) {
     if (snapshot.hasData) {
       User _user = snapshot.data;
-      return profileInfo(_user);
+      return FutureBuilder(
+          future: getLengths(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasError) {
+              return profileInfo(_user);
+            }
+
+            return CircularProgressIndicator();
+          });
     }
     if (snapshot.hasError) {
       print(snapshot.stackTrace.toString());
@@ -41,8 +50,15 @@ class ProfileState extends State<ProfileTabPage> {
     }
 
     return Center(
-      child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Color(0xFF00b764))),
+      child: CircularProgressIndicator(
+          valueColor: new AlwaysStoppedAnimation<Color>(Color(0xFF00b764))),
     );
+  }
+
+  getLengths() async {
+    final SharedPreferences prefs = await _prefs;
+    numPollsCreated = prefs.getInt("numPollsCreated");
+    numPollsVoted = prefs.getInt("numPollsVoted");
   }
 
   Widget pollsCreated(User _user) {
@@ -50,8 +66,6 @@ class ProfileState extends State<ProfileTabPage> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             polls = snapshot.data;
-            numPollsCreated = polls.length;
-
             if (polls.length > 0)
               return ListView.builder(
                   itemCount: polls.length,
@@ -71,7 +85,9 @@ class ProfileState extends State<ProfileTabPage> {
           if (snapshot.hasError)
             return Text("An error occurred fetching polls.");
           return Center(
-            child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Color(0xFF00b764))),
+            child: CircularProgressIndicator(
+                valueColor:
+                    new AlwaysStoppedAnimation<Color>(Color(0xFF00b764))),
           );
         },
         future: _user.getCreatedPolls());
@@ -82,7 +98,6 @@ class ProfileState extends State<ProfileTabPage> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             polls = snapshot.data;
-            numPollsVoted = polls.length;
             if (polls.length > 0)
               return ListView.builder(
                   itemCount: polls.length,
@@ -104,7 +119,9 @@ class ProfileState extends State<ProfileTabPage> {
             return Text("An error occurred fetching polls.");
           }
           return Center(
-            child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Color(0xFF00b764))),
+            child: CircularProgressIndicator(
+                valueColor:
+                    new AlwaysStoppedAnimation<Color>(Color(0xFF00b764))),
           );
         },
         future: _user.getVotedPolls());
@@ -121,7 +138,10 @@ class ProfileState extends State<ProfileTabPage> {
               backgroundColor: Colors.white,
               expandedHeight: 250,
               actions: [
-                IconButton(onPressed: () {}, icon: Icon(Icons.settings_outlined), color: Color(0xFF00b764))
+                IconButton(
+                    onPressed: () {},
+                    icon: Icon(Icons.settings_outlined),
+                    color: Color(0xFF00b764))
               ],
               flexibleSpace: FlexibleSpaceBar(
                 background: Container(
@@ -152,13 +172,19 @@ class ProfileState extends State<ProfileTabPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "$numPollsCreated Polls Created",
+                              "${_user.getnumPollsCreated()} Created",
                               textScaleFactor: 1.1,
                               style: TextStyle(color: Colors.black),
                             ),
-                            Text(" · ", textScaleFactor: 1.5, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
                             Text(
-                              "$numPollsVoted Polls Participated in",
+                              " · ",
+                              textScaleFactor: 1.5,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              "${_user.getnumPollsVoted()} Participated in",
                               textScaleFactor: 1.1,
                               style: TextStyle(color: Colors.black),
                             )
@@ -171,21 +197,20 @@ class ProfileState extends State<ProfileTabPage> {
               pinned: true,
               snap: true,
               bottom: new TabBar(
-                unselectedLabelColor: Colors.grey,
-                    indicatorColor: Color(0xFF00b764),
-                    labelColor: Color(0xFF00b764),
-                    isScrollable: false,
-                    tabs: [
-                      new Container(
-                        width: MediaQuery.of(context).size.width / 2,
-                        child: new Tab(text: 'Polls I Created'),
-                      ),
-                      new Container(
-                        width: MediaQuery.of(context).size.width / 2,
-                        child: new Tab(text: 'Polls I Voted In'),
-                      )
-                    ]
-              ),
+                  unselectedLabelColor: Colors.grey,
+                  indicatorColor: Color(0xFF00b764),
+                  labelColor: Color(0xFF00b764),
+                  isScrollable: false,
+                  tabs: [
+                    new Container(
+                      width: MediaQuery.of(context).size.width / 2,
+                      child: new Tab(text: 'Polls I Created'),
+                    ),
+                    new Container(
+                      width: MediaQuery.of(context).size.width / 2,
+                      child: new Tab(text: 'Polls I Voted In'),
+                    )
+                  ]),
             ),
           ];
         },

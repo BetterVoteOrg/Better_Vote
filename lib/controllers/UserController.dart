@@ -4,10 +4,11 @@ import 'package:better_vote/models/Poll.dart';
 import 'package:better_vote/models/User.dart';
 import 'package:better_vote/network/NetworkHandler.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserController {
   var _userdata;
-
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   UserController();
 
   Future<User> findProfileData() async {
@@ -49,6 +50,8 @@ class UserController {
       //   Map<String, dynamic> pollData = rawPollData['poll'];
       //   polls.add(Poll(user, pollData));
       // });
+      final SharedPreferences prefs = await _prefs;
+      prefs.setInt("numPollsVoted", polls.length);
       return polls;
     } catch (error) {
       throw error;
@@ -57,7 +60,11 @@ class UserController {
 
   Future<List<Poll>> getUserCreatedPolls(User user) async {
     String _pollPath = "/api/users/${user.getUserID()}/created-polls";
-    return await _organizedData(_pollPath, user);
+
+    List<Poll> polls = await _organizedData(_pollPath, user);
+    final SharedPreferences prefs = await _prefs;
+    prefs.setInt("numPollsCreated", polls.length);
+    return polls;
   }
 
   Future<List<Poll>> _organizedData(String _pollPath, User user) async {

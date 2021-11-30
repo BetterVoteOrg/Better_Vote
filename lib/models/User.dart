@@ -1,4 +1,5 @@
 import 'package:better_vote/controllers/UserController.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/Poll.dart';
 
 class User {
@@ -8,6 +9,8 @@ class User {
   String _createdAt;
   String _userId;
   String _userAvatar;
+  int _pollsCreated = 0;
+  int _pollsVoted = 0;
   User(Map<String, dynamic> data) {
     _userName = data["user_name"];
     _email = data["email"];
@@ -24,6 +27,14 @@ class User {
     return _email;
   }
 
+  int getnumPollsVoted() {
+    return _pollsVoted;
+  }
+
+  int getnumPollsCreated() {
+    return _pollsCreated;
+  }
+
   String getAvatar() {
     return _userAvatar;
   }
@@ -37,10 +48,18 @@ class User {
   }
 
   Future<List<Poll>> getCreatedPolls() async {
-    return await controller.getUserCreatedPolls(this);
+    final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    final SharedPreferences prefs = await _prefs;
+    _pollsCreated = prefs.getInt("numPollsCreated");
+    List<Poll> polls = await controller.getUserCreatedPolls(this);
+    return polls;
   }
 
   Future<List<Poll>> getVotedPolls() async {
-    return await controller.getUserParticipatedPolls(this);
+    final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    final SharedPreferences prefs = await _prefs;
+    _pollsVoted = prefs.getInt("numPollsVoted");
+    List<Poll> polls = await controller.getUserParticipatedPolls(this);
+    return polls;
   }
 }
