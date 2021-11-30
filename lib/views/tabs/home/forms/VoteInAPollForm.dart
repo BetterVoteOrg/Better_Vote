@@ -21,7 +21,12 @@ class VoteInAPollForm extends StatelessWidget {
             if (!snapshot.hasError) {
               if (snapshot.hasData) if (snapshot.data) {
                 return Center(
-                  child: Results(poll),
+                  child: Column(
+                    children: [
+                      Text("Thanks for voting."),
+                      Results(poll),
+                    ],
+                  ),
                 );
               }
               return _getVotingForm();
