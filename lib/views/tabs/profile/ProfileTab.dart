@@ -57,8 +57,10 @@ class ProfileState extends State<ProfileTabPage> {
 
   getLengths() async {
     final SharedPreferences prefs = await _prefs;
-    numPollsCreated = prefs.getInt("numPollsCreated");
-    numPollsVoted = prefs.getInt("numPollsVoted");
+    int newnum = prefs.getInt("numPollsCreated");
+    int newvoted = prefs.getInt("numPollsVoted");
+    numPollsCreated = newnum != null ? newnum : 0;
+    numPollsVoted = newvoted != null ? prefs.getInt("numPollsVoted") : 0;
   }
 
   Widget pollsCreated(User _user) {
