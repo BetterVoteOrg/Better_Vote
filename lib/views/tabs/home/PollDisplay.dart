@@ -35,7 +35,7 @@ class PollDisplay extends StatelessWidget {
                   _Instructions(poll),
                   poll.getStatus() == 'ACTIVE'
                       ? _VotingForm(poll) //CHANGE BACK
-                      : _Results(poll)
+                      : Results(poll)
                 ],
               ),
             ),
@@ -310,9 +310,9 @@ class _VotingForm extends StatelessWidget {
   }
 }
 
-class _Results extends StatelessWidget {
+class Results extends StatelessWidget {
   final Poll poll;
-  const _Results(this.poll, {Key key}) : super(key: key);
+  const Results(this.poll, {Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     int numVotes = poll.getNumberOfVotes();

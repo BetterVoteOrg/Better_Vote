@@ -51,6 +51,8 @@ class UserController {
       //   polls.add(Poll(user, pollData));
       // });
       final SharedPreferences prefs = await _prefs;
+      prefs.setStringList(
+          "votedPollsIds", polls.map((e) => e.getId()).toList());
       prefs.setInt("numPollsVoted", polls.length);
       return polls;
     } catch (error) {

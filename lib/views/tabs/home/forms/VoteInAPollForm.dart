@@ -1,20 +1,46 @@
+import 'package:better_vote/views/tabs/home/PollDisplay.dart';
 import 'package:flutter/material.dart';
 import 'package:better_vote/models/Poll.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'PLURALITY/PLURALITYForm.dart';
 import 'RCV/RCVForm.dart';
 import 'STAR/STARForm.dart';
 
 class VoteInAPollForm extends StatelessWidget {
   final Poll poll;
-  const VoteInAPollForm(this.poll, {Key key}) : super(key: key);
-
+  VoteInAPollForm(this.poll, {Key key}) : super(key: key);
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   @override
   Widget build(BuildContext context) {
     return Expanded(
         //width: MediaQuery.of(context).size.width,
         child: Column(
-      children: <Widget>[_getVotingForm()],
+      children: <Widget>[
+        FutureBuilder(
+          builder: (context, snapshot) {
+            if (!snapshot.hasError) {
+              if (snapshot.hasData) if (snapshot.data) {
+                return Center(
+                  child: Results(poll),
+                );
+              }
+              return _getVotingForm();
+            }
+            return Center(
+              child: Text("${snapshot.error}"),
+            );
+          },
+          future: checkIfVoted(),
+        )
+      ],
     ));
+  }
+
+  checkIfVoted() async {
+    final SharedPreferences prefs = await _prefs;
+
+    List<dynamic> votedPollsIds = prefs.getStringList("votedPollsIds");
+    return votedPollsIds.contains(poll.getId());
   }
 
   Widget _getVotingForm() {
