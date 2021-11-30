@@ -33,6 +33,7 @@ class Poll {
   String _status;
   String _createdTime;
   PollResults _results;
+  int _numVotes;
   List<dynamic> _choices = [];
   List<Ballot> _votes = [];
 
@@ -57,8 +58,16 @@ class Poll {
     return _id;
   }
 
+  int getNumberOfVotes() {
+    return _numVotes;
+  }
+
   String getStatus() {
     return _status;
+  }
+
+  void setNumVoters(int newVotes) {
+    this._numVotes = newVotes;
   }
 
   User getCreator() {

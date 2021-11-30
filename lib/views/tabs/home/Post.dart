@@ -60,6 +60,9 @@ class PostTime extends StatelessWidget {
       if (timeDifference.inMinutes <= 60) {
         return "${timeDifference.inMinutes} minutes ago";
       }
+      if (timeDifference.inHours == 1) {
+        return "${timeDifference.inHours} hour ago";
+      }
       if (timeDifference.inHours <= 24) {
         return "${timeDifference.inHours} hours ago";
       }

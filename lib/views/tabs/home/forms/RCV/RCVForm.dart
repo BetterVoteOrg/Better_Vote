@@ -4,6 +4,7 @@ import 'package:better_vote/models/Poll.dart';
 import 'package:better_vote/models/User.dart';
 import 'package:better_vote/models/ballots/RcvBallot.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class RCVForm extends StatefulWidget {
   final Poll poll;
@@ -83,6 +84,35 @@ class _RCVFormState extends State<RCVForm> {
                       bool succesfulVote = await BallotController()
                           .attempToSubmitABallot(
                               widget.poll.getId(), ballot.getVote());
+
+                      showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                                title: Container(
+                                    child: Column(
+                                  children: [
+                                    Icon(FontAwesomeIcons.checkCircle),
+                                    Text("Vote submitted!"),
+                                  ],
+                                )),
+                                content: Container(
+                                  height: 40,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Column(
+                                        children: [
+                                          Center(
+                                            child:
+                                                Text("Thank you for voting."),
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ));
                     },
                     child: Text(
                       "Submit Vote",
@@ -94,7 +124,8 @@ class _RCVFormState extends State<RCVForm> {
       if (snapshot.hasError) return Text("Voter info not found.");
 
       return Center(
-        child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Color(0xFF00b764))),
+        child: CircularProgressIndicator(
+            valueColor: new AlwaysStoppedAnimation<Color>(Color(0xFF00b764))),
       );
     }
 

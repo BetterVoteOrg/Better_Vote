@@ -15,7 +15,7 @@ class PostTitleAndSummary extends StatelessWidget {
     final String status = poll.getStatus();
     final String summary = poll.getQuestion();
     final String image = poll.getImageUrl();
-
+    final int numVotes = poll.getNumberOfVotes();
     return Expanded(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -24,7 +24,23 @@ class PostTitleAndSummary extends StatelessWidget {
           Text(title,
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
           SizedBox(height: 10),
-          handlePollStatus(status),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              handlePollStatus(status),
+              // if (status != 'ENDED')
+              Wrap(
+                children: [
+                  Text("$numVotes",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      )),
+                  Text(numVotes == 1 ? "Vote" : "Votes")
+                ],
+              )
+            ],
+          ),
           SizedBox(height: 10),
           image == 'no image' || image == null
               ? Container(

@@ -17,6 +17,7 @@ class PollController {
     // User pollCreator = User(allPolls);
     // List<dynamic> pollsRaw = allPolls["created_polls"];
     List<Poll> polls = [];
+
     allPolls.toList().forEach((rawPollData) {
       Map<String, dynamic> pollData = rawPollData;
       polls.add(Poll(user, pollData));
@@ -29,12 +30,27 @@ class PollController {
       var response = await NetworkHandler("/api/polls/public").fetchData();
       List<dynamic> allPolls = json.decode(response);
       List<Poll> polls = [];
-      allPolls.toList().forEach((rawPollData) {
+
+      for (var rawPollData in allPolls.toList()) {
         User pollCreator = User(rawPollData["created_by"]);
         Map<String, dynamic> data = rawPollData;
-        polls.add(Poll(pollCreator, data));
-      });
+        Poll poll = Poll(pollCreator, data);
+        int value = await this.getNumberOfVotes(poll);
+        poll.setNumVoters(value);
+        polls.add(poll);
+      }
       return polls;
+    } catch (error) {
+      throw (error);
+    }
+  }
+
+  Future<int> getNumberOfVotes(Poll poll) async {
+    try {
+      var response = await NetworkHandler("/api/polls/${poll.getId()}/ballots")
+          .fetchData();
+      List<dynamic> votes = json.decode(response)["votes"];
+      return votes.length;
     } catch (error) {
       throw (error);
     }

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:better_vote/controllers/PollController.dart';
 import 'package:better_vote/models/Poll.dart';
 import 'package:better_vote/models/User.dart';
 import 'package:better_vote/network/NetworkHandler.dart';
@@ -24,10 +25,6 @@ class UserController {
     return _userdata;
   }
 
-  // User getLoggedInUser() {
-  //   return User(this.getLoggedInUserJsonData());
-  // }
-
   Future<dynamic> getProfileData(User user) async {
     String response =
         await NetworkHandler("/api/users/" + user.getUserID()).fetchData();
@@ -36,15 +33,22 @@ class UserController {
 
   Future<List<Poll>> getUserParticipatedPolls(User user) async {
     String _pollPath = "/api/users/me/participated-polls";
-    // String _pollPath = "/api/polls/public";
     try {
       var response = await NetworkHandler(_pollPath).fetchData();
       List<dynamic> selectionsWithPolls = json.decode(response);
       List<Poll> polls = [];
-      selectionsWithPolls.toList().forEach((rawPollData) {
+
+      for (var rawPollData in selectionsWithPolls.toList()) {
         Map<String, dynamic> pollData = rawPollData['poll'];
-        polls.add(Poll(user, pollData));
-      });
+        Poll poll = Poll(user, pollData);
+        int value = await PollController().getNumberOfVotes(poll);
+        poll.setNumVoters(value);
+        polls.add(poll);
+      }
+      // selectionsWithPolls.toList().forEach((rawPollData) {
+      //   Map<String, dynamic> pollData = rawPollData['poll'];
+      //   polls.add(Poll(user, pollData));
+      // });
       return polls;
     } catch (error) {
       throw error;
@@ -53,7 +57,6 @@ class UserController {
 
   Future<List<Poll>> getUserCreatedPolls(User user) async {
     String _pollPath = "/api/users/${user.getUserID()}/created-polls";
-    // String _pollPath = "/api/polls/public";
     return await _organizedData(_pollPath, user);
   }
 
@@ -62,10 +65,18 @@ class UserController {
       var response = await NetworkHandler(_pollPath).fetchData();
       List<dynamic> allPolls = json.decode(response);
       List<Poll> polls = [];
-      allPolls.toList().forEach((rawPollData) {
+
+      for (var rawPollData in allPolls.toList()) {
         Map<String, dynamic> pollData = rawPollData;
-        polls.add(Poll(user, pollData));
-      });
+        Poll poll = Poll(user, pollData);
+        int value = await PollController().getNumberOfVotes(poll);
+        poll.setNumVoters(value);
+        polls.add(poll);
+      }
+      // allPolls.toList().forEach((rawPollData) {
+      //   Map<String, dynamic> pollData = rawPollData;
+      //   polls.add(Poll(user, pollData));
+      // });
 
       return polls;
     } catch (error) {

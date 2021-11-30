@@ -34,7 +34,7 @@ class PollDisplay extends StatelessWidget {
                   ),
                   _Instructions(poll),
                   poll.getStatus() == 'ACTIVE'
-                      ? _VotingForm(poll)  //CHANGE BACK
+                      ? _VotingForm(poll) //CHANGE BACK
                       : _Results(poll)
                 ],
               ),
@@ -67,6 +67,8 @@ class _PostTitleAndSummary extends StatelessWidget {
     final String status = poll.getStatus();
     final String summary = poll.getQuestion();
     final String image = poll.getImageUrl();
+    final int numVotes = poll.getNumberOfVotes();
+
     return Expanded(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,7 +78,23 @@ class _PostTitleAndSummary extends StatelessWidget {
           Text(title,
               style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
           SizedBox(height: 10),
-          handlePollStatus(status),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              handlePollStatus(status),
+              if (status != 'ENDED')
+                Wrap(
+                  children: [
+                    Text("$numVotes",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        )),
+                    Text(numVotes == 1 ? "Vote" : "Votes")
+                  ],
+                )
+            ],
+          ),
           SizedBox(height: 10),
           image == 'no image' || image == null
               ? Container()
@@ -231,12 +249,11 @@ class _VotingSystemAndInstructions extends StatelessWidget {
                                     ))
                               ]),
                               Divider(
-                                color: Color(0xFF00b764),
-                                height: 40,
-                                thickness: 1,
-                                indent: 1,
-                                endIndent: 1
-                              ),
+                                  color: Color(0xFF00b764),
+                                  height: 40,
+                                  thickness: 1,
+                                  indent: 1,
+                                  endIndent: 1),
                               Row(
                                 children: [
                                   Expanded(
@@ -298,30 +315,79 @@ class _Results extends StatelessWidget {
   const _Results(this.poll, {Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    int numVotes = poll.getNumberOfVotes();
     return Container(
       child: Column(
         children: [
-          Row(children: [Text("Choices", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, )),],),
-          SizedBox(height:10),
-          Align(alignment: Alignment.centerLeft, child: Wrap(children: [_Choices(poll)])),
-          SizedBox(height:20),
-          Row(children: [Text("Results", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, )),],),
+          Row(
+            children: [
+              Text("Choices",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  )),
+            ],
+          ),
+          SizedBox(height: 10),
+          Align(
+              alignment: Alignment.centerLeft,
+              child: Wrap(children: [_Choices(poll)])),
+          SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Results",
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  )),
+              Wrap(
+                children: [
+                  Text("$numVotes",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      )),
+                  Text(numVotes == 1 ? "Vote" : "Votes")
+                ],
+              )
+            ],
+          ),
           Divider(
-                                color: Color(0xFF00b764),
-                                height: 20,
-                                thickness: 1,
-                                indent: 1,
-                                endIndent: 1
-                              ),
-          
-          
-          Row(children: [Text("Winner", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, )),],),
-          SizedBox(height:10),
-          Row(children: [Flexible(child: Text(" ${poll.getResults().winner}")),]),
-          SizedBox(height:20),
-          Row(children: [Text("Details", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, )),],),
-          SizedBox(height:10),
-          Row(children: [Flexible(child:Text("${poll.getResults().analysis.replaceAll("\n", " ")}"))])
+              color: Color(0xFF00b764),
+              height: 20,
+              thickness: 1,
+              indent: 1,
+              endIndent: 1),
+          Row(
+            children: [
+              Text("Winner",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  )),
+            ],
+          ),
+          SizedBox(height: 10),
+          Row(children: [
+            Flexible(child: Text(" ${poll.getResults().winner}")),
+          ]),
+          SizedBox(height: 20),
+          Row(
+            children: [
+              Text("Details",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  )),
+            ],
+          ),
+          SizedBox(height: 10),
+          Row(children: [
+            Flexible(
+                child:
+                    Text("${poll.getResults().analysis.replaceAll("\n", " ")}"))
+          ])
         ],
       ),
     );
@@ -331,7 +397,6 @@ class _Results extends StatelessWidget {
 class _Choices extends StatelessWidget {
   final Poll poll;
   const _Choices(this.poll, {Key key}) : super(key: key);
-  
 
   @override
   Widget build(BuildContext context) {
@@ -340,29 +405,23 @@ class _Choices extends StatelessWidget {
     //int numChoices = choices.length;
 
     return Wrap(
-      children: choices.map<Widget>((choices) => 
-        Padding(padding: EdgeInsets.fromLTRB(0, 0, 10, 5), child:
-            Badge(
-              toAnimate: false,
-              shape: BadgeShape.square,
-              badgeColor: Colors.white,
-              borderSide: BorderSide(color: Color(0xFF00b764)),
-              borderRadius: BorderRadius.circular(100),
-              badgeContent: 
-                Padding(
-                  padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  child: 
-                    Text(
-                      choices,
-                      style: TextStyle(
-                        color: Colors.grey[800],
-                        fontSize: 12,
-                      )
-                    )
-                )
-            ),
-        )).toList()
-    );
+        children: choices
+            .map<Widget>((choices) => Padding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 10, 5),
+                  child: Badge(
+                      toAnimate: false,
+                      shape: BadgeShape.square,
+                      badgeColor: Colors.white,
+                      borderSide: BorderSide(color: Color(0xFF00b764)),
+                      borderRadius: BorderRadius.circular(100),
+                      badgeContent: Padding(
+                          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                          child: Text(choices,
+                              style: TextStyle(
+                                color: Colors.grey[800],
+                                fontSize: 12,
+                              )))),
+                ))
+            .toList());
   }
 }
-
