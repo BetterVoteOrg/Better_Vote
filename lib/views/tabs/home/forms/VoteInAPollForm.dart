@@ -10,8 +10,28 @@ class VoteInAPollForm extends StatelessWidget {
   final Poll poll;
   VoteInAPollForm(this.poll, {Key key}) : super(key: key);
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
   @override
   Widget build(BuildContext context) {
+    var startArr =
+        DateTime.parse(poll.getStartTime()).toLocal().toString().split(" ");
+    var stopArr = DateTime.parse(poll.getEndTime())
+        .toLocal()
+        .toLocal()
+        .toString()
+        .split(" ");
+    Widget _getVotingForm() {
+      //debugPrint("here we are");
+
+      return Column(
+        children: [
+          Text("Started ${startArr[0]} at ${startArr[1].substring(0, 5)}"),
+          Text("Ends ${stopArr[0]} at ${stopArr[1].substring(0, 5)}"),
+          chooseForm()
+        ],
+      );
+    }
+
     return Expanded(
         //width: MediaQuery.of(context).size.width,
         child: Column(
@@ -23,7 +43,13 @@ class VoteInAPollForm extends StatelessWidget {
                 return Center(
                   child: Column(
                     children: [
-                      Text("Thanks for voting."),
+                      if (poll.getStatus() == 'ACTIVE')
+                        Text(
+                            "Thanks for voting. Poll will end on ${stopArr[0]} at ${stopArr[1].substring(0, 5)}"),
+                      if (poll.getStatus() == 'JUST_CREATED')
+                        Text(
+                            "Poll will start on ${startArr[0]} at ${startArr[1].substring(0, 5)}"),
+                      Padding(padding: EdgeInsets.all(20)),
                       Results(poll),
                     ],
                   ),
@@ -48,12 +74,11 @@ class VoteInAPollForm extends StatelessWidget {
     return votedPollsIds.contains(poll.getId());
   }
 
-  Widget _getVotingForm() {
+  Widget chooseForm() {
     String rcv = "RCV";
     String star = "STAR";
     String plurality = "PLURALITY";
     final String votingSystem = poll.getVotingSystem();
-    //debugPrint("here we are");
 
     if (votingSystem == rcv) {
       return RCVForm(poll);
@@ -62,5 +87,7 @@ class VoteInAPollForm extends StatelessWidget {
     } else if (votingSystem == plurality) {
       return PLURALITYForm(poll);
     }
+
+    return Container();
   }
 }
