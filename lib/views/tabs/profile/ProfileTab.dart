@@ -119,10 +119,15 @@ class ProfileState extends State<ProfileTabPage> {
                 background: Container(
                   alignment: Alignment.topCenter,
                   child: Column(children: [
-                    Icon(Icons.account_circle_outlined, size: 120, color: Colors.white,),
+                    Icon(
+                      Icons.account_circle_outlined,
+                      size: 120,
+                      color: Colors.white,
+                    ),
                     Text(
                       _user.getUsername(),
-                      style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.white),
                       textScaleFactor: 2,
                     ),
                     Padding(
@@ -130,9 +135,16 @@ class ProfileState extends State<ProfileTabPage> {
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text("# Polls Created: ", textScaleFactor: 1.1, style: TextStyle(color: Colors.white),),
-                            Text("# Polls Participated in: ",
-                                textScaleFactor: 1.1, style: TextStyle(color: Colors.white),)
+                            Text(
+                              "# Polls Created: ",
+                              textScaleFactor: 1.1,
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            Text(
+                              "# Polls Participated in: ",
+                              textScaleFactor: 1.1,
+                              style: TextStyle(color: Colors.white),
+                            )
                           ]),
                     ),
                   ]),

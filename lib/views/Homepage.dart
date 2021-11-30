@@ -29,9 +29,7 @@ class HomeState extends State<HomePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    _firebaseMessaging.getToken().then((token) => print(token));
   }
 
   @override

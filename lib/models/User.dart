@@ -7,11 +7,13 @@ class User {
   String _email;
   String _createdAt;
   String _userId;
+  String _userAvatar;
   User(Map<String, dynamic> data) {
     _userName = data["user_name"];
     _email = data["email"];
     _createdAt = data["created_at"];
     _userId = data["user_id"];
+    _userAvatar = data["user_avatar"];
   }
 
   String getUsername() {
@@ -20,6 +22,10 @@ class User {
 
   String getEmail() {
     return _email;
+  }
+
+  String getAvatar() {
+    return _userAvatar;
   }
 
   String getUserID() {
