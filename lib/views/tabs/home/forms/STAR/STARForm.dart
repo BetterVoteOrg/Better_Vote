@@ -124,7 +124,7 @@ class _STARFormState extends State<STARForm> {
       if (snapshot.hasError) return Text("Voter info not found.");
 
       return Center(
-        child: CircularProgressIndicator(),
+        child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Color(0xFF00b764))),
       );
     }
 

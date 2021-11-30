@@ -96,7 +96,12 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
         title: 'BetterVote',
         theme: ThemeData(
-          primaryColor: Color(0xFF008037),
+          primaryColor: Color(0xFF00b764),
+          primaryColorDark: Color(0xFF00b764),
+          textSelectionTheme: TextSelectionThemeData(
+            cursorColor: Color(0xFF00b764),
+          ),
+          //timePickerTheme: TimePickerThemeData(hourMinuteTextColor: Color(0xFF00b764), dayPeriodColor:Color(0xFF00b764), dayPeriodTextColor: Color(0xFF00b764), dialHandColor: Color(0xFF00b764), )
         ),
         debugShowCheckedModeBanner: false,
         localizationsDelegates: [

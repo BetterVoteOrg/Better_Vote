@@ -22,7 +22,7 @@ class PostTitleAndSummary extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Text(title,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
           SizedBox(height: 10),
           handlePollStatus(status),
           SizedBox(height: 10),

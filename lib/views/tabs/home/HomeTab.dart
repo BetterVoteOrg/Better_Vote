@@ -33,6 +33,7 @@ class HomeTabState extends State<HomeTabPage>
         appBar: ScrollAppBar(
           controller: _controller,
           title: Image.asset('images/better_vote_logo.png', height: 50),
+          centerTitle: true,
           backgroundColor: Colors.white,
           elevation: 0.5,
           automaticallyImplyLeading: false,
@@ -48,7 +49,7 @@ class HomeTabState extends State<HomeTabPage>
     }
     if (snapshot.hasError) return Text("An error occurred home data.");
     return Center(
-      child: CircularProgressIndicator(),
+      child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Color(0xFF00b764))),
     );
   }
 }

@@ -4,6 +4,7 @@ import 'package:better_vote/models/User.dart';
 import 'package:better_vote/views/tabs/home/Postcard.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:better_vote/helper/profilePics.dart';
 
 class ProfileTabPage extends StatefulWidget {
   // ProfileTabPage( {Key key}) : super(key: key)
@@ -40,7 +41,7 @@ class ProfileState extends State<ProfileTabPage> {
     }
 
     return Center(
-      child: CircularProgressIndicator(),
+      child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Color(0xFF00b764))),
     );
   }
 
@@ -70,7 +71,7 @@ class ProfileState extends State<ProfileTabPage> {
           if (snapshot.hasError)
             return Text("An error occurred fetching polls.");
           return Center(
-            child: CircularProgressIndicator(),
+            child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Color(0xFF00b764))),
           );
         },
         future: _user.getCreatedPolls());
@@ -103,7 +104,7 @@ class ProfileState extends State<ProfileTabPage> {
             return Text("An error occurred fetching polls.");
           }
           return Center(
-            child: CircularProgressIndicator(),
+            child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Color(0xFF00b764))),
           );
         },
         future: _user.getVotedPolls());
@@ -117,10 +118,10 @@ class ProfileState extends State<ProfileTabPage> {
           return <Widget>[
             new SliverAppBar(
               automaticallyImplyLeading: false,
-              backgroundColor: Color(0xFF008037),
+              backgroundColor: Colors.white,
               expandedHeight: 250,
               actions: [
-                IconButton(onPressed: () {}, icon: Icon(Icons.settings))
+                IconButton(onPressed: () {}, icon: Icon(Icons.settings_outlined), color: Color(0xFF00b764))
               ],
               flexibleSpace: FlexibleSpaceBar(
                 background: Container(
@@ -142,7 +143,7 @@ class ProfileState extends State<ProfileTabPage> {
                     Text(
                       _user.getUsername(),
                       style: const TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.white),
+                          fontWeight: FontWeight.bold, color: Colors.black),
                       textScaleFactor: 2,
                     ),
                     Padding(
@@ -151,14 +152,15 @@ class ProfileState extends State<ProfileTabPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "# Polls Created: $numPollsCreated ",
+                              "$numPollsCreated Polls Created",
                               textScaleFactor: 1.1,
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(color: Colors.black),
                             ),
+                            Text(" · ", textScaleFactor: 1.5, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
                             Text(
-                              "# Polls Participated in: $numPollsVoted",
+                              "$numPollsVoted Polls Participated in",
                               textScaleFactor: 1.1,
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(color: Colors.black),
                             )
                           ]),
                     ),
@@ -169,11 +171,20 @@ class ProfileState extends State<ProfileTabPage> {
               pinned: true,
               snap: true,
               bottom: new TabBar(
-                isScrollable: true,
-                tabs: <Tab>[
-                  new Tab(text: "POLLS I CREATED"),
-                  new Tab(text: "POLLS I VOTED IN"),
-                ],
+                unselectedLabelColor: Colors.grey,
+                    indicatorColor: Color(0xFF00b764),
+                    labelColor: Color(0xFF00b764),
+                    isScrollable: false,
+                    tabs: [
+                      new Container(
+                        width: MediaQuery.of(context).size.width / 2,
+                        child: new Tab(text: 'Polls I Created'),
+                      ),
+                      new Container(
+                        width: MediaQuery.of(context).size.width / 2,
+                        child: new Tab(text: 'Polls I Voted In'),
+                      )
+                    ]
               ),
             ),
           ];

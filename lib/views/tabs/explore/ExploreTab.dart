@@ -38,7 +38,7 @@ class ExploreTabState extends State<ExploreTabPage> {
                   automaticallyImplyLeading: false,
                   backgroundColor: Colors.white,
                   title: Container(
-                    padding: EdgeInsets.only(left: 30, right: 30),
+                    padding: EdgeInsets.only(left: 50, right: 0),
                     height: 30,
                     child: Align(
                       alignment: Alignment.centerLeft,
@@ -73,6 +73,9 @@ class ExploreTabState extends State<ExploreTabPage> {
                   floating: true,
                   pinned: true,
                   snap: true,
+                  actions: [
+                    IconButton(onPressed: () {}, icon: Icon(Icons.settings_outlined), color: Color(0xFF00b764))
+                  ],
                   bottom: new TabBar(
                     unselectedLabelColor: Colors.grey,
                     indicatorColor: Color(0xFF00b764),
@@ -104,7 +107,7 @@ class ExploreTabState extends State<ExploreTabPage> {
     }
     if (snapshot.hasError) return Text("An error occurred home data.");
     return Center(
-      child: CircularProgressIndicator(),
+      child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Color(0xFF00b764))),
     );
   }
 

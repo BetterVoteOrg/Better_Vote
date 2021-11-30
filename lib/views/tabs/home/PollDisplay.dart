@@ -4,6 +4,7 @@ import 'package:better_vote/models/Poll.dart';
 import 'package:better_vote/helper/demoValues.dart';
 import 'package:better_vote/views/tabs/home/forms/VoteInAPollForm.dart';
 import 'package:better_vote/helper/descriptionTextWidgetV2.dart';
+import 'package:badges/badges.dart';
 
 import 'Post.dart';
 
@@ -33,21 +34,8 @@ class PollDisplay extends StatelessWidget {
                   ),
                   _Instructions(poll),
                   poll.getStatus() == 'ACTIVE'
-                      ? _VotingForm(poll)
-                      : Center(
-                          child: Container(
-                            child: Column(
-                              children: [
-                                Text(
-                                    "Poll is not active or has ended. (Specify)"),
-                                Text("Winner:"),
-                                Text(" ${poll.getResults().winner}"),
-                                Text("Analysis: "),
-                                Text("${poll.getResults().analysis}")
-                              ],
-                            ),
-                          ),
-                        )
+                      ? _VotingForm(poll)  //CHANGE BACK
+                      : _Results(poll)
                 ],
               ),
             ),
@@ -86,9 +74,10 @@ class _PostTitleAndSummary extends StatelessWidget {
         children: <Widget>[
           SizedBox(height: 10),
           Text(title,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
           SizedBox(height: 10),
           handlePollStatus(status),
+          SizedBox(height: 10),
           image == 'no image' || image == null
               ? Container()
               : AspectRatio(
@@ -221,7 +210,7 @@ class _VotingSystemAndInstructions extends StatelessWidget {
                       isScrollControlled: true,
                       backgroundColor: Colors.transparent,
                       builder: (context) => Container(
-                        height: MediaQuery.of(context).size.height * 0.9,
+                        height: MediaQuery.of(context).size.height * 0.4,
                         decoration: new BoxDecoration(
                           color: Colors.white,
                           borderRadius: new BorderRadius.only(
@@ -235,35 +224,19 @@ class _VotingSystemAndInstructions extends StatelessWidget {
                               child: Column(
                             children: [
                               Row(children: [
-                                Text("Voting Systems",
+                                Text("How to Vote",
                                     style: TextStyle(
                                       fontSize: 22,
                                       fontWeight: FontWeight.bold,
                                     ))
                               ]),
                               Divider(
-                                  color: Color(0xFF00b764),
-                                  height: 40,
-                                  thickness: 1,
-                                  indent: 1,
-                                  endIndent: 1),
-                              Row(children: [
-                                Flexible(
-                                    child: Text(
-                                        "Explanation of Voting Systems. Just explain why voting systems are important and what voting systems Better Vote offers. Filler Text: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."))
-                              ]),
-                              SizedBox(height: 20),
-                              Row(
-                                children: [
-                                  Text(
-                                    "How to vote",
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
-                                  )
-                                ],
+                                color: Color(0xFF00b764),
+                                height: 40,
+                                thickness: 1,
+                                indent: 1,
+                                endIndent: 1
                               ),
-                              SizedBox(height: 10),
                               Row(
                                 children: [
                                   Expanded(
@@ -298,11 +271,11 @@ class _VotingSystemAndInstructions extends StatelessWidget {
     String plurality = "PLURALITY";
 
     if (votingSystem == rcv) {
-      return "These are the instructions for RCV. This is how you vote in a RCV poll. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Resize Later";
+      return "Rank your favorite choice with “1”, your second favorite with “2”, and so on. You must rank at least your first choice. No choice may be given the same rank. Although you do not need to rank all the choices, doing so may result in your vote not being considered in later rounds.";
     } else if (votingSystem == star) {
-      return "These are the instructions for STAR. This is how you vote in a STAR poll. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Resize later";
+      return "Give each choice a score between zero and five, where a higher score means you like the choice more. Not all choices need to be scored, but at least one does. Choices that are left unscored will receive a score of zero. You may give multiple choices the same score, but note that giving both choices that make it to the runoff the same score will be interpreted as a vote of no preference between the two.";
     } else if (votingSystem == plurality) {
-      return "These are the instructions for Plurality. This is how you vote in a Plurality poll.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Resize later";
+      return "Select your favorite choice. You must select exactly one choice.";
     }
   }
 }
@@ -319,3 +292,77 @@ class _VotingForm extends StatelessWidget {
         ));
   }
 }
+
+class _Results extends StatelessWidget {
+  final Poll poll;
+  const _Results(this.poll, {Key key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        children: [
+          Row(children: [Text("Choices", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, )),],),
+          SizedBox(height:10),
+          Align(alignment: Alignment.centerLeft, child: Wrap(children: [_Choices(poll)])),
+          SizedBox(height:20),
+          Row(children: [Text("Results", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, )),],),
+          Divider(
+                                color: Color(0xFF00b764),
+                                height: 20,
+                                thickness: 1,
+                                indent: 1,
+                                endIndent: 1
+                              ),
+          
+          
+          Row(children: [Text("Winner", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, )),],),
+          SizedBox(height:10),
+          Row(children: [Flexible(child: Text(" ${poll.getResults().winner}")),]),
+          SizedBox(height:20),
+          Row(children: [Text("Details", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, )),],),
+          SizedBox(height:10),
+          Row(children: [Flexible(child:Text("${poll.getResults().analysis.replaceAll("\n", " ")}"))])
+        ],
+      ),
+    );
+  }
+}
+
+class _Choices extends StatelessWidget {
+  final Poll poll;
+  const _Choices(this.poll, {Key key}) : super(key: key);
+  
+
+  @override
+  Widget build(BuildContext context) {
+    List<dynamic> choices = poll.getChoices();
+    //List<dynamic> choices = ["superlong", "thisistheiha","fdsahfjudskhaf","fkdlsjifkldshak", "fdjkshfkdjushafjkhsiuahjkda", "kfdsjhkafhds", "salfjdklsfjals", "fldksjlafj", "fdjksfhdjskahfk", "kslafj", "djksdf", "jdsfk", "djkshf", "fdjshfjskha"];
+    //int numChoices = choices.length;
+
+    return Wrap(
+      children: choices.map<Widget>((choices) => 
+        Padding(padding: EdgeInsets.fromLTRB(0, 0, 10, 5), child:
+            Badge(
+              toAnimate: false,
+              shape: BadgeShape.square,
+              badgeColor: Colors.white,
+              borderSide: BorderSide(color: Color(0xFF00b764)),
+              borderRadius: BorderRadius.circular(100),
+              badgeContent: 
+                Padding(
+                  padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  child: 
+                    Text(
+                      choices,
+                      style: TextStyle(
+                        color: Colors.grey[800],
+                        fontSize: 12,
+                      )
+                    )
+                )
+            ),
+        )).toList()
+    );
+  }
+}
+

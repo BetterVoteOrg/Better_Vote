@@ -26,8 +26,9 @@ class CreatePollState extends State<CreatePollTabPage> {
         key: _formkey,
       ),
       appBar: AppBar(
-        title: const Text(pageTitle),
-        backgroundColor: Color(0xFF008037),
+        title: const Text(pageTitle, style: TextStyle(color: Color(0xFF00b764))),
+        centerTitle: true,
+        backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
       ),
     );

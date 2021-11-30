@@ -94,7 +94,7 @@ class _RCVFormState extends State<RCVForm> {
       if (snapshot.hasError) return Text("Voter info not found.");
 
       return Center(
-        child: CircularProgressIndicator(),
+        child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Color(0xFF00b764))),
       );
     }
 

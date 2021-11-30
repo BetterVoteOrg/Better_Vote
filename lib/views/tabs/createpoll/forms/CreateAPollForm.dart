@@ -183,8 +183,8 @@ bool _isBusy = false;
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                  child: Text("Poll details"),
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  //child: Text("Poll details"),
                 ),
                 Card(
                   child: Container(
@@ -194,24 +194,34 @@ bool _isBusy = false;
                         Padding(
                           padding:
                               EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                          child: Text("Poll title"),
+                          child: Text("Title", style: TextStyle(fontWeight: FontWeight.bold)),
                         ),
                         TextField(
                             controller: _pollTitleController,
                             decoration: InputDecoration(
-                              border: OutlineInputBorder(),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Color(0xFF00b764), width: 2.0),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black38, width: 1.0),
+                              ),
                               hintText: 'Enter title',
                             )),
                         Padding(
                           padding:
                               EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                          child: Text("Poll question"),
+                          child: Text("Question", style: TextStyle(fontWeight: FontWeight.bold)),
                         ),
                         TextField(
                           controller: _pollQuestionController,
                           decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: 'Enter Question',
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xFF00b764), width: 2.0),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black38, width: 1.0),
+                            ),
+                            hintText: 'Enter question',
                           ),
                         ),
                         Padding(
@@ -220,23 +230,114 @@ bool _isBusy = false;
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Choose vote system.'),
-                                DropdownButton<String>(
-                                    value: _selectedVoteSystem,
-                                    iconSize: 24,
-                                    elevation: 16,
-                                    hint: Text("Choose voting system"),
-                                    onChanged: (String newValue) {
-                                      if (newValue.length >= 0)
-                                        setState(() {
-                                          _selectedVoteSystem = newValue;
-                                        });
-                                    },
-                                    items: VoteSystemDropDown.map(
-                                        (e) => DropdownMenuItem<String>(
-                                              value: e,
-                                              child: Text(e),
-                                            )).toList())
+                                Text('Voting System', style: TextStyle(fontWeight: FontWeight.bold)),
+                                Row(children: [
+                                    DropdownButton<String>(
+                                      value: _selectedVoteSystem,
+                                      iconSize: 24,
+                                      elevation: 16,
+                                      hint: Text("Select voting system"),
+                                      onChanged: (String newValue) {
+                                        if (newValue.length >= 0)
+                                          setState(() {
+                                            _selectedVoteSystem = newValue;
+                                          });
+                                      },
+                                      items: VoteSystemDropDown.map(
+                                          (e) => DropdownMenuItem<String>(
+                                                value: e,
+                                                child: Text(e),
+                                              )).toList()
+                                    ),
+
+                                    TextButton(
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      backgroundColor: Colors.transparent,
+                      builder: (context) => Container(
+                        height: MediaQuery.of(context).size.height * 0.9,
+                        decoration: new BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: new BorderRadius.only(
+                            topLeft: const Radius.circular(25.0),
+                            topRight: const Radius.circular(25.0),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.all(20),
+                          child: SingleChildScrollView(
+                              child: Column(
+                            children: [
+                              Row(children: [
+                                Text("Voting Systems",
+                                    style: TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold,
+                                    ))
+                              ]),
+                              Divider(
+                                color: Color(0xFF00b764),
+                                height: 40,
+                                thickness: 1,
+                                indent: 1,
+                                endIndent: 1
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                      child: Text("RCV", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)))
+                                ],
+                              ),
+                              SizedBox(height: 5),
+                              Row(
+                                children: [
+                                  Expanded(
+                                      child: Text("In ranked choice voting (also known as Instant Runoff Voting), voters rank each choice, starting at 1, counting upwards. If a choice is ranked as the first choice on more than half of ballots, then that choice wins. Otherwise, the choice that is ranked as the first choice on the fewest ballots is eliminated and their votes are redistributed to their voters’ second choices. The process of checking for a winner and eliminating the last place is repeated until a choice receives more than half of the votes."))
+                                ],
+                              ),
+                              SizedBox(height: 15),
+                              Row(
+                                children: [
+                                  Expanded(
+                                      child: Text("STAR", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)))
+                                ],
+                              ),
+                              SizedBox(height: 5),
+                              Row(
+                                children: [
+                                  Expanded(
+                                      child: Text("In STAR voting (Score Then Automatic Runoff), voters score each choice between zero and five. The scores are tallied and the choices with the two highest scores enter a runoff. In the runoff, a choice receives a single vote from each ballot where they scored higher than the other choice. The choice that receives the majority of votes in the runoff wins the poll."))
+                                ],
+                              ),
+                              SizedBox(height: 15),
+                              Row(
+                                children: [
+                                  Expanded(
+                                      child: Text("Plurality", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)))
+                                ],
+                              ),
+                              SizedBox(height: 5),
+                              Row(
+                                children: [
+                                  Expanded(
+                                      child: Text("In plurality voting (also known as first-past-the-post), each voter gets one vote, which they can give to any of the choices. The choice that receives the most votes wins the poll."))
+                                ],
+                              ),
+                            ],
+                          )),
+                        ),
+                      ),
+                    );
+                  },
+                  child: Text(
+                    "Learn More",
+                    style: TextStyle(fontSize: 12, color: Color(0xFF00b764)),
+                  )),
+
+                                  ]
+                                )
                               ],
                             )),
                       ],
@@ -244,15 +345,22 @@ bool _isBusy = false;
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                  child: Text("Poll candidates"),
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  //child: Text("Poll candidates"),
                 ),
                 Card(
                     child: Container(
                   child: Column(
                     children: [
+                      Align(alignment: Alignment.centerLeft, child:
+                        Padding(
+                            padding:
+                                EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                            child: Text("Choices", style: TextStyle(fontWeight: FontWeight.bold)),
+                        )
+                      ),
                       Container(
-                        height: 80,
+                        height: 70,
                         color: Color(000),
                         child: ListView.builder(
                           shrinkWrap: true,
@@ -274,21 +382,26 @@ bool _isBusy = false;
                         child: TextField(
                             controller: _candidateController,
                             decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              hintText: 'Candidate name',
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Color(0xFF00b764), width: 2.0),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black38, width: 1.0),
+                              ),
+                              hintText: 'Choice name',
                               suffixIcon: Wrap(
                                 children: [
                                   IconButton(
                                     onPressed: () {
                                       setState(() {});
                                     },
-                                    icon: Icon(Icons.image),
+                                    icon: Icon(Icons.image, color: Color(0xFF00b764),),
                                   ),
                                   IconButton(
                                     onPressed: () {
                                       _candidateController.clear();
                                     },
-                                    icon: Icon(Icons.clear),
+                                    icon: Icon(Icons.clear, color: Color(0xFF00b764)),
                                   )
                                 ],
                               ),
@@ -301,7 +414,7 @@ bool _isBusy = false;
                           child: Container(
                             width: 300,
                             child: ElevatedButton(
-                              child: Text("Add Option"),
+                              child: Text("Add Choice"),
                               onPressed: () {
                                 setState(() {
                                   _selectedCandidates.remove("");
@@ -312,6 +425,9 @@ bool _isBusy = false;
                                   _candidateController.text = "";
                                 });
                               },
+                              style: ElevatedButton.styleFrom(
+                                primary: Color(0xFF00b764)
+                              ),
                             ),
                           ),
                         ),
@@ -320,12 +436,19 @@ bool _isBusy = false;
                   ),
                 )),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                  child: Text("Poll Dates."),
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  //child: Text("Poll Dates."),
                 ),
                 Card(
                   child: Column(
                     children: [
+                      Align(alignment: Alignment.centerLeft, child:
+                        Padding(
+                            padding:
+                                EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                            child: Text("Timeframe", style: TextStyle(fontWeight: FontWeight.bold)),
+                        )
+                      ),
                       Padding(
                         padding:
                             EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -397,8 +520,8 @@ bool _isBusy = false;
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                  child: Text('Other options.'),
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  //child: Text('Other options.'),
                 ),
                 Container(
                   width: double.infinity,
@@ -412,7 +535,7 @@ bool _isBusy = false;
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Poll category'),
+                              Text('Category', style: TextStyle(fontWeight: FontWeight.bold)),
                               DropdownButton<String>(
                                   value: _selectedCategory,
                                   iconSize: 24,
@@ -445,7 +568,7 @@ bool _isBusy = false;
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Poll visibilty'),
+                              Text('Visibility', style: TextStyle(fontWeight: FontWeight.bold)),
                               DropdownButton<String>(
                                   value: _selectedVisibility,
                                   iconSize: 24,
@@ -478,7 +601,7 @@ bool _isBusy = false;
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 20, vertical: 5),
                               ),
-                              Text('Poll image'),
+                              Text('Image', style: TextStyle(fontWeight: FontWeight.bold)),
                               Padding(
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 20, vertical: 5),
@@ -487,7 +610,7 @@ bool _isBusy = false;
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   _selectedImage == null
-                                      ? Text('Poll image not selected.')
+                                      ? Text('Image not selected.')
                                       : Container(
                                           height: 300,
                                           child: Image.file(
@@ -504,6 +627,7 @@ bool _isBusy = false;
                                         _selectedImage = xfile;
                                       });
                                     },
+                                    style: ElevatedButton.styleFrom(primary: Color(0xFF00b764))
                                   )
                                 ],
                               ),
@@ -517,12 +641,13 @@ bool _isBusy = false;
                   )),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                   child: Center(
                     child: Container(
                       width: double.infinity,
                       child: ElevatedButton(
                         child: Text("Submit Poll"),
+                        style: ElevatedButton.styleFrom(primary: Color(0xFF00b764)),
                         onPressed: () {
                           setState(() {
                             _isBusy = true;
